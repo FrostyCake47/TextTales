@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "107529915544",
+    "project_id": "texttales-69",
+    "storage_bucket": "texttales-69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107529915544:android:a4a69f6f88e653f9da94ed",
+        "android_client_info": {
+          "package_name": "com.example.texttales"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRFbucajSyl5qBAGnMWu7E6hbMeoU-Kg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
