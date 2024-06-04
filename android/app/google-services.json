@@ -12,7 +12,20 @@
           "package_name": "com.example.texttales"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "107529915544-mlr0sl5m38os7v7la365389jlci4cvdb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.texttales",
+            "certificate_hash": "ea169e225df750d45c63bd8790cad3f93dd6ec1c"
+          }
+        },
+        {
+          "client_id": "107529915544-l9ubmq35sdv23jspgiagov3dlkhjoiel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDRFbucajSyl5qBAGnMWu7E6hbMeoU-Kg0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107529915544-l9ubmq35sdv23jspgiagov3dlkhjoiel.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
