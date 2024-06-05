@@ -37,15 +37,7 @@ class HomeScreen extends ConsumerWidget {
           );
       });
 
-      try{
-        User? user = await AuthService().signInWithGoogle();
-        String name = user!.displayName ?? '';
-        ref.read(playerProvider.notifier).updateName(name);
-        print("Player name: ${name}");
-      }
-      catch(e){
-        print(e);
-      }
+      PlayerUpdation().addAuthenticatedUser(ref, playerProvider);
       Navigator.pop(context);
     }
 
@@ -106,13 +98,16 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                         child: TextField(
                             controller: _joinGameController,
                             textAlign: TextAlign.center,
+                            keyboardType: TextInputType.number,
+                            maxLength: 4,
+
                             decoration: InputDecoration(
-                              hintTextDirection: TextDirection.ltr,
                               hintText: 'Enter room ID',
+                              counterText: "",
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 borderSide: const BorderSide(color: secondaryColor, width: 1)
