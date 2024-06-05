@@ -19,8 +19,10 @@ class AuthScreen extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
+          if(mode == null) return HomeScreen();
           if(snapshot.hasData) {
-            print("I habe data");
+            print(mode);
+            print("I habe data ${snapshot.data}");
             Fluttertoast.showToast(msg: "Logged in");
             return LobbyScreen(mode: mode);
             }

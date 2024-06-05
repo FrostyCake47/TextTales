@@ -20,6 +20,7 @@ import 'package:texttales/services/auth_service.dart';
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
@@ -27,26 +28,32 @@ class HomeScreen extends ConsumerWidget {
   final toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
 
+
   void signInWithGoogle() async {
-      showDialog(context: context, builder: (context){
-        return const Center(
-            child: SpinKitCircle(
-              color: Colors.redAccent,
-              size: 50.0,
-            ),
-          );
-      });
+    showDialog(context: context, builder: (context){
+      return const Center(
+          child: SpinKitCircle(
+            color: Colors.redAccent,
+            size: 50.0,
+          ),
+        );
+    });
 
-      PlayerUpdation().addAuthUser(ref, playerProvider);
-      Navigator.pop(context);
-    }
+    PlayerUpdation().addAuthUser(ref, playerProvider);
+    Navigator.pop(context);
+  }
 
-    void signOut() async {
-      PlayerUpdation().removeAuthUser(ref, playerProvider);
-    }
+  void signOut() async {
+    PlayerUpdation().removeAuthUser(ref, playerProvider);
+  }
 
+  void joinGame(){
+    ref.read(toggleJoinGameProvider.notifier).toggle();
+    Fluttertoast.showToast(msg: 'toggling notifier');
+    Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+  }
 
-    return Scaffold(
+  return Scaffold(
       backgroundColor: dark,
       body: Center(
         child: SingleChildScrollView(
@@ -71,8 +78,6 @@ class HomeScreen extends ConsumerWidget {
               ),
           
               
-              
-              
               GestureDetector(
                 onTap: (){
                   Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
@@ -92,9 +97,7 @@ class HomeScreen extends ConsumerWidget {
               toggleJoinGame.toggleVal ? 
               GestureDetector(
                 onTap: (){
-                  //Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
                   ref.read(toggleJoinGameProvider.notifier).toggle();
-                  Fluttertoast.showToast(msg: 'toggling notifier');
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -138,18 +141,12 @@ class HomeScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    IconButton(onPressed: (){
-                      ref.read(toggleJoinGameProvider.notifier).toggle();
-                    }, 
-                    icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 50,),
+                    IconButton(onPressed: joinGame, 
+                    icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 60,),
                   ],
                 ),
               ),
-              
-          
-          
-          
-          
+                        
               player.userId == '' ? GestureDetector(
                 onTap: signInWithGoogle,
                 child: Container(
