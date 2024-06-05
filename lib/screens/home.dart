@@ -24,8 +24,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-  TextEditingController _joinGameController = TextEditingController();
-  final toggleJoinGame = ref.watch(toggleJoinGameProvider);
+  final TextEditingController _joinGameController = TextEditingController();
+  final ToggleJoinGame toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
 
 

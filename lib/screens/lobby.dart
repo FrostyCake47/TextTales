@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:texttales/components/configtab.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
+import 'package:texttales/models/gamesetting.dart';
 
 class LobbyScreen extends ConsumerWidget {
   LobbyScreen({super.key, this.mode});
   final String? mode;
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController nameController = TextEditingController();
+    final GameSetting gameSetting = ref.watch(gameSettingProvider);
 
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
@@ -22,12 +25,18 @@ class LobbyScreen extends ConsumerWidget {
         child: Center(
           child: Column(
             children: [
-              Text('TextTales', style: textTalesStyle,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text('TextTales', style: textTalesStyle,)),
 
               //online players
-
+              Text("Edit the config", style: textMedium,),
               //configs
-              
+              Column(
+                children: <Widget>[
+                  ConfigTab(),
+                ],
+              )
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/firebase_options.dart';
+import 'package:texttales/models/gamesetting.dart';
 
 import 'package:texttales/models/player.dart';
 import 'package:texttales/screens/auth.dart';
@@ -12,6 +13,7 @@ import 'package:texttales/screens/story.dart';
 
 final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => PlayerNotifier(Player('', '', '')));
 final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(false)));
+final gameSettingProvider = StateNotifierProvider<GameSettingNotifier, GameSetting>((ref) => GameSettingNotifier(GameSetting('Classic', 5, 200, 60)));
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
