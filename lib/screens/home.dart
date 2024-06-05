@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
+import 'package:texttales/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -10,12 +14,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String clientID = 'mwaa';
+  String clientID = '';
 
   @override
   void initState() {
     super.initState();
-    
+  }
+
+  void signInWithGoogle() async {
+      showDialog(context: context, builder: (context){
+          return const Center(
+              child: SpinKitCircle(
+                color: Colors.redAccent,
+                size: 50.0,
+              ),
+            );
+        });
+
+      try{
+        AuthService().signInWithGoogle();
+      }
+      catch(e){
+        print(e);
+      }
+      Navigator.pop(context);
   }
 
   @override
@@ -39,13 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                margin: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
                 decoration: BoxDecoration(
                   color: secondaryColor,
                   borderRadius: BorderRadius.circular(20)
                 ),
-                child: Text("Create Game", style: textMedium.copyWith(fontSize: 20)),
+                child: Center(child: Text("Create Game", style: textMedium.copyWith(fontSize: 20))),
               ),
             ),
 
@@ -54,32 +77,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: secondaryColor,
                   borderRadius: BorderRadius.circular(20)
                 ),
-                child: Text("Join game", style: textMedium.copyWith(fontSize: 20)),
+                child: Center(child: Text("Join game", style: textMedium.copyWith(fontSize: 20))),
               ),
             ),
 
+
+
             GestureDetector(
-              onTap: () async {
-                try{
-                  print("login");
-                }
-                catch (e) {
-                  print(e);
-                }
-              },
+              onTap: signInWithGoogle,
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: BorderRadius.circular(20)
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10)
                 ),
-                child: Text("Google Sign in", style: textMedium.copyWith(fontSize: 20)),
+                child: FractionallySizedBox(
+                  widthFactor: 0.5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    
+                    children: [
+                      Text("Sign in", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
+                      SizedBox(width: 10,),
+                      Image.asset('assets/google.png', width: 20,)
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

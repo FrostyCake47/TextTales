@@ -14,13 +14,13 @@ final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => Pl
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
 
   runApp(MaterialApp(
     initialRoute: '/',
     routes: {
       '/' : (context) => HomeScreen(),
-      //'/auth' : (context) => const AuthScreen(),
+      '/auth' : (context) => const AuthScreen(),
       '/lobby' : (context) => LobbyScreen(),
       '/game' : (context) => const GameScreen(),
       '/story' : (context) => const StoryScreen(),

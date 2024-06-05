@@ -10,12 +10,13 @@ class LobbyScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playerProvider);
     TextEditingController nameController = TextEditingController();
 
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
+
+    
 
     
 
@@ -25,7 +26,7 @@ class LobbyScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(player.name, style: textMedium,),
+            Text("aa", style: textMedium,),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: TextField(
