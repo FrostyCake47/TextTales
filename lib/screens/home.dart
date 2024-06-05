@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
+import 'package:texttales/models/player.dart';
 import 'package:texttales/services/auth_service.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -24,6 +25,7 @@ class HomeScreen extends ConsumerWidget {
 
   TextEditingController _joinGameController = TextEditingController();
   final toggleJoinGame = ref.watch(toggleJoinGameProvider);
+  final Player player = ref.watch(playerProvider);
 
   void signInWithGoogle() async {
     showDialog(context: context, builder: (context){
@@ -60,7 +62,7 @@ class HomeScreen extends ConsumerWidget {
                 child: Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50))
               ),
           
-              Text(playerProvider.name ?? '', style: textMedium,),
+              Text(player.name, style: textMedium,),
               
               
               GestureDetector(
