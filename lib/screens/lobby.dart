@@ -15,11 +15,6 @@ class LobbyScreen extends ConsumerWidget {
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
-
-    
-
-    
-
     return Scaffold(
       backgroundColor: tertiaryColor,
       body: Center(

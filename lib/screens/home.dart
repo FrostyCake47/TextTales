@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:riverpod/riverpod.dart';
+
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
@@ -15,6 +20,9 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+  TextEditingController _joinGameController = TextEditingController();
+  final toggleJoinGame = ref.watch(toggleJoinGameProvider);
 
   void signInWithGoogle() async {
     showDialog(context: context, builder: (context){
@@ -52,6 +60,7 @@ class HomeScreen extends ConsumerWidget {
 
             Text(playerProvider.name ?? '', style: textMedium,),
             
+            
             GestureDetector(
               onTap: (){
                 Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
@@ -68,9 +77,12 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
 
+            //toggleGameJoin ? 
             GestureDetector(
               onTap: (){
-                Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+                //Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+                ref.read(toggleJoinGameProvider.notifier).toggle();
+                Fluttertoast.showToast(msg: 'toggling notifier');
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -83,6 +95,22 @@ class HomeScreen extends ConsumerWidget {
                 child: Center(child: Text("Join game", style: textMedium.copyWith(fontSize: 20))),
               ),
             ),
+
+            /*Row(
+              children: [
+                TextField(
+                    controller: _joinGameController,
+                    decoration: InputDecoration(
+                      hintText: 'Name',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                      hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)
+                    ),
+                    style: textMedium.copyWith(fontSize: 15),
+                ),
+              ],
+            ),*/
+            
+
 
 
 
@@ -109,6 +137,8 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
             ),
+
+            Text(toggleJoinGame.toString())
           ],
         ),
       ),
@@ -117,3 +147,64 @@ class HomeScreen extends ConsumerWidget {
 }
 
 
+/*class ToggleJoinGame extends StateNotifier<bool>{
+  ToggleJoinGame() : super(false);
+
+  void toggle(){
+    state != state;
+  }
+}*/
+
+class ToggleJoinGame {
+  final bool toggleVal;
+
+  ToggleJoinGame(
+    this.toggleVal,
+  );
+
+  ToggleJoinGame copyWith({
+    bool? toggleVal,
+  }) {
+    return ToggleJoinGame(
+      toggleVal ?? this.toggleVal,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'toggleVal': toggleVal,
+    };
+  }
+
+  factory ToggleJoinGame.fromMap(Map<String, dynamic> map) {
+    return ToggleJoinGame(
+      map['toggleVal'] as bool,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ToggleJoinGame.fromJson(String source) => ToggleJoinGame.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'ToggleJoinGame(toggleVal: $toggleVal)';
+
+  @override
+  bool operator ==(covariant ToggleJoinGame other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.toggleVal == toggleVal;
+  }
+
+  @override
+  int get hashCode => toggleVal.hashCode;
+}
+
+class ToggleJoinGameNotifier extends StateNotifier<ToggleJoinGame>{
+  ToggleJoinGameNotifier(super.state);
+
+  void toggle(){
+    state = state.copyWith(toggleVal: !state.toggleVal);
+  }
+}

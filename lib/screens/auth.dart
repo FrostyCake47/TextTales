@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:texttales/screens/home.dart';
 import 'package:texttales/screens/lobby.dart';
@@ -20,10 +21,11 @@ class AuthScreen extends StatelessWidget {
         builder: (context, snapshot){
           if(snapshot.hasData) {
             print("I habe data");
-            //Fluttertoast.showToast(msg: "Logged in");
+            Fluttertoast.showToast(msg: "Logged in");
             return LobbyScreen(mode: mode);
             }
           else {
+            Fluttertoast.showToast(msg: "Sign up");
             return HomeScreen();
           }
         },
