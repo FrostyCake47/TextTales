@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
   final Player player = ref.watch(playerProvider);
 
   void signInWithGoogle() async {
-    showDialog(context: context, builder: (context){
+      showDialog(context: context, builder: (context){
         return const Center(
             child: SpinKitCircle(
               color: Colors.redAccent,
@@ -37,9 +37,14 @@ class HomeScreen extends ConsumerWidget {
           );
       });
 
-      PlayerUpdation().addAuthenticatedUser(ref, playerProvider);
+      PlayerUpdation().addAuthUser(ref, playerProvider);
       Navigator.pop(context);
     }
+
+    void signOut() async {
+      PlayerUpdation().removeAuthUser(ref, playerProvider);
+    }
+
 
     return Scaffold(
       backgroundColor: dark,
@@ -49,12 +54,23 @@ class HomeScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 40),
+                padding: EdgeInsets.symmetric(vertical: player.name == '' ? 40 : 25),
                 margin: const EdgeInsets.symmetric(vertical: 40),
-                child: Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50))
+                child: Column(
+                  children: [
+                    Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
+                    player.userId != '' ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(player.photoURL, scale: 2,),
+                        Text(player.name, style: textMedium.copyWith(fontSize: 15),),
+                      ],
+                    ) : Container(),
+                  ],
+                )
               ),
           
-              Text(player.name, style: textMedium,),
+              
               
               
               GestureDetector(
@@ -125,7 +141,7 @@ class HomeScreen extends ConsumerWidget {
                     IconButton(onPressed: (){
                       ref.read(toggleJoinGameProvider.notifier).toggle();
                     }, 
-                    icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 50,)
+                    icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 50,),
                   ],
                 ),
               ),
@@ -134,7 +150,7 @@ class HomeScreen extends ConsumerWidget {
           
           
           
-              GestureDetector(
+              player.userId == '' ? GestureDetector(
                 onTap: signInWithGoogle,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -156,6 +172,30 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+              ) :
+
+              GestureDetector(
+                onTap: signOut,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      
+                      children: [
+                        Text("Sign out", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
+                        SizedBox(width: 10,),
+                        Image.asset('assets/google.png', width: 20,)
+                      ],
+                    ),
+                  ),
+                ),
               ),
           
               Text(toggleJoinGame.toString())
@@ -167,14 +207,6 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-
-/*class ToggleJoinGame extends StateNotifier<bool>{
-  ToggleJoinGame() : super(false);
-
-  void toggle(){
-    state != state;
-  }
-}*/
 
 class ToggleJoinGame {
   final bool toggleVal;
