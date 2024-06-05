@@ -15,7 +15,28 @@ class LobbyScreen extends ConsumerWidget {
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
+
     return Scaffold(
+      backgroundColor: dark,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Text('TextTales', style: textTalesStyle,),
+
+              //online players
+
+              //configs
+              
+            ],
+          ),
+        ),
+      ),
+    );
+
+
+
+    /*return Scaffold(
       backgroundColor: tertiaryColor,
       body: Center(
         child: Column(
@@ -40,6 +61,6 @@ class LobbyScreen extends ConsumerWidget {
         ),
 
       ),
-    );
+    );*/
   }
 }
