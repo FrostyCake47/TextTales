@@ -39,7 +39,7 @@ class HomeScreen extends ConsumerWidget {
         User? user = await AuthService().signInWithGoogle();
         String name = user!.displayName ?? '';
         ref.read(playerProvider.notifier).updateName(name);
-        print(playerProvider.name);
+        print("Player name: ${name}");
       }
       catch(e){
         print(e);

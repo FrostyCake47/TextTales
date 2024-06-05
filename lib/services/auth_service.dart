@@ -14,6 +14,6 @@ class AuthService{
     );
 
     print("signed in on google");
-    return await FirebaseAuth.instance.signInWithCredential(credentials);
-  }
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credentials);
+    return userCredential.user;  }
 }
