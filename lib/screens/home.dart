@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
@@ -96,19 +97,33 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
 
-            /*Row(
-              children: [
-                TextField(
-                    controller: _joinGameController,
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                      hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: TextField(
+                          controller: _joinGameController,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            hintTextDirection: TextDirection.ltr,
+                            hintText: 'Enter room ID',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                            hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)
+                          ),
+                          style: textMedium.copyWith(fontSize: 15),
+                      ),
                     ),
-                    style: textMedium.copyWith(fontSize: 15),
-                ),
-              ],
-            ),*/
+                  ),
+                  IconButton(onPressed: (){
+                    
+                  }, 
+                  icon: FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 50,)
+                ],
+              ),
+            ),
             
 
 
