@@ -1,47 +1,43 @@
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
+import 'package:texttales/main.dart';
 import 'package:texttales/services/auth_service.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String clientID = '';
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
 
   void signInWithGoogle() async {
-      showDialog(context: context, builder: (context){
-          return const Center(
-              child: SpinKitCircle(
-                color: Colors.redAccent,
-                size: 50.0,
-              ),
-            );
-        });
+    showDialog(context: context, builder: (context){
+        return const Center(
+            child: SpinKitCircle(
+              color: Colors.redAccent,
+              size: 50.0,
+            ),
+          );
+      });
 
       try{
-        AuthService().signInWithGoogle();
+        User? user = await AuthService().signInWithGoogle();
+        String name = user!.displayName ?? '';
+        ref.read(playerProvider.notifier).updateName(name);
+        print(playerProvider.name);
       }
       catch(e){
         print(e);
       }
       Navigator.pop(context);
-  }
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: dark,
       body: Center(
@@ -54,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50))
             ),
 
-            Text(clientID, style: textMedium,),
+            Text(playerProvider.name ?? '', style: textMedium,),
             
             GestureDetector(
               onTap: (){
