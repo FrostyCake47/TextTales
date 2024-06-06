@@ -19,59 +19,64 @@ class ConfigTab extends ConsumerWidget {
   int setting = 0;
 
   final Map<String, void Function()> decrementActions = {
-    'rounds': () => ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1),
-    'time': () => ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 1),
-    'maxchar': () => ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 1),
+    'rounds': () {if (gameSetting.rounds > 0 && gameSetting.rounds <= 10) ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1);},
+    'time': () {if (gameSetting.time > 20 && gameSetting.time <= 120) ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 10);},
+    'maxchar': () {if (gameSetting.maxchar > 0 && gameSetting.maxchar <= 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 10);},
   };
 
   final Map<String, void Function()> incrementActions = {
-    'rounds': () => ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1),
-    'time': () => ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 1),
-    'maxchar': () => ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 1),
+    'rounds': () {if (gameSetting.rounds >= 0 && gameSetting.rounds < 10) ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1);},
+    'time': () {if (gameSetting.time >= 20 && gameSetting.time < 120) ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 10);},
+    'maxchar': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10);},
   };
 
-  return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        GestureDetector(
-          onTap: (){
-            print('decrement $item');
-            decrementActions[item]!();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: primaryColor
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          GestureDetector(
+            onTap: (){
+              print('decrement $item');
+              decrementActions[item]!();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: primaryColor
+              ),
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+              child: Icon(Icons.remove),
             ),
-            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
-            child: Icon(Icons.remove),
           ),
-        ),
-
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: primaryColor, width: 1),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Text("${capitalize(item)}: ${item == 'rounds' ? gameSetting.rounds : item == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,)
-        ),
-
-        GestureDetector(
-          onTap: (){
-            incrementActions[item]!();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: primaryColor
+    
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: primaryColor, width: 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Center(child: Text("${capitalize(item)}: ${item == 'rounds' ? gameSetting.rounds : item == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,))
             ),
-            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
-            child: Icon(Icons.add),
           ),
-        )
-      ],
-    );
+    
+          GestureDetector(
+            onTap: (){
+              incrementActions[item]!();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: primaryColor
+              ),
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+              child: Icon(Icons.add),
+            ),
+          )
+        ],
+      ),
+  );
   }
 }
