@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/constants/colors.dart';
@@ -6,18 +8,35 @@ import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 
 class ConfigTab extends ConsumerWidget {
-  const ConfigTab({super.key});
+  final String item;
+  ConfigTab({super.key, required this.item});
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-  final GameSetting gameSetting = ref.watch(gameSettingProvider);
-  
+  final gameSetting = ref.watch(gameSettingProvider);
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  int setting = 0;
+
+  final Map<String, void Function()> decrementActions = {
+    'rounds': () => ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1),
+    'time': () => ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 1),
+    'maxchar': () => ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 1),
+  };
+
+  final Map<String, void Function()> incrementActions = {
+    'rounds': () => ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1),
+    'time': () => ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 1),
+    'maxchar': () => ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 1),
+  };
+
   return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         GestureDetector(
           onTap: (){
-            ref.watch(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1);
+            print('decrement $item');
+            decrementActions[item]!();
           },
           child: Container(
             decoration: BoxDecoration(
@@ -36,12 +55,12 @@ class ConfigTab extends ConsumerWidget {
             border: Border.all(color: primaryColor, width: 1),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Text("Rounds: ${gameSetting.rounds}", style: textMedium,)
+          child: Text("${capitalize(item)}: ${item == 'rounds' ? gameSetting.rounds : item == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,)
         ),
 
         GestureDetector(
           onTap: (){
-            ref.watch(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1);
+            incrementActions[item]!();
           },
           child: Container(
             decoration: BoxDecoration(

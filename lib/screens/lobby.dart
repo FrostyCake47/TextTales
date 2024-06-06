@@ -34,7 +34,9 @@ class LobbyScreen extends ConsumerWidget {
               //configs
               Column(
                 children: <Widget>[
-                  ConfigTab(),
+                  ConfigTab(item: 'rounds',),
+                  ConfigTab(item: 'maxchar',),
+                  ConfigTab(item: 'time',),
                 ],
               )
             ],
