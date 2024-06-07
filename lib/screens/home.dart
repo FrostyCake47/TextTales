@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:texttales/components/homebtn.dart';
+import 'package:texttales/components/loginbtn.dart';
 
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
@@ -168,6 +169,49 @@ class HomeScreen extends ConsumerWidget {
                   },
                   child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mx: 80,)
                 ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
+                    ),
+                    Text("Login if you haven't", style: textMedium.copyWith(color: Colors.black, fontSize: 15),),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                player.playerId == '' ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: signInWithGoogle,
+                      child: IntrinsicWidth(child: LoginBtn(imgSrc: 'google')),
+                    ),
+                    GestureDetector(
+                      onTap: (){},
+                      child: IntrinsicWidth(child: LoginBtn(imgSrc: 'apple')),
+                    )
+                  ],
+                ) : Container(),
                           
                 player.playerId == '' ? GestureDetector(
                   onTap: signInWithGoogle,
