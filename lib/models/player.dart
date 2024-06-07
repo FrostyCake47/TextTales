@@ -6,23 +6,23 @@ import 'package:riverpod/riverpod.dart';
 class Player {
   final String name;
   final String photoURL;
-  final String userId;
+  final String playerId;
 
   Player(
     this.name,
     this.photoURL,
-    this.userId,
+    this.playerId,
   );
 
   Player copyWith({
     String? name,
     String? photoURL,
-    String? userId,
+    String? playerId,
   }) {
     return Player(
       name ?? this.name,
       photoURL ?? this.photoURL,
-      userId ?? this.userId,
+      playerId ?? this.playerId,
     );
   }
 
@@ -30,7 +30,7 @@ class Player {
     return <String, dynamic>{
       'name': name,
       'photoURL': photoURL,
-      'userId': userId,
+      'playerId': playerId,
     };
   }
 
@@ -38,7 +38,7 @@ class Player {
     return Player(
       map['name'] as String,
       map['photoURL'] as String,
-      map['userId'] as String,
+      map['playerId'] as String,
     );
   }
 
@@ -47,7 +47,7 @@ class Player {
   factory Player.fromJson(String source) => Player.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Player(name: $name, photoURL: $photoURL, userId: $userId)';
+  String toString() => 'Player(name: $name, photoURL: $photoURL, playerId: $playerId)';
 
   @override
   bool operator ==(covariant Player other) {
@@ -56,11 +56,11 @@ class Player {
     return 
       other.name == name &&
       other.photoURL == photoURL &&
-      other.userId == userId;
+      other.playerId == playerId;
   }
 
   @override
-  int get hashCode => name.hashCode ^ photoURL.hashCode ^ userId.hashCode;
+  int get hashCode => name.hashCode ^ photoURL.hashCode ^ playerId.hashCode;
 }
 
 class PlayerNotifier extends StateNotifier<Player>{
@@ -70,7 +70,7 @@ class PlayerNotifier extends StateNotifier<Player>{
     state = state.copyWith(name: name);
   }
 
-  void updateAll(String userId, String photoURL, String name){
-    state = state.copyWith(userId: userId, name: name, photoURL: photoURL);
+  void updateAll(String playerId, String photoURL, String name){
+    state = state.copyWith(playerId: playerId, name: name, photoURL: photoURL);
   }
 }

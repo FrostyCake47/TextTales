@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
-                    player.userId != '' ? Row(
+                    player.playerId != '' ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.network(player.photoURL, scale: 2,),
@@ -147,7 +147,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
                         
-              player.userId == '' ? GestureDetector(
+              player.playerId == '' ? GestureDetector(
                 onTap: signInWithGoogle,
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

@@ -44,9 +44,9 @@ class PlayerUpdation{
 
       String name = user!.displayName ?? '';
       String photoURL = user.photoURL ?? '';
-      String userId = user.uid ?? '';
+      String playerId = user.uid ?? '';
 
-      ref.read(playerProvider.notifier).updateAll(userId, photoURL, name);
+      ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);
       print("Player name: ${name}");
     }
     catch(e){
