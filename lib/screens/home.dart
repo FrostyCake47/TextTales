@@ -78,17 +78,32 @@ class HomeScreen extends ConsumerWidget {
                           style: textMedium.copyWith(fontSize: 20, fontWeight: FontWeight.w400),),
                       ),
 
-                      player.playerId != '' ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(player.photoURL, scale: 2,),
-                          Text(player.name, style: textMedium.copyWith(fontSize: 15),),
-                        ],
+                      player.playerId != '' ? IntrinsicWidth(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: const Color.fromARGB(20, 217, 217, 217),
+                            border: Border.all(color: Colors.black)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.network(player.photoURL, scale: 3,)
+                              ),
+                              const SizedBox(width: 10,),
+                              Text(player.name, style: textMedium.copyWith(fontSize: 15),),
+                              const SizedBox(width: 10,)
+                            ],
+                          ),
+                        ),
                       ) : Container(),
                     ],
                   )
                 ),
-
 
             
                 
