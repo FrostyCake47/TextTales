@@ -14,3 +14,11 @@ const Gradient bgGradient = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient homebtnGradient = LinearGradient(
+  colors: [Color(0xffF1DAFF), Color(0xffBBF2FE)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);

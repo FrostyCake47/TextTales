@@ -10,6 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:texttales/components/homebtn.dart';
 
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
@@ -62,11 +63,12 @@ class HomeScreen extends ConsumerWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(vertical: player.name == '' ? 40 : 25),
-                  margin: const EdgeInsets.symmetric(vertical: 40),
+                  margin: const EdgeInsets.symmetric(vertical: 0),
                   child: Column(
                     children: [
                       Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
@@ -111,33 +113,16 @@ class HomeScreen extends ConsumerWidget {
                   onTap: (){
                     Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
                   },
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Center(child: Text("Create Game", style: textMedium.copyWith(fontSize: 20))),
-                  ),
+                  child: const HomeBtn(text: 'Create Game')
                 ),
             
+
                 toggleJoinGame.toggleVal ? 
                 GestureDetector(
                   onTap: (){
                     ref.read(toggleJoinGameProvider.notifier).toggle();
                   },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Center(child: Text("Join game", style: textMedium.copyWith(fontSize: 20))),
-                  ),
+                  child: const HomeBtn(text: "Join Game"),
                 ) :
             
                 Container(
