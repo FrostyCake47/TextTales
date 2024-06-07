@@ -85,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
 
                       player.playerId != '' ? IntrinsicWidth(
                         child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
