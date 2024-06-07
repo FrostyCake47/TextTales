@@ -70,6 +70,7 @@ class HomeScreen extends ConsumerWidget {
                   padding: EdgeInsets.symmetric(vertical: player.name == '' ? 40 : 25),
                   margin: const EdgeInsets.symmetric(vertical: 0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
                       SizedBox(height: 30,),
@@ -113,7 +114,7 @@ class HomeScreen extends ConsumerWidget {
                   onTap: (){
                     Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
                   },
-                  child: const HomeBtn(text: 'Create Game')
+                  child: HomeBtn(text: 'Create Game', imgSrc: 'create',)
                 ),
             
 
@@ -122,7 +123,7 @@ class HomeScreen extends ConsumerWidget {
                   onTap: (){
                     ref.read(toggleJoinGameProvider.notifier).toggle();
                   },
-                  child: const HomeBtn(text: "Join Game"),
+                  child: HomeBtn(text: "Join Game", imgSrc: 'join',),
                 ) :
             
                 Container(
@@ -159,6 +160,13 @@ class HomeScreen extends ConsumerWidget {
                       icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 60,),
                     ],
                   ),
+                ),
+
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
+                  },
+                  child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mx: 80,)
                 ),
                           
                 player.playerId == '' ? GestureDetector(
