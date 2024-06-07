@@ -55,148 +55,163 @@ class HomeScreen extends ConsumerWidget {
 
   return Scaffold(
       backgroundColor: dark,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.symmetric(vertical: player.name == '' ? 40 : 25),
-                margin: const EdgeInsets.symmetric(vertical: 40),
-                child: Column(
-                  children: [
-                    Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
-                    player.playerId != '' ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(player.photoURL, scale: 2,),
-                        Text(player.name, style: textMedium.copyWith(fontSize: 15),),
-                      ],
-                    ) : Container(),
-                  ],
-                )
-              ),
-          
-              
-              GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Center(child: Text("Create Game", style: textMedium.copyWith(fontSize: 20))),
-                ),
-              ),
-          
-              toggleJoinGame.toggleVal ? 
-              GestureDetector(
-                onTap: (){
-                  ref.read(toggleJoinGameProvider.notifier).toggle();
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Center(child: Text("Join game", style: textMedium.copyWith(fontSize: 20))),
-                ),
-              ) :
-          
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: TextField(
-                            controller: _joinGameController,
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            maxLength: 4,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: bgGradient,
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: player.name == '' ? 40 : 25),
+                  margin: const EdgeInsets.symmetric(vertical: 40),
+                  child: Column(
+                    children: [
+                      Text("TextTales", style: textTalesStyle.copyWith(fontSize: 50)),
+                      SizedBox(height: 30,),
+                      Text("Welcome to TextTales", style: textMedium.copyWith(fontSize: 25, fontWeight: FontWeight.bold),),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text("Join a game to continue an adventure or create your own story and invite friends to join.", textAlign: TextAlign.center,
+                          style: textMedium.copyWith(fontSize: 20, fontWeight: FontWeight.w400),),
+                      ),
 
-                            decoration: InputDecoration(
-                              hintText: 'Enter room ID',
-                              counterText: "",
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: secondaryColor, width: 1)
+                      player.playerId != '' ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(player.photoURL, scale: 2,),
+                          Text(player.name, style: textMedium.copyWith(fontSize: 15),),
+                        ],
+                      ) : Container(),
+                    ],
+                  )
+                ),
+
+
+            
+                
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Center(child: Text("Create Game", style: textMedium.copyWith(fontSize: 20))),
+                  ),
+                ),
+            
+                toggleJoinGame.toggleVal ? 
+                GestureDetector(
+                  onTap: (){
+                    ref.read(toggleJoinGameProvider.notifier).toggle();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 10,  horizontal: 20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Center(child: Text("Join game", style: textMedium.copyWith(fontSize: 20))),
+                  ),
+                ) :
+            
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: TextField(
+                              controller: _joinGameController,
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              maxLength: 4,
+        
+                              decoration: InputDecoration(
+                                hintText: 'Enter room ID',
+                                counterText: "",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(color: secondaryColor, width: 1)
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: const BorderSide(color: primaryColor, width: 1)
+                                ),
+                                hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)       
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: const BorderSide(color: primaryColor, width: 1)
-                              ),
-                              hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)       
-                            ),
-                            style: textMedium.copyWith(fontSize: 15),
+                              style: textMedium.copyWith(fontSize: 15),
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(onPressed: joinGame, 
-                    icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 60,),
-                  ],
+                      IconButton(onPressed: joinGame, 
+                      icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 60,),
+                    ],
+                  ),
                 ),
-              ),
+                          
+                player.playerId == '' ? GestureDetector(
+                  onTap: signInWithGoogle,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: FractionallySizedBox(
+                      widthFactor: 0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         
-              player.playerId == '' ? GestureDetector(
-                onTap: signInWithGoogle,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10)
+                        children: [
+                          Text("Sign in", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
+                          SizedBox(width: 10,),
+                          Image.asset('assets/google.png', width: 20,)
+                        ],
+                      ),
+                    ),
                   ),
-                  child: FractionallySizedBox(
-                    widthFactor: 0.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      
-                      children: [
-                        Text("Sign in", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
-                        SizedBox(width: 10,),
-                        Image.asset('assets/google.png', width: 20,)
-                      ],
+                ) :
+        
+                GestureDetector(
+                  onTap: signOut,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: FractionallySizedBox(
+                      widthFactor: 0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        
+                        children: [
+                          Text("Sign out", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
+                          SizedBox(width: 10,),
+                          Image.asset('assets/google.png', width: 20,)
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ) :
-
-              GestureDetector(
-                onTap: signOut,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: FractionallySizedBox(
-                    widthFactor: 0.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      
-                      children: [
-                        Text("Sign out", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
-                        SizedBox(width: 10,),
-                        Image.asset('assets/google.png', width: 20,)
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          
-              Text(toggleJoinGame.toString())
-            ],
+            
+                Text(toggleJoinGame.toString())
+              ],
+            ),
           ),
         ),
       ),
