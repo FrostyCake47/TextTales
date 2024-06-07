@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -100,7 +101,15 @@ class HomeScreen extends ConsumerWidget {
                               ),
                               const SizedBox(width: 10,),
                               Text(player.name, style: textMedium.copyWith(fontSize: 15),),
-                              const SizedBox(width: 10,)
+                              const SizedBox(width: 10,),
+                              GestureDetector(
+                                onTap: signOut,
+                                child: SvgPicture.asset(
+                                  'assets/signout.svg',
+                                  width: 25,
+                                  semanticsLabel: 'A red up arrow'
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -169,98 +178,58 @@ class HomeScreen extends ConsumerWidget {
                   },
                   child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mx: 80,)
                 ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 2),
-                        margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                      ),
-                    ),
-                    Text("Login if you haven't", style: textMedium.copyWith(color: Colors.black, fontSize: 15),),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 2),
-                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                      ),
-                    ),
-                  ],
+                const SizedBox(
+                  height: 20,
                 ),
 
-                player.playerId == '' ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: signInWithGoogle,
-                      child: IntrinsicWidth(child: LoginBtn(imgSrc: 'google')),
-                    ),
-                    GestureDetector(
-                      onTap: (){},
-                      child: IntrinsicWidth(child: LoginBtn(imgSrc: 'apple')),
-                    )
-                  ],
-                ) : Container(),
-                          
-                player.playerId == '' ? GestureDetector(
-                  onTap: signInWithGoogle,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: FractionallySizedBox(
-                      widthFactor: 0.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        
-                        children: [
-                          Text("Sign in", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
-                          SizedBox(width: 10,),
-                          Image.asset('assets/google.png', width: 20,)
-                        ],
+                player.playerId == '' ? 
+                Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 2),
+                          margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
                       ),
+                      Text("Login if you haven't", style: textMedium.copyWith(color: Colors.black, fontSize: 15),),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 2),
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: signInWithGoogle,
+                          child: IntrinsicWidth(child: LoginBtn(imgSrc: 'google')),
+                        ),
+                        GestureDetector(
+                          onTap: (){},
+                          child: IntrinsicWidth(child: LoginBtn(imgSrc: 'apple')),
+                        )
+                      ],
                     ),
                   ),
-                ) :
-        
-                GestureDetector(
-                  onTap: signOut,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: FractionallySizedBox(
-                      widthFactor: 0.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        
-                        children: [
-                          Text("Sign out", style: textMedium.copyWith(fontSize: 20, color: Colors.black)),
-                          SizedBox(width: 10,),
-                          Image.asset('assets/google.png', width: 20,)
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            
+                ],)
+                : Container(),
+
                 Text(toggleJoinGame.toString())
               ],
             ),
