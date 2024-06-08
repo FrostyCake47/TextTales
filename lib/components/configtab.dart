@@ -22,13 +22,15 @@ class ConfigTab extends ConsumerWidget {
   final Map<String, void Function()> decrementActions = {
     'rounds': () {if (gameSetting.rounds > 0 && gameSetting.rounds <= 10) ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1);},
     'time': () {if (gameSetting.time > 20 && gameSetting.time <= 120) ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 10);},
-    'maxchar': () {if (gameSetting.maxchar > 0 && gameSetting.maxchar <= 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 10);},
+    'max char': () {if (gameSetting.maxchar > 0 && gameSetting.maxchar <= 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 10);},
+    'game mode' : (){}
   };
 
   final Map<String, void Function()> incrementActions = {
     'rounds': () {if (gameSetting.rounds >= 0 && gameSetting.rounds < 10) ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1);},
     'time': () {if (gameSetting.time >= 20 && gameSetting.time < 120) ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 10);},
-    'maxchar': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10);},
+    'max char': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10);},
+    'game mode' : (){}
   };
 
   return Container(
@@ -50,22 +52,29 @@ class ConfigTab extends ConsumerWidget {
           ),
 
           Container(
+            width: 140,
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               gradient: configCardInnerGradient
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: title == 'game mode' ? 
+              [
+                Text("Classic", style: textMedium.copyWith(color: Colors.white, fontSize: 20),)
+              
+              ]  
+
+              : [
                 GestureDetector(
                   onTap: (){decrementActions[title]!();},
                   child: Icon(Icons.remove),
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text("${title == 'rounds' ? gameSetting.rounds : title == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,),
                 ),
 

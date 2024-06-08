@@ -29,25 +29,25 @@ class LobbyScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //online players
+              //intro
               Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
               Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),),
+              
+              SizedBox(height: 30,),
               //configs
-              /*Column(
-                children: <Widget>[
-                  ConfigTab(item: 'rounds',),
-                  ConfigTab(item: 'maxchar',),
-                  ConfigTab(item: 'time',),
-                ],
-              )*/
-
               Column(
                 children: <Widget>[
+                  ConfigTab(title: 'game mode', desc: "determines the type of game  ",),
                   ConfigTab(title: 'rounds', desc: "amount of turns in the game ",),
-                  ConfigTab(title: 'maxChar', desc: "max no of characters per turn ",),
+                  ConfigTab(title: 'max char', desc: "max no of characters per turn ",),
                   ConfigTab(title: 'time', desc: "the time duration of each round ",),
                 ],
-              )
+              ),
+
+
+              SizedBox(height: 50,),
+              Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
+              Text("Room ID : 4769", style: textTalesStyle.copyWith(fontSize: 20))
             ],
           ),
         ),
