@@ -22,3 +22,19 @@ const Gradient homebtnGradient = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient configCardInnerGradient = LinearGradient(
+  colors: [Color(0xff8E9D32), Color(0xff1B934B)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.centerLeft,
+  end: FractionalOffset.centerRight,
+  tileMode: TileMode.repeated
+);
+
+const Gradient configCardOuterGradient = LinearGradient(
+  colors: [Color(0xffF0F4E0), Color(0xffE7FFEA)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);

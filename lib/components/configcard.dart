@@ -7,10 +7,9 @@ import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 
-class ConfigTab extends ConsumerWidget {
-  final String title;
-  final String desc;
-  ConfigTab({super.key, required this.title, required this.desc});
+class ConfigCard extends ConsumerWidget {
+  final String item;
+  ConfigCard({super.key, required this.item});
   
 
   @override
@@ -31,49 +30,51 @@ class ConfigTab extends ConsumerWidget {
     'maxchar': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210) ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10);},
   };
 
+  //decrementActions[item]!()
+
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-    padding: EdgeInsets.only(left:12, right: 10, top: 5, bottom: 5),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      gradient: configCardOuterGradient
-    ),
     child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
-              Text(desc, style: textMedium.copyWith(color: Colors.black, fontSize: 12),)
-            ],
-          ),
-
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              gradient: configCardInnerGradient
+          GestureDetector(
+            onTap: (){
+              print('decrement $item');
+              decrementActions[item]!();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: primaryColor
+              ),
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+              child: Icon(Icons.remove),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: (){decrementActions[title]!();},
-                  child: Icon(Icons.remove),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("${title == 'rounds' ? gameSetting.rounds : title == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,),
-                ),
-
-                GestureDetector(
-                  onTap: (){incrementActions[title]!();},
-                  child: Icon(Icons.add),
-                ),
-              ],
+          ),
+    
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: primaryColor, width: 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Center(child: Text("${capitalize(item)}: ${item == 'rounds' ? gameSetting.rounds : item == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,))
+            ),
+          ),
+    
+          GestureDetector(
+            onTap: (){
+              incrementActions[item]!();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: primaryColor
+              ),
+              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+              child: Icon(Icons.add),
             ),
           )
         ],

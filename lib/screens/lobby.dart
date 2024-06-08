@@ -31,7 +31,7 @@ class LobbyScreen extends ConsumerWidget {
             children: [
               //online players
               Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
-              Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),)
+              Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),),
               //configs
               /*Column(
                 children: <Widget>[
@@ -40,6 +40,14 @@ class LobbyScreen extends ConsumerWidget {
                   ConfigTab(item: 'time',),
                 ],
               )*/
+
+              Column(
+                children: <Widget>[
+                  ConfigTab(title: 'rounds', desc: "amount of turns in the game ",),
+                  ConfigTab(title: 'maxChar', desc: "max no of characters per turn ",),
+                  ConfigTab(title: 'time', desc: "the time duration of each round ",),
+                ],
+              )
             ],
           ),
         ),
