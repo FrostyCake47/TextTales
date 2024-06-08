@@ -52,6 +52,7 @@ class JoinTextArea extends StatelessWidget {
           ),
           //IconButton(onPressed: (){joinGame();}, 
           //icon: const FaIcon(FontAwesomeIcons.play), color: Colors.black, iconSize: 60,),
+          
         ],
       ),
     );

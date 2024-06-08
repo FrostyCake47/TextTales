@@ -17,6 +17,7 @@ dependencies:
   fluttertoast: ^8.2.5
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.10+1
+  web_socket_channel: ^2.4.0
 
 dev_dependencies:
   flutter_test:
