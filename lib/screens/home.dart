@@ -37,13 +37,13 @@ class HomeScreen extends ConsumerWidget {
     showDialog(context: context, builder: (context){
       return const Center(
           child: SpinKitCircle(
-            color: Colors.redAccent,
+            color: Colors.white,
             size: 50.0,
           ),
         );
     });
 
-    PlayerUpdation().addAuthUser(ref, playerProvider);
+    await PlayerUpdation().addAuthUser(ref, playerProvider);
     Navigator.pop(context);
   }
 

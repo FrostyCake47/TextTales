@@ -38,7 +38,7 @@ class AuthService{
 }
 
 class PlayerUpdation{
-  void addAuthUser(WidgetRef ref, StateNotifierProvider<PlayerNotifier, Player> playerProvider) async {
+  Future<void> addAuthUser(WidgetRef ref, StateNotifierProvider<PlayerNotifier, Player> playerProvider) async {
     try{
       User? user = await AuthService().signInWithGoogle();
 
