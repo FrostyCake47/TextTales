@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:texttales/components/homebtn.dart';
+import 'package:texttales/components/jointextarea.dart';
 import 'package:texttales/components/loginbtn.dart';
 
 import 'package:texttales/constants/colors.dart';
@@ -134,43 +135,7 @@ class HomeScreen extends ConsumerWidget {
                     ref.read(toggleJoinGameProvider.notifier).toggle();
                   },
                   child: HomeBtn(text: "Join Game", imgSrc: 'join',),
-                ) :
-            
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: TextField(
-                              controller: _joinGameController,
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              maxLength: 4,
-        
-                              decoration: InputDecoration(
-                                hintText: 'Enter room ID',
-                                counterText: "",
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: secondaryColor, width: 1)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(color: primaryColor, width: 1)
-                                ),
-                                hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)       
-                              ),
-                              style: textMedium.copyWith(fontSize: 15),
-                          ),
-                        ),
-                      ),
-                      IconButton(onPressed: joinGame, 
-                      icon: const FaIcon(FontAwesomeIcons.play), color: secondaryColor, iconSize: 60,),
-                    ],
-                  ),
-                ),
+                ) : JoinTextArea(joinGameController: _joinGameController, joinGame: joinGame, text: "Enter room ID"),
 
                 GestureDetector(
                   onTap: (){

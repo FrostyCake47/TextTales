@@ -12,7 +12,7 @@ import 'package:texttales/screens/lobby.dart';
 import 'package:texttales/screens/story.dart';
 
 final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => PlayerNotifier(Player('', '', '')));
-final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(false)));
+final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(true)));
 final gameSettingProvider = StateNotifierProvider<GameSettingNotifier, GameSetting>((ref) => GameSettingNotifier(GameSetting('Classic', 5, 200, 60)));
 
 Future<void> main() async {
