@@ -21,57 +21,29 @@ class LobbyScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: dark,
-      body: SafeArea(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/lobbybg.png'), fit: BoxFit.fill)
+        ),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text('TextTales', style: textTalesStyle,)),
-
               //online players
-              Text("Edit the config", style: textMedium,),
+              Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
+              Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),)
               //configs
-              Column(
+              /*Column(
                 children: <Widget>[
                   ConfigTab(item: 'rounds',),
                   ConfigTab(item: 'maxchar',),
                   ConfigTab(item: 'time',),
                 ],
-              )
+              )*/
             ],
           ),
         ),
       ),
     );
-
-
-
-    /*return Scaffold(
-      backgroundColor: tertiaryColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("aa", style: textMedium,),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                  hintStyle: textMedium.copyWith(color: Colors.grey, fontSize: 15)
-                ),
-                style: textMedium.copyWith(fontSize: 15),
-              ),
-            ),
-            TextButton(onPressed: (){updateName(nameController.text);}, 
-            child: Text("Submit", style: textMedium,)),
-          ],
-        ),
-
-      ),
-    );*/
   }
 }
