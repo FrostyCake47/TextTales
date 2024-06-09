@@ -21,17 +21,35 @@ import 'package:texttales/main.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/services/auth_service.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   HomeScreen({super.key});
 
+  bool isPlayerInitiallyUpdated = false;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
 
   final TextEditingController _joinGameController = TextEditingController();
   final ToggleJoinGame toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
 
+  User? _user = FirebaseAuth.instance.currentUser;
+  if(!widget.isPlayerInitiallyUpdated && _user != null){
+    String name = _user!.displayName ?? '';
+    String photoURL = _user.photoURL ?? '';
+    String playerId = _user.uid ?? '';
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.isPlayerInitiallyUpdated = true;
+      ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);  
+    });
+    
+  }
 
   void signInWithGoogle() async {
     showDialog(context: context, builder: (context){
@@ -51,11 +69,22 @@ class HomeScreen extends ConsumerWidget {
     PlayerUpdation().removeAuthUser(ref, playerProvider);
   }
 
+  bool isPlayerAuth(){
+    return _user == null ? false : true;
+  }
+
   void joinGame(){
     ref.read(toggleJoinGameProvider.notifier).toggle();
     Fluttertoast.showToast(msg: 'toggling notifier');
-    Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+    /*Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});*/
+
+    if(isPlayerAuth()){
+      //Navigator.pushNamed(context, '/lobby', arguments: {'mode': 'join'});
+      Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+    }
   }
+
+
 
   return Scaffold(
       backgroundColor: dark,
@@ -123,7 +152,9 @@ class HomeScreen extends ConsumerWidget {
                 
                 GestureDetector(
                   onTap: (){
-                    Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
+                    if(isPlayerAuth()){
+                      Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
+                    }  
                   },
                   child: HomeBtn(text: 'Create Game', imgSrc: 'create',)
                 ),

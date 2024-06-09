@@ -8,9 +8,12 @@ import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+
+
 class LobbyScreen extends ConsumerStatefulWidget {
   LobbyScreen({super.key, this.mode});
   final String? mode;
+  bool isPlayerIdupdated = false;
 
   @override
   ConsumerState<LobbyScreen> createState() => _LobbyScreenState();
@@ -27,8 +30,9 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     final _controller = TextEditingController();
 
     print(player.playerId);
-    if(player.playerId != ''){
+    if(player.playerId != '' && !widget.isPlayerIdupdated){
       _channel.sink.add("playerId:${player.playerId}");
+      widget.isPlayerIdupdated = true;
     }
 
     void updateName(String name){
@@ -76,6 +80,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                         ConfigTab(title: 'time', desc: "the time duration of each round ",),
                       ],
                     ),
+
+                    
                             
                             
                     SizedBox(height: 50,),
