@@ -75,12 +75,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void joinGame(){
     ref.read(toggleJoinGameProvider.notifier).toggle();
-    Fluttertoast.showToast(msg: 'toggling notifier');
-    /*Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});*/
+    
 
     if(isPlayerAuth()){
-      //Navigator.pushNamed(context, '/lobby', arguments: {'mode': 'join'});
       Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+    }
+    else {
+      Fluttertoast.showToast(msg: 'Login first');
     }
   }
 
@@ -154,7 +155,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onTap: (){
                     if(isPlayerAuth()){
                       Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
-                    }  
+                    }
+                    else {
+                      Fluttertoast.showToast(msg: 'Login first');
+                    }
                   },
                   child: HomeBtn(text: 'Create Game', imgSrc: 'create',)
                 ),
@@ -226,7 +230,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],)
                 : Container(),
 
-                Text(toggleJoinGame.toString())
+                //Text(toggleJoinGame.toString())
               ],
             ),
           ),

@@ -24,11 +24,9 @@ class AuthScreen extends StatelessWidget {
           if(snapshot.data?.uid != null) {
             print(mode);
             print("I habe data ${snapshot.data}");
-            Fluttertoast.showToast(msg: "Logged in");
             return LobbyScreen(mode: mode);
             }
           else {
-            Fluttertoast.showToast(msg: "Sign up");
             return HomeScreen();
           }
         },
