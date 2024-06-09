@@ -5,6 +5,7 @@ import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
+import 'package:texttales/models/player.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class LobbyScreen extends ConsumerStatefulWidget {
@@ -18,13 +19,18 @@ class LobbyScreen extends ConsumerStatefulWidget {
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   @override
   Widget build(BuildContext context) {
-    final GameSetting gameSetting = ref.watch(gameSettingProvider);
+    final gameSetting = ref.watch(gameSettingProvider);
+    final player = ref.watch(playerProvider);
 
     final wsUrl = Uri.parse('ws://example.com');
-    final _channel = WebSocketChannel.connect(Uri.parse('wss://echo.websocket.events'));
+    final _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
     final _controller = TextEditingController();
 
-    
+    print(player.playerId);
+    if(player.playerId != ''){
+      _channel.sink.add("playerId:${player.playerId}");
+    }
+
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
@@ -41,7 +47,6 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       _controller.dispose();
       super.dispose();
     }
-
 
     return Scaffold(
       backgroundColor: dark,
