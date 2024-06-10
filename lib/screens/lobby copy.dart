@@ -11,9 +11,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 
 class LobbyScreen extends ConsumerStatefulWidget {
-  LobbyScreen({super.key, this.mode, this.roomId});
+  LobbyScreen({super.key, this.mode, /*this.roomId*/});
   final String? mode;
-  final int? roomId;
+  /*final int? roomId;*/
   bool isPlayerIdupdated = false;
 
   @override
@@ -82,11 +82,9 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     ),
 
                     
-                            
-                            
                     SizedBox(height: 50,),
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("Room ID : ${widget.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
+                    /*Text("Room ID : ${widget.roomId.toString()}", style: textTalesStyle.copyWith(fontSize: 20)),*/
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : ''),
                 

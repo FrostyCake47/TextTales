@@ -20,6 +20,7 @@ import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/services/auth_service.dart';
+import 'package:texttales/services/gamerequest.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   HomeScreen({super.key});
@@ -79,6 +80,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     if(isPlayerAuth()){
       Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+    }
+    else {
+      Fluttertoast.showToast(msg: 'Login first');
+    }
+  }
+
+  void createGame() async {
+    if(isPlayerAuth()){
+      int roomId = await GameRequest().getRoomId();
+      print(roomId);
+      Navigator.pushNamed(context, '/auth', arguments: {'mode':'create', 'roomId':roomId});
     }
     else {
       Fluttertoast.showToast(msg: 'Login first');
@@ -152,14 +164,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             
                 
                 GestureDetector(
-                  onTap: (){
-                    if(isPlayerAuth()){
-                      Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
-                    }
-                    else {
-                      Fluttertoast.showToast(msg: 'Login first');
-                    }
-                  },
+                  onTap: createGame,
                   child: HomeBtn(text: 'Create Game', imgSrc: 'create',)
                 ),
             

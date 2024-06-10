@@ -12,8 +12,9 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String? mode = args['mode'];
+    final int? roomId = args['roomId'];
     
     return Scaffold(
       body: StreamBuilder<User?>(
@@ -24,7 +25,7 @@ class AuthScreen extends StatelessWidget {
           if(snapshot.data?.uid != null) {
             print(mode);
             print("I habe data ${snapshot.data}");
-            return LobbyScreen(mode: mode);
+            return LobbyScreen(mode: mode, roomId: roomId);
             }
           else {
             return HomeScreen();
