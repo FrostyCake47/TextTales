@@ -12,6 +12,11 @@ class GameRequest{
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
       );
 
 
