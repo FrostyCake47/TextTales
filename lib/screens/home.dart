@@ -19,6 +19,7 @@ import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/player.dart';
+import 'package:texttales/components/alert.dart';
 import 'package:texttales/services/auth_service.dart';
 import 'package:texttales/services/gamerequest.dart';
 
@@ -62,8 +63,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
     });
 
-    await PlayerUpdation().addAuthUser(ref, playerProvider);
-    Navigator.pop(context);
+    try{
+      await PlayerUpdation().addAuthUser(ref, playerProvider);
+    }
+    catch(e){
+      print("Auth error");
+      createAlert(context, "Auth Error: Try logging again", homebtnGradient);
+    }
+    finally{
+      Navigator.pop(context);
+    }
+    
   }
 
   void signOut() async {
@@ -87,13 +97,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void createGame() async {
+    showDialog(context: context, builder: (context){
+      return const Center(
+          child: SpinKitCircle(
+            color: Colors.white,
+            size: 50.0,
+          ),
+        );
+    });
+
     if(isPlayerAuth()){
       int roomId = await GameRequest().getRoomId();
       print(roomId);
-      Navigator.pushNamed(context, '/auth', arguments: {'mode':'create', 'roomId':roomId});
+      Navigator.pop(context);
+
+      if(roomId == 0) createAlert(context, "Couldn't allocate you a room: Try again later", homebtnGradient);
+      else if(roomId == -1) createAlert(context, "Server Error: Try again later", homebtnGradient);
+      else Navigator.pushNamed(context, '/auth', arguments: {'mode':'create', 'roomId':roomId});
     }
     else {
-      Fluttertoast.showToast(msg: 'Login first');
+      Navigator.pop(context);
+      createAlert(context, 'Login and try again', homebtnGradient);
     }
   }
 

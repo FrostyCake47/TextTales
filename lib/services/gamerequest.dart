@@ -14,6 +14,7 @@ class GameRequest{
         },
       );
 
+
       print('got response');
 
       if (response.statusCode == 200) {
@@ -23,7 +24,7 @@ class GameRequest{
       } else {
         // Handle the error
         print('Failed to create room');
-        roomId = 0;
+        roomId = -1;
         print(response.body);
       }
 
@@ -31,7 +32,7 @@ class GameRequest{
       return roomId;
     }
     catch(e){
-      roomId = 0;
+      roomId = -1;
       return roomId;
     }
   }
