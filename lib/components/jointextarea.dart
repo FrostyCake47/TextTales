@@ -26,7 +26,7 @@ class JoinTextArea extends StatelessWidget {
                   onChanged: (text){
                     if(text.length == 4){
                       Future.delayed(Durations.long1);
-                      joinGame();
+                      joinGame(int.tryParse(joinGameController.text) ?? 0);
                     }
                   },
 

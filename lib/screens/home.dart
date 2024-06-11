@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, curly_braces_in_flow_control_structures, use_build_context_synchronously
 import 'dart:convert';
 import 'dart:ffi';
 
@@ -91,12 +91,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return _user == null ? false : true;
   }
 
-  void joinGame(){
+  void joinGame(int roomId) async {
     ref.read(toggleJoinGameProvider.notifier).toggle();
-    
-
     if(isPlayerAuth()){
-      Navigator.pushNamed(context, '/auth', arguments: {'mode':'join'});
+      int status =  await GameRequest().getRoomStatus(roomId);
+      print("status at home $status");
+      if(status == 0) Navigator.pushNamed(context, '/auth', arguments: {'mode':'join', 'roomId':roomId});
+      else if(status == 1) createAlert(context, "Invalid RoomId", homebtnGradient);
+      else createAlert(context, "Server Error: Try again later", homebtnGradient);
     }
     else {
       Fluttertoast.showToast(msg: 'Login first');
