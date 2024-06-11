@@ -21,13 +21,29 @@ class LobbyScreen extends ConsumerStatefulWidget {
 }
 
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
+  late WebSocketChannel _channel;
+  late TextEditingController _controller;
+
+  @override
+  void initState(){
+    super.initState();
+    print("initstate of lobby");
+    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    print("disposeed");
+    _channel.sink.close();
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
-
-    final _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
-    final _controller = TextEditingController();
 
     print(player.playerId);
     if(player.playerId != '' && !widget.isPlayerIdupdated){
@@ -44,13 +60,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
         _channel.sink.add(_controller.text);
       }
     }
+    
 
-    @override
-    void dispose() {
-      _channel.sink.close();
-      _controller.dispose();
-      super.dispose();
-    }
+
+    
 
     return Scaffold(
       backgroundColor: dark,

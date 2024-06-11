@@ -8,7 +8,7 @@ class GameRequest{
     try{
       print('getRoomID');
       final response = await http.get(
-        Uri.parse('http://192.168.18.105:1234/rooms/create'),  // Replace with your IP address
+        Uri.parse('http://192.168.29.226:1234/rooms/create'),  // Replace with your IP address
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

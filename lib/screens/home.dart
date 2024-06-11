@@ -106,6 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
     });
 
+    print('PLauer auth ${isPlayerAuth()}');
     if(isPlayerAuth()){
       int roomId = await GameRequest().getRoomId();
       print(roomId);
@@ -119,6 +120,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       Navigator.pop(context);
       createAlert(context, 'Login and try again', homebtnGradient);
     }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    print("home initsate");
+  }
+
+  @override 
+  void dispose(){
+    print("home dispose");
+    _joinGameController.dispose();
+    super.dispose();
   }
 
 
