@@ -40,6 +40,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ToggleJoinGame toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
 
+
+  @override 
+  void dispose(){
+    _joinGameController.dispose();
+    super.dispose();
+  }
+
   User? _user = FirebaseAuth.instance.currentUser;
   if(!widget.isPlayerInitiallyUpdated && _user != null){
     String name = _user!.displayName ?? '';
@@ -67,7 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       await PlayerUpdation().addAuthUser(ref, playerProvider);
     }
     catch(e){
-      print("Auth error");
+      print("Auth error :${e.toString()}");
       createAlert(context, "Auth Error: Try logging again", homebtnGradient);
     }
     finally{
@@ -108,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     print('PLauer auth ${isPlayerAuth()}');
     if(isPlayerAuth()){
-      int roomId = await GameRequest().getRoomId();
+      int roomId = await GameRequest().getRoomId(player);
       print(roomId);
       Navigator.pop(context);
 
@@ -122,21 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  @override
-  void initState(){
-    super.initState();
-    print("home initsate");
-  }
-
-  @override 
-  void dispose(){
-    print("home dispose");
-    _joinGameController.dispose();
-    super.dispose();
-  }
-
-
-
+  
   return Scaffold(
       backgroundColor: dark,
       body: Container(
