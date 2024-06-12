@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/components/configtab.dart';
@@ -34,21 +36,23 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
   @override
   void dispose() {
-    print("disposeed");
+    print("disposeed why here?");
     _channel.sink.close();
     _controller.dispose();
     super.dispose();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
 
-    print(player.playerId);
-    if(player.playerId != '' && !widget.isPlayerIdupdated){
-      _channel.sink.add("playerId:${player.playerId}");
-      widget.isPlayerIdupdated = true;
+    void onJoinBroadcast(int roomId){
+      Map _package = {'type':'join', 'player':{'playerId':player.playerId, 'photoUrl': player.photoURL, 'name':player.name}, 'roomId':roomId};
+      print(_package);
+      _channel.sink.add(json.encode(_package));
     }
 
     void updateName(String name){
@@ -60,10 +64,16 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
         _channel.sink.add(_controller.text);
       }
     }
-    
 
 
-    
+
+
+    print(player.playerId);
+    if(player.playerId != '' && !widget.isPlayerIdupdated){
+      onJoinBroadcast(widget.roomId ?? 0);
+      widget.isPlayerIdupdated = true;
+    }
+
 
     return Scaffold(
       backgroundColor: dark,
