@@ -69,10 +69,11 @@ class GameRequest{
 
       print('got response');
       print(response.body);
+      print(response.statusCode);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        if (data['status'] == 'true') return 0;
+        if (data['status'] == true) return 0;
         else return 1;
       } else {
         // Handle the error
