@@ -38,7 +38,15 @@ class ConfigTab extends ConsumerWidget {
     padding: EdgeInsets.only(left:12, right: 10, top: 5, bottom: 5),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      gradient: configCardOuterGradient
+      gradient: configCardOuterGradient,
+      boxShadow: const [
+          BoxShadow(
+            color:  Color.fromARGB(64, 0, 0, 0),
+            spreadRadius: 0,
+            blurRadius: 4,
+            offset: Offset(0, 6), // changes position of shadow
+          ),
+        ],
     ),
     child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +64,15 @@ class ConfigTab extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: configCardInnerGradient
+              gradient: configCardInnerGradient,
+              boxShadow: const [
+                BoxShadow(
+                  color:  Color.fromARGB(64, 0, 0, 0),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(0, 2), // changes position of shadow
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
