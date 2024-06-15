@@ -17,6 +17,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
   final String? mode;
   final int? roomId;
   bool isPlayerIdupdated = false;
+  bool isRoomIdInitiallyUpdated = false;
 
   @override
   ConsumerState<LobbyScreen> createState() => _LobbyScreenState();
@@ -48,6 +49,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   Widget build(BuildContext context) {
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
+    final lobbyStatus = ref.watch(lobbyStatusProvider);
+
 
     void onJoinBroadcast(int roomId){
       Map _package = {'type':'join', 'player':{'playerId':player.playerId, 'photoUrl': player.photoURL, 'name':player.name}, 'roomId':roomId};
@@ -65,8 +68,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       }
     }
 
-
-
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.isRoomIdInitiallyUpdated = true;
+      ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId); 
+    });*/
+    
 
     print(player.playerId);
     if(player.playerId != '' && !widget.isPlayerIdupdated){
@@ -103,13 +109,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                         ConfigTab(title: 'time', desc: "the time duration of each round ",),
                       ],
                     ),
-
-                    
-                            
+          
                             
                     SizedBox(height: 50,),
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("Room ID : ${widget.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
+                    Text("Room ID : ${lobbyStatus.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
