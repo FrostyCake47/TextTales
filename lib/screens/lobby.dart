@@ -68,10 +68,13 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       }
     }
 
-    /*WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.isRoomIdInitiallyUpdated = true;
-      ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId); 
-    });*/
+    if(!widget.isPlayerIdupdated){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.isRoomIdInitiallyUpdated = true;
+        ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId); 
+      });
+    }
+    /**/
     
 
     print(player.playerId);
