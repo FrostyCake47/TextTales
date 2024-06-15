@@ -111,7 +111,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
                     Text("Room ID : ${widget.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
                 
-                    Text(snapshot.hasData ? '${snapshot.data}' : ''),
+                    Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
                     Form(
                       child: TextFormField(
