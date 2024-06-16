@@ -79,9 +79,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     }
 
     void toggleBroadcastFlag(){
-      setState(() {
         widget.broadcastFlag = true;
-      });
     }
 
 
