@@ -57,7 +57,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
 
     void onJoinBroadcast(int roomId){
-      Map _package = {'type':'join', 'player':{'playerId':player.playerId, 'photoUrl': player.photoURL, 'name':player.name}, 'roomId':roomId};
+      Map _package = {'type':'join', 'player':{'playerId':player.playerId, 'photoURL': player.photoURL, 'name':player.name}, 'roomId':roomId};
       print(_package);
       _channel.sink.add(json.encode(_package));
     }
@@ -100,18 +100,22 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
           stream: _channel.stream,
           builder: (context, snapshot) {
             if(snapshot.hasData && (snapshot.data != widget.oldsnapshot)){
-              message = jsonDecode(snapshot.data as String);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                message = jsonDecode(snapshot.data as String);
+                widget.oldsnapshot = snapshot.data;
 
-              print('${snapshot.data}  ${widget.oldsnapshot}');
+                if(message['type'] == 'youjoin'){
+                  final Map _gameSetting = message['gameSetting'];
+                    ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
+                }
 
-              if(message['type'] == 'youjoin'){
-                final Map _gameSetting = message['gameSetting'];
+                else if(message['type'] == 'otherjoin'){
+                  Player _player = Player.fromMap(message['player']);
+                  ref.read(lobbyStatusProvider.notifier).addPlayer(_player);
+                }
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  widget.oldsnapshot = snapshot.data;
-                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
-                });
-              }  
+                //else if(message['type'] == )
+              });
             }
 
             return Center(
