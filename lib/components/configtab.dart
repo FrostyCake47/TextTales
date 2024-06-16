@@ -34,7 +34,7 @@ class ConfigTab extends ConsumerWidget {
   };
 
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     padding: EdgeInsets.only(left:12, right: 10, top: 5, bottom: 5),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
