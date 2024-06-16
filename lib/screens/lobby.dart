@@ -151,6 +151,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                   final String _playerId = message['playerId'];
                   ref.read(lobbyStatusProvider.notifier).removePlayer(_playerId);
                 }
+
+                else if(message['type'] == 'gameSetting'){
+                  final GameSetting _gameSetting = GameSetting.fromMap(message['gameSetting']);
+                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting.gamemode, _gameSetting.rounds, _gameSetting.maxchar, _gameSetting.time);
+                }
               });
             }
 
