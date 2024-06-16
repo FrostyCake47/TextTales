@@ -10,7 +10,8 @@ import 'package:texttales/models/gamesetting.dart';
 class ConfigTab extends ConsumerWidget {
   final String title;
   final String desc;
-  ConfigTab({super.key, required this.title, required this.desc});
+  final Function gameSettingUpdateBroadcast;
+  ConfigTab({super.key, required this.title, required this.desc, required this.gameSettingUpdateBroadcast});
   
 
   @override
@@ -88,7 +89,10 @@ class ConfigTab extends ConsumerWidget {
 
               : [
                 GestureDetector(
-                  onTap: (){decrementActions[title]!();},
+                  onTap: (){
+                    decrementActions[title]!();
+                    gameSettingUpdateBroadcast();
+                  },
                   child: Icon(Icons.remove),
                 ),
 
@@ -98,7 +102,10 @@ class ConfigTab extends ConsumerWidget {
                 ),
 
                 GestureDetector(
-                  onTap: (){incrementActions[title]!();},
+                  onTap: (){
+                    incrementActions[title]!();
+                    gameSettingUpdateBroadcast();
+                  },
                   child: Icon(Icons.add),
                 ),
               ],

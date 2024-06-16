@@ -63,6 +63,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       _channel.sink.add(json.encode(_package));
     }
 
+    void gameSettingUpdateBroadcast(){
+      _channel.sink.add(json.encode({'type':'gameSetting', 'gameSetting':gameSetting.toMap()}));
+    }
+
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
@@ -72,6 +76,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
         _channel.sink.add(_controller.text);
       }
     }
+
+
 
     if(!widget.isPlayerIdupdated){
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -88,7 +94,6 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       widget.isPlayerIdupdated = true;
     }
 
-    print('currentPlayers begining${lobbyStatus.currentPlayers}');
 
 
     return Scaffold(
@@ -106,29 +111,32 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 print(message);
                 widget.oldsnapshot = snapshot.data;
 
+                //when you join
                 if(message['type'] == 'youjoin'){
                   final Map _gameSetting = message['gameSetting'];
-                    ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
-                    
-                    
-                    final List<Map<String, dynamic>> _players = (message['players'] as List).cast<Map<String, dynamic>>();
 
-                    _players.forEach((_player){
-                      print('each player ${_player}');
-                      ref.read(lobbyStatusProvider.notifier).addPlayer(Player.fromMap(_player));
-                    });
+                  //update gamesetting
+                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
+                  final List<Map<String, dynamic>> _players = (message['players'] as List).cast<Map<String, dynamic>>();
+
+                  //update currentPlayers
+                  _players.forEach((_player){
+                    ref.read(lobbyStatusProvider.notifier).addPlayer(Player.fromMap(_player));
+                  });
                 }
 
+                //when otherjoins
                 else if(message['type'] == 'otherjoin'){
+                  //update the new player
                   Player _player = Player.fromMap(message['player']);
                   ref.read(lobbyStatusProvider.notifier).addPlayer(_player);
-                  print('currentPlayers ${lobbyStatus.currentPlayers}');
                 }
-
+                
+                //when other disconnects
                 else if(message['type'] == 'disconnect'){
+                  //update the disconnected
                   final String _playerId = message['playerId'];
                   ref.read(lobbyStatusProvider.notifier).removePlayer(_playerId);
-                  print('currentPlayers ${lobbyStatus.currentPlayers}');
                 }
               });
             }
@@ -146,10 +154,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     //configs
                     Column(
                       children: <Widget>[
-                        ConfigTab(title: 'game mode', desc: "determines the type of game  ",),
-                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ",),
-                        ConfigTab(title: 'max char', desc: "max no of characters per turn ",),
-                        ConfigTab(title: 'time', desc: "the time duration of each round ",),
+                        ConfigTab(title: 'game mode', desc: "determines the type of game  ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
+                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
+                        ConfigTab(title: 'max char', desc: "max no of characters per turn ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
+                        ConfigTab(title: 'time', desc: "the time duration of each round ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
                       ],
                     ),
           
