@@ -20,6 +20,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
   final int? roomId;
   bool isPlayerIdupdated = false;
   bool isRoomIdInitiallyUpdated = false;
+  bool broadcastFlag = false;
   var oldsnapshot;
 
   @override
@@ -35,8 +36,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   void initState(){
     super.initState();
     print("initstate of lobby");
-    //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
-    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.89.31:6969'));
+    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
+    //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.89.31:6969'));
     _controller = TextEditingController();
   }
 
@@ -64,7 +65,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     }
 
     void gameSettingUpdateBroadcast(){
-      _channel.sink.add(json.encode({'type':'gameSetting', 'gameSetting':gameSetting.toMap()}));
+      _channel.sink.add(json.encode({'type':'gameSetting', 'gameSetting':gameSetting.toMap(), 'playerId':player.playerId, 'roomId':lobbyStatus.roomId},));
     }
 
     void updateName(String name){
@@ -77,6 +78,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       }
     }
 
+    void toggleBroadcastFlag(){
+      setState(() {
+        widget.broadcastFlag = true;
+      });
+    }
 
 
     if(!widget.isPlayerIdupdated){
@@ -92,6 +98,15 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     if(player.playerId != '' && !widget.isPlayerIdupdated){
       onJoinBroadcast(widget.roomId ?? 0);
       widget.isPlayerIdupdated = true;
+    }
+
+    print(widget.broadcastFlag);
+    if(widget.broadcastFlag){
+      print("broadcasting now");
+      gameSettingUpdateBroadcast();
+      setState(() {
+        widget.broadcastFlag = false;
+      });
     }
 
 
@@ -154,10 +169,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     //configs
                     Column(
                       children: <Widget>[
-                        ConfigTab(title: 'game mode', desc: "determines the type of game  ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
-                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
-                        ConfigTab(title: 'max char', desc: "max no of characters per turn ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
-                        ConfigTab(title: 'time', desc: "the time duration of each round ", gameSettingUpdateBroadcast: gameSettingUpdateBroadcast,),
+                        ConfigTab(title: 'game mode', desc: "determines the type of game  ",  toggleBroadcastFlag: toggleBroadcastFlag,),
+                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ", toggleBroadcastFlag: toggleBroadcastFlag,),
+                        ConfigTab(title: 'max char', desc: "max no of characters per turn ", toggleBroadcastFlag: toggleBroadcastFlag,),
+                        ConfigTab(title: 'time', desc: "the time duration of each round ", toggleBroadcastFlag: toggleBroadcastFlag,),
                       ],
                     ),
           
