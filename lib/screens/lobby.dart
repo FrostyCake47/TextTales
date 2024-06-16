@@ -82,8 +82,6 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     }
     /**/
     
-
-    print(player.playerId);
     if(player.playerId != '' && !widget.isPlayerIdupdated){
       onJoinBroadcast(widget.roomId ?? 0);
       widget.isPlayerIdupdated = true;
@@ -102,19 +100,33 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
             if(snapshot.hasData && (snapshot.data != widget.oldsnapshot)){
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 message = jsonDecode(snapshot.data as String);
+                print(message);
                 widget.oldsnapshot = snapshot.data;
 
                 if(message['type'] == 'youjoin'){
                   final Map _gameSetting = message['gameSetting'];
                     ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
+                    
+                    
+                    final List<Map<String, dynamic>> _players = (message['players'] as List).cast<Map<String, dynamic>>();
+
+                    _players.forEach((_player){
+                      print('each player ${_player}');
+                      ref.read(lobbyStatusProvider.notifier).addPlayer(Player.fromMap(_player));
+                    });
                 }
 
                 else if(message['type'] == 'otherjoin'){
                   Player _player = Player.fromMap(message['player']);
                   ref.read(lobbyStatusProvider.notifier).addPlayer(_player);
+                  print('currentPlayers ${lobbyStatus.currentPlayers}');
                 }
 
-                //else if(message['type'] == )
+                else if(message['type'] == 'disconnect'){
+                  final String _playerId = message['playerId'];
+                  ref.read(lobbyStatusProvider.notifier).removePlayer(_playerId);
+                  print('currentPlayers ${lobbyStatus.currentPlayers}');
+                }
               });
             }
 
@@ -143,7 +155,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
                     Text("Room ID : ${lobbyStatus.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
 
-                    PlayerIconBar(player: player,),
+                    lobbyStatus.currentPlayers.length != 0 ? PlayerIconBar(players: lobbyStatus.currentPlayers) : Text('no players'),
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 

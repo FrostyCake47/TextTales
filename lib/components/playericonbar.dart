@@ -16,11 +16,13 @@ class PlayerIcon extends StatelessWidget {
 }
 
 class PlayerIconBar extends StatelessWidget {
-  final Player player;
-  const PlayerIconBar({super.key, required this.player});
+  final Set<Player> players;
+  const PlayerIconBar({super.key, required this.players});
 
   @override
   Widget build(BuildContext context) {
+    final List<Player> playerList = players.toList();
+
     return IntrinsicWidth(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -28,12 +30,11 @@ class PlayerIconBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: dark, width: 1)
         ),
-        child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlayerIcon(player: player)
-                ],
-              ),
+        child: ListView.builder(
+          itemCount: playerList.length,
+          itemBuilder: (context, index){
+            return PlayerIcon(player: playerList[index]);
+          }),
       ),
     );
   }
