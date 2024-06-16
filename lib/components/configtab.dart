@@ -51,12 +51,15 @@ class ConfigTab extends ConsumerWidget {
     child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
-              Text(desc, style: textMedium.copyWith(color: Colors.black, fontSize: 12),)
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),),
+                Text(desc, style: textMedium.copyWith(color: Colors.black, fontSize: 12),)
+              ],
+            ),
           ),
 
           Container(

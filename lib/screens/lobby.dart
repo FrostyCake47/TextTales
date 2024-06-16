@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/components/configtab.dart';
+import 'package:texttales/components/playericonbar.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
@@ -18,6 +20,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
   final int? roomId;
   bool isPlayerIdupdated = false;
   bool isRoomIdInitiallyUpdated = false;
+  var oldsnapshot;
 
   @override
   ConsumerState<LobbyScreen> createState() => _LobbyScreenState();
@@ -26,6 +29,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   late WebSocketChannel _channel;
   late TextEditingController _controller;
+  var message;
 
   @override
   void initState(){
@@ -71,7 +75,9 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     if(!widget.isPlayerIdupdated){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.isRoomIdInitiallyUpdated = true;
-        ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId); 
+
+        ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId);
+
       });
     }
     /**/
@@ -93,6 +99,21 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
         child: StreamBuilder(
           stream: _channel.stream,
           builder: (context, snapshot) {
+            if(snapshot.hasData && (snapshot.data != widget.oldsnapshot)){
+              message = jsonDecode(snapshot.data as String);
+
+              print('${snapshot.data}  ${widget.oldsnapshot}');
+
+              if(message['type'] == 'youjoin'){
+                final Map _gameSetting = message['gameSetting'];
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  widget.oldsnapshot = snapshot.data;
+                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
+                });
+              }  
+            }
+
             return Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -117,6 +138,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     SizedBox(height: 50,),
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
                     Text("Room ID : ${lobbyStatus.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
+
+                    PlayerIconBar(player: player,),
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
