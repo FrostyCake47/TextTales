@@ -35,7 +35,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   void initState(){
     super.initState();
     print("initstate of lobby");
-    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
+    //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
+    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.89.31:6969'));
     _controller = TextEditingController();
   }
 
@@ -86,6 +87,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       onJoinBroadcast(widget.roomId ?? 0);
       widget.isPlayerIdupdated = true;
     }
+
+    print('currentPlayers begining${lobbyStatus.currentPlayers}');
 
 
     return Scaffold(

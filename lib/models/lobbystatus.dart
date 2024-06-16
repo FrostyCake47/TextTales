@@ -16,9 +16,12 @@ class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
 
 
     void addPlayer(Player player){
-      final updatedPlayers = Set<Player>.from(state.currentPlayers)..add(player);
+      //final updatedPlayers = Set<Player>.from(state.currentPlayers)..add(player);
+      final updatedPlayers = Set<Player>()..add(player);
+
       print('updatedPlayers ${updatedPlayers}');
       state = state.copyWith(currentPlayers: updatedPlayers);
+      print('state.currentplayers: ${state.currentPlayers}');
     }
 
     void removePlayer(String playerId){

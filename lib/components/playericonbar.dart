@@ -23,19 +23,19 @@ class PlayerIconBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Player> playerList = players.toList();
 
-    return IntrinsicWidth(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: dark, width: 1)
-        ),
-        child: ListView.builder(
-          itemCount: playerList.length,
-          itemBuilder: (context, index){
-            return PlayerIcon(player: playerList[index]);
-          }),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: dark, width: 1)
       ),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: playerList.length,
+        itemBuilder: (context, index){
+          return PlayerIcon(player: playerList[index]);
+        }),
     );
   }
 }
