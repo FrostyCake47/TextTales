@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:texttales/components/settingbutton.dart';
 import 'package:texttales/constants/textstyles.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
@@ -26,7 +27,23 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   child: Text("Settings", style: textMedium.copyWith(fontSize: 32, fontWeight: FontWeight.bold), ),
                 ),
                 Text("Change your configurations here", style: textMedium.copyWith(fontSize: 16),),
-            
+
+                SizedBox(height: 40,),
+
+                GestureDetector(
+                  onTap: (){
+                    showDialog(context: context, builder: (context){
+                      return Scaffold(
+                        body: Column(
+                          children: [
+                            Text("server 1"),
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                  child: SettingButton(text: 'Select Server', imgSrc: 'signal'),
+                )
               ],
             ),
           ),
