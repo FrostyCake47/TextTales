@@ -212,7 +212,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                 GestureDetector(
                   onTap: (){
-                    Navigator.pushNamed(context, '/auth', arguments: {'mode':'create'});
+                    Navigator.pushNamed(context, '/setting',);
                   },
                   child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mx: 80,)
                 ),

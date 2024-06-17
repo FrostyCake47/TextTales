@@ -10,6 +10,7 @@ import 'package:texttales/screens/auth.dart';
 import 'package:texttales/screens/game.dart';
 import 'package:texttales/screens/home.dart';
 import 'package:texttales/screens/lobby.dart';
+import 'package:texttales/screens/setting.dart';
 import 'package:texttales/screens/story.dart';
 
 final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => PlayerNotifier(Player('', '', '')));
@@ -29,6 +30,7 @@ Future<void> main() async {
         '/lobby' : (context) => LobbyScreen(),
         '/game' : (context) => const GameScreen(),
         '/story' : (context) => const StoryScreen(),
+        '/setting' : (context) => const SettingScreen(),
       },
     
       debugShowCheckedModeBanner: false,
@@ -36,7 +38,7 @@ Future<void> main() async {
         textTheme: const TextTheme(
           bodyMedium: TextStyle(color: Color(0xfff0eff4)) 
         ).apply(
-          bodyColor: Colors.orange, 
+          bodyColor: Colors.white, 
           displayColor: Colors.blue, 
         )
       ),
