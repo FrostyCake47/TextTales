@@ -184,7 +184,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     Text("Joined Players", style: textTalesStyle.copyWith(fontSize: 30),),
                     Text("Room ID : ${lobbyStatus.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
 
-                    lobbyStatus.currentPlayers.length != 0 ? Text(lobbyStatus.currentPlayers.toString()) : Text('no players'),
+                    lobbyStatus.currentPlayers.length != 0 ? PlayerIconBar(players: lobbyStatus.currentPlayers) : Text('no players'),
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
