@@ -57,6 +57,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
     final lobbyStatus = ref.watch(lobbyStatusProvider);
+    final gameServer = ref.watch(gameServerProvider);
 
 
     void onJoinBroadcast(int roomId){

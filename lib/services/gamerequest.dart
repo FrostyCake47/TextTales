@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:texttales/main.dart';
 import 'dart:convert';
 
 import 'package:texttales/models/player.dart';
 
 class GameRequest{
-  Future<int> getRoomId(Player player) async {
+  Future<int> getRoomId(Player player, WidgetRef ref) async {
     int roomId;
+    final gameServer = ref.watch(gameServerProvider);
     Map playerData = {
       'playerId' : player.playerId,
       'name': player.name,
@@ -16,7 +19,7 @@ class GameRequest{
     try{
       print('getRoomID');
       final response = await http.post(
-        Uri.parse('http://192.168.29.226:1234/rooms/create'),
+        Uri.parse('${gameServer.ip}:1234/rooms/create'),
         //Uri.parse('http://192.168.89.31:1234/rooms/create'),  // Replace with your IP address
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -52,11 +55,12 @@ class GameRequest{
     }
   }
 
-  Future<int> getRoomStatus(int roomID) async {
+  Future<int> getRoomStatus(int roomID, WidgetRef ref) async {
     try{
+      final gameServer = ref.watch(gameServerProvider);
       print('getRoomStatus');
       final response = await http.post(
-        Uri.parse('http://192.168.29.226:1234/rooms/join'),  // Replace with your IP address
+        Uri.parse('${gameServer.ip}:1234/rooms/join'),  // Replace with your IP address
         //Uri.parse('http://192.168.89.31:1234/rooms/join'), 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

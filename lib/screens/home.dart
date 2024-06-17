@@ -94,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void joinGame(int roomId) async {
     ref.read(toggleJoinGameProvider.notifier).toggle();
     if(isPlayerAuth()){
-      int status =  await GameRequest().getRoomStatus(roomId);
+      int status =  await GameRequest().getRoomStatus(roomId, ref);
       print("status at home $status");
       if(status == 0) Navigator.pushNamed(context, '/auth', arguments: {'mode':'join', 'roomId':roomId});
       else if(status == 1) createAlert(context, "Invalid RoomId", homebtnGradient);
@@ -117,7 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     print('PLauer auth ${isPlayerAuth()}');
     if(isPlayerAuth()){
-      int roomId = await GameRequest().getRoomId(player);
+      int roomId = await GameRequest().getRoomId(player, ref);
       print(roomId);
       Navigator.pop(context);
 
