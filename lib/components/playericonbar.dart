@@ -44,7 +44,8 @@ class PlayerIconBar extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              gradient: configCardOuterGradient,
+              //gradient: playerCardReady,
+              border: Border.all(color: Colors.green, width: 1),
               boxShadow: const [
                 BoxShadow(
                   color:  Color.fromARGB(64, 0, 0, 0),

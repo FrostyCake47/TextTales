@@ -38,3 +38,11 @@ const Gradient configCardOuterGradient = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient playerCardReady = LinearGradient(
+  colors: [Color.fromARGB(255, 130, 190, 90), Color.fromARGB(255, 201, 255, 209)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
