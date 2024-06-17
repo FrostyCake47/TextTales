@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/components/configtab.dart';
 import 'package:texttales/components/playericonbar.dart';
+import 'package:texttales/components/readybutton.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
@@ -185,6 +186,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     Text("Room ID : ${lobbyStatus.roomId}", style: textTalesStyle.copyWith(fontSize: 20)),
 
                     lobbyStatus.currentPlayers.length != 0 ? PlayerIconBar(players: lobbyStatus.currentPlayers) : Text('no players'),
+
+                    GestureDetector(
+                      onTap: (){},
+                      child: ReadyButton(),
+                    ),
                 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 

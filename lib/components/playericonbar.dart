@@ -31,7 +31,7 @@ class PlayerIconBar extends StatelessWidget {
         //border: Border.all(color: dark, width: 2)
       ),
       child: GridView.builder(
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.symmetric(vertical: 20),
         scrollDirection: Axis.vertical,
         physics: ScrollPhysics(),
         shrinkWrap: true,
@@ -43,12 +43,21 @@ class PlayerIconBar extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(20),
+              gradient: configCardOuterGradient,
+              boxShadow: const [
+                BoxShadow(
+                  color:  Color.fromARGB(64, 0, 0, 0),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(0, 6), // changes position of shadow
+                ),
+              ],
             ),
             
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleAvatar(backgroundImage: NetworkImage(playerList[index].photoURL),),
                 Padding(
