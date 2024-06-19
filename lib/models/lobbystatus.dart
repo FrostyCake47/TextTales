@@ -27,6 +27,10 @@ class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
       ..removeWhere((player) => player.playerId == playerId);
       state = state.copyWith(currentPlayers: updatedPlayers);
     }
+
+    void updateReadyPlayer(Map<String, bool> readyPlayers){
+      state = state.copyWith(readyPlayers: readyPlayers);
+    }
 }
 
 

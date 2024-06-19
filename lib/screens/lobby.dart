@@ -70,6 +70,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       _channel.sink.add(json.encode({'type':'gameSetting', 'gameSetting':gameSetting.toMap(), 'playerId':player.playerId, 'roomId':lobbyStatus.roomId},));
     }
 
+    void readyPlayerBroadcast(){
+      _channel.sink.add(jsonEncode({'type':'readyPlayers', 'playerId':player.playerId, 'roomId':lobbyStatus.roomId}));
+    }
+
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
@@ -109,6 +113,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
       print("broadcasting now");
       if(widget.broadcastFlag == 1) gameSettingUpdateBroadcast();
+      else if(widget.broadcastFlag == 2) readyPlayerBroadcast();
       
       setState(() {
         widget.broadcastFlag = 0;
@@ -164,6 +169,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                   final GameSetting _gameSetting = GameSetting.fromMap(message['gameSetting']);
                   ref.read(gameSettingProvider.notifier).updateAll(_gameSetting.gamemode, _gameSetting.rounds, _gameSetting.maxchar, _gameSetting.time);
                 }
+
+                else if(message['type'] == 'readyPlayers'){
+                  final Map<String, bool> readyPlayers = message['readyPlayers'];
+                  ref.read(lobbyStatusProvider.notifier).updateReadyPlayer(readyPlayers);
+                }
               });
             }
 
@@ -198,10 +208,15 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     lobbyStatus.currentPlayers.length != 0 ? PlayerIconBar(players: lobbyStatus.currentPlayers) : Text('no players'),
 
                     GestureDetector(
-                      onTap: (){},
+                      onTap: (){
+                        setState(() {
+                          widget.broadcastFlag = 2;
+                        });
+                      },
                       child: ReadyButton(),
                     ),
-                
+
+                    Text(lobbyStatus.readyPlayers.toString()),
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
                     Form(
