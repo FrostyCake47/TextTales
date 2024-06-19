@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:texttales/models/player.dart';
 
-
-
 class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
     LobbyStatusNotifier(super.state);
     void changeRoomId(int? roomId){
@@ -35,19 +33,23 @@ class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
 class LobbyStatus {
   final int? roomId;
   final Set<Player> currentPlayers;
+  final int ready;
 
   LobbyStatus(
     this.roomId,
     this.currentPlayers,
+    this.ready,
   );
 
   LobbyStatus copyWith({
     int? roomId,
     Set<Player>? currentPlayers,
+    int? ready,
   }) {
     return LobbyStatus(
       roomId ?? this.roomId,
       currentPlayers ?? this.currentPlayers,
+      ready ?? this.ready,
     );
   }
 
@@ -55,6 +57,7 @@ class LobbyStatus {
     return <String, dynamic>{
       'roomId': roomId,
       'currentPlayers': currentPlayers.map((x) => x.toMap()).toList(),
+      'ready': ready,
     };
   }
 
@@ -62,6 +65,7 @@ class LobbyStatus {
     return LobbyStatus(
       map['roomId'] != null ? map['roomId'] as int : null,
       Set<Player>.from((map['currentPlayers'] as List<int>).map<Player>((x) => Player.fromMap(x as Map<String,dynamic>),),),
+      map['ready'] as int,
     );
   }
 
@@ -70,7 +74,7 @@ class LobbyStatus {
   factory LobbyStatus.fromJson(String source) => LobbyStatus.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'LobbyStatus(roomId: $roomId, currentPlayers: $currentPlayers)';
+  String toString() => 'LobbyStatus(roomId: $roomId, currentPlayers: $currentPlayers, ready: $ready)';
 
   @override
   bool operator ==(covariant LobbyStatus other) {
@@ -78,9 +82,10 @@ class LobbyStatus {
   
     return 
       other.roomId == roomId &&
-      setEquals(other.currentPlayers, currentPlayers);
+      setEquals(other.currentPlayers, currentPlayers) &&
+      other.ready == ready;
   }
 
   @override
-  int get hashCode => roomId.hashCode ^ currentPlayers.hashCode;
+  int get hashCode => roomId.hashCode ^ currentPlayers.hashCode ^ ready.hashCode;
 }

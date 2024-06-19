@@ -12,8 +12,9 @@ class ConfigTab extends ConsumerStatefulWidget {
   final String title;
   final String desc;
   final Function toggleBroadcastFlag;
+  final String mode;
 
-  ConfigTab({super.key, required this.title, required this.desc,  required this.toggleBroadcastFlag,});
+  ConfigTab({super.key, required this.title, required this.desc,  required this.toggleBroadcastFlag, required this.mode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ConfigTabState();
@@ -95,24 +96,24 @@ class _ConfigTabState extends ConsumerState<ConfigTab> {
                 ]  
 
                 : [
-                  GestureDetector(
+                   widget.mode == 'create' ? GestureDetector(
                     onTap: (){
                       decrementActions[widget.title]!();
                     },
                     child: Icon(Icons.remove),
-                  ),
+                  ) : Container(),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text("${widget.title == 'rounds' ? gameSetting.rounds : widget.title == 'time' ? gameSetting.time : gameSetting.maxchar}", style: textMedium,),
                   ),
 
-                  GestureDetector(
+                  widget.mode == 'create' ? GestureDetector(
                     onTap: () {
                       incrementActions[widget.title]!();
                     },
                     child: Icon(Icons.add),
-                  ),
+                  ) : Container(),
                 ],
               ),
             )

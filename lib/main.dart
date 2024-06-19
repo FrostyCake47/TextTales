@@ -17,7 +17,7 @@ import 'package:texttales/screens/story.dart';
 final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => PlayerNotifier(Player('', '', '')));
 final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(true)));
 final gameSettingProvider = StateNotifierProvider<GameSettingNotifier, GameSetting>((ref) => GameSettingNotifier(GameSetting('Classic', 5, 200, 60)));
-final lobbyStatusProvider = StateNotifierProvider<LobbyStatusNotifier, LobbyStatus>((ref) => LobbyStatusNotifier(LobbyStatus(0, <Player>{})));
+final lobbyStatusProvider = StateNotifierProvider<LobbyStatusNotifier, LobbyStatus>((ref) => LobbyStatusNotifier(LobbyStatus(0, <Player>{}, 0)));
 final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>((ref) => GameServerNotifier(GameServer(name: 'Jio localhost', ip: 'http://192.168.29.226')));
 
 Future<void> main() async {

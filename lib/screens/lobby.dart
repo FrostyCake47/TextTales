@@ -174,10 +174,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     //configs
                     Column(
                       children: <Widget>[
-                        ConfigTab(title: 'game mode', desc: "determines the type of game  ",  toggleBroadcastFlag: toggleBroadcastFlag,),
-                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ", toggleBroadcastFlag: toggleBroadcastFlag,),
-                        ConfigTab(title: 'max char', desc: "max no of characters per turn ", toggleBroadcastFlag: toggleBroadcastFlag,),
-                        ConfigTab(title: 'time', desc: "the time duration of each round ", toggleBroadcastFlag: toggleBroadcastFlag,),
+                        ConfigTab(title: 'game mode', desc: "determines the type of game  ",  toggleBroadcastFlag: toggleBroadcastFlag, mode: widget.mode ?? '',),
+                        ConfigTab(title: 'rounds', desc: "amount of turns in the game ", toggleBroadcastFlag: toggleBroadcastFlag, mode: widget.mode ?? ''),
+                        ConfigTab(title: 'max char', desc: "max no of characters per turn ", toggleBroadcastFlag: toggleBroadcastFlag, mode: widget.mode ?? ''),
+                        ConfigTab(title: 'time', desc: "the time duration of each round ", toggleBroadcastFlag: toggleBroadcastFlag, mode: widget.mode ?? ''),
                       ],
                     ),
           
