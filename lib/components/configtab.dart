@@ -11,7 +11,7 @@ import 'package:texttales/models/gamesetting.dart';
 class ConfigTab extends ConsumerStatefulWidget {
   final String title;
   final String desc;
-  final Function toggleBroadcastFlag;
+  final Function(int mode) toggleBroadcastFlag;
   final String mode;
 
   ConfigTab({super.key, required this.title, required this.desc,  required this.toggleBroadcastFlag, required this.mode});
@@ -29,16 +29,16 @@ class _ConfigTabState extends ConsumerState<ConfigTab> {
     int setting = 0;
 
     final Map<String, void Function()> decrementActions = {
-      'rounds': () {if (gameSetting.rounds > 0 && gameSetting.rounds <= 10) {ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1); widget.toggleBroadcastFlag();}},
-      'time': () {if (gameSetting.time > 20 && gameSetting.time <= 120) {ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 10); widget.toggleBroadcastFlag();}},
-      'max char': () {if (gameSetting.maxchar > 0 && gameSetting.maxchar <= 210) {ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 10); widget.toggleBroadcastFlag();}},
+      'rounds': () {if (gameSetting.rounds > 0 && gameSetting.rounds <= 10) {ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds - 1); widget.toggleBroadcastFlag(1);}},
+      'time': () {if (gameSetting.time > 20 && gameSetting.time <= 120) {ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time - 10); widget.toggleBroadcastFlag(1);}},
+      'max char': () {if (gameSetting.maxchar > 0 && gameSetting.maxchar <= 210) {ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar - 10); widget.toggleBroadcastFlag(1);}},
       'game mode' : (){}
     };
 
     final Map<String, void Function()> incrementActions = {
-      'rounds': () {if (gameSetting.rounds >= 0 && gameSetting.rounds < 10){ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1); widget.toggleBroadcastFlag(); }},
-      'time': () {if (gameSetting.time >= 20 && gameSetting.time < 120){ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 10); widget.toggleBroadcastFlag();}},
-      'max char': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210){ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10); widget.toggleBroadcastFlag();}},
+      'rounds': () {if (gameSetting.rounds >= 0 && gameSetting.rounds < 10){ref.read(gameSettingProvider.notifier).updateRounds(gameSetting.rounds + 1); widget.toggleBroadcastFlag(1); }},
+      'time': () {if (gameSetting.time >= 20 && gameSetting.time < 120){ref.read(gameSettingProvider.notifier).updateTime(gameSetting.time + 10); widget.toggleBroadcastFlag(1);}},
+      'max char': () {if (gameSetting.maxchar >= 0 && gameSetting.maxchar < 210){ref.read(gameSettingProvider.notifier).updateMaxChar(gameSetting.maxchar + 10); widget.toggleBroadcastFlag(1);}},
       'game mode' : (){}
     };
 

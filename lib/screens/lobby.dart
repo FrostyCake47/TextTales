@@ -21,7 +21,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
   final int? roomId;
   bool isPlayerIdupdated = false;
   bool isRoomIdInitiallyUpdated = false;
-  bool broadcastFlag = false;
+  int broadcastFlag = 0;
   var oldsnapshot;
 
   @override
@@ -80,8 +80,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       }
     }
 
-    void toggleBroadcastFlag(){
-        widget.broadcastFlag = true;
+    void toggleBroadcastFlag(int mode){
+        widget.broadcastFlag = mode;
     }
 
 
@@ -101,11 +101,17 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     }
 
     print(widget.broadcastFlag);
-    if(widget.broadcastFlag){
+    if(widget.broadcastFlag != 0){
+      //broadcastflag
+      // 0 - off
+      // 1 - gameSetting broadcast
+      // 2 - update readyPlayer
+
       print("broadcasting now");
-      gameSettingUpdateBroadcast();
+      if(widget.broadcastFlag == 1) gameSettingUpdateBroadcast();
+      
       setState(() {
-        widget.broadcastFlag = false;
+        widget.broadcastFlag = 0;
       });
     }
 
@@ -167,8 +173,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //intro
-                    Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 60),
+                      child: Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
+                    ),
+                    widget.mode == 'create' ? Container() : Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),),
                     
                     SizedBox(height: 30,),
                     //configs

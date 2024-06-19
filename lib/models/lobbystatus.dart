@@ -33,23 +33,23 @@ class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
 class LobbyStatus {
   final int? roomId;
   final Set<Player> currentPlayers;
-  final int ready;
+  final Map<String, bool> readyPlayers;
 
   LobbyStatus(
     this.roomId,
     this.currentPlayers,
-    this.ready,
+    this.readyPlayers,
   );
 
   LobbyStatus copyWith({
     int? roomId,
     Set<Player>? currentPlayers,
-    int? ready,
+    Map<String, bool>? readyPlayers,
   }) {
     return LobbyStatus(
       roomId ?? this.roomId,
       currentPlayers ?? this.currentPlayers,
-      ready ?? this.ready,
+      readyPlayers ?? this.readyPlayers,
     );
   }
 
@@ -57,7 +57,7 @@ class LobbyStatus {
     return <String, dynamic>{
       'roomId': roomId,
       'currentPlayers': currentPlayers.map((x) => x.toMap()).toList(),
-      'ready': ready,
+      'readyPlayers': readyPlayers,
     };
   }
 
@@ -65,8 +65,8 @@ class LobbyStatus {
     return LobbyStatus(
       map['roomId'] != null ? map['roomId'] as int : null,
       Set<Player>.from((map['currentPlayers'] as List<int>).map<Player>((x) => Player.fromMap(x as Map<String,dynamic>),),),
-      map['ready'] as int,
-    );
+      Map<String, bool>.from((map['readyPlayers'] as Map<String, bool>),
+    ));
   }
 
   String toJson() => json.encode(toMap());
@@ -74,7 +74,7 @@ class LobbyStatus {
   factory LobbyStatus.fromJson(String source) => LobbyStatus.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'LobbyStatus(roomId: $roomId, currentPlayers: $currentPlayers, ready: $ready)';
+  String toString() => 'LobbyStatus(roomId: $roomId, currentPlayers: $currentPlayers, readyPlayers: $readyPlayers)';
 
   @override
   bool operator ==(covariant LobbyStatus other) {
@@ -83,9 +83,9 @@ class LobbyStatus {
     return 
       other.roomId == roomId &&
       setEquals(other.currentPlayers, currentPlayers) &&
-      other.ready == ready;
+      mapEquals(other.readyPlayers, readyPlayers);
   }
 
   @override
-  int get hashCode => roomId.hashCode ^ currentPlayers.hashCode ^ ready.hashCode;
+  int get hashCode => roomId.hashCode ^ currentPlayers.hashCode ^ readyPlayers.hashCode;
 }
