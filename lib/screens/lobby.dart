@@ -171,7 +171,12 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 }
 
                 else if(message['type'] == 'readyPlayers'){
-                  final Map<String, bool> readyPlayers = message['readyPlayers'];
+                  final List<dynamic> readyPlayerList = jsonDecode(message['readyPlayers']);
+                  Map<String, bool> readyPlayers = Map();
+                  readyPlayerList.forEach((item) { 
+                    readyPlayers[item[0]] = item[1];
+                  });
+                  //final Map<String, bool> readyPlayers = (message['readyPlayers'] as Map<String, dynamic>).map((key, value) => MapEntry(key, value as bool));
                   ref.read(lobbyStatusProvider.notifier).updateReadyPlayer(readyPlayers);
                 }
               });
