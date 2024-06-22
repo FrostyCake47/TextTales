@@ -60,11 +60,17 @@ class PlayerIconBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(backgroundImage: NetworkImage(playerList[index].photoURL),),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(playerList[index].name, overflow: TextOverflow.ellipsis, style: textMedium.copyWith(color: Colors.black, fontSize: 18),),
-                )
+                CircleAvatar(
+                  backgroundImage: NetworkImage(playerList[index].photoURL),
+                ),
+                SizedBox(width: 10), // Added spacing between avatar and text
+                Expanded(
+                  child: Text(
+                    playerList[index].name,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                ),
               ],
             ),
           );

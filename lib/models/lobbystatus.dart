@@ -31,6 +31,10 @@ class LobbyStatusNotifier extends StateNotifier<LobbyStatus>{
     void updateReadyPlayer(Map<String, bool> readyPlayers){
       state = state.copyWith(readyPlayers: readyPlayers);
     }
+
+    void clearAll(){
+      state = state.copyWith(roomId: 0, currentPlayers: {}, readyPlayers: {});
+    }
 }
 
 

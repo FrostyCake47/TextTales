@@ -24,7 +24,7 @@ class ReadyButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        gradient: (mode == 'create') ? (playerCount-1 == readyCount ? configCardInnerGradient : playerCardNotStart)
+        gradient: (mode == 'create') ? (playerCount - 1 <= readyCount ? configCardInnerGradient : playerCardNotStart)
          : (isReady ? playerCardNotReady : configCardInnerGradient),
         
         boxShadow: const [

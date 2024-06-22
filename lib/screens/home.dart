@@ -18,6 +18,7 @@ import 'package:texttales/components/loginbtn.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
+import 'package:texttales/models/lobbystatus.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/components/alert.dart';
 import 'package:texttales/services/auth_service.dart';
@@ -39,6 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _joinGameController = TextEditingController();
   final ToggleJoinGame toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
+  final LobbyStatus lobbyStatus = ref.watch(lobbyStatusProvider);
 
 
   @override 
@@ -55,7 +57,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.isPlayerInitiallyUpdated = true;
-      ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);  
+      ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);
+      ref.read(lobbyStatusProvider.notifier).clearAll();
     });
     
   }
