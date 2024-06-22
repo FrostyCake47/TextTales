@@ -17,7 +17,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class LobbyScreen extends ConsumerStatefulWidget {
   LobbyScreen({super.key, this.mode, this.roomId});
-  final String? mode;
+  String? mode;
   final int? roomId;
   bool isPlayerIdupdated = false;
   bool isRoomIdInitiallyUpdated = false;
@@ -37,7 +37,8 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   void initState(){
     super.initState();
     print("initstate of lobby");
-    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
+    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
+    //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
     //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.89.31:6969'));
     _controller = TextEditingController();
   }
@@ -190,7 +191,20 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     //intro
                     Padding(
                       padding: const EdgeInsets.only(top: 60),
-                      child: Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Configure your game", style: textTalesStyle.copyWith(fontSize: 30),),
+                          IconButton(
+                            onPressed: (){
+                              setState(() {
+                                (widget.mode == 'create') ? (widget.mode = 'join') : (widget.mode = 'create');
+                              });
+                            }, 
+                            icon: Icon(Icons.star, color: Colors.yellow,))
+                        ],
+                      ),
                     ),
                     widget.mode == 'create' ? Container() : Text("only leaders can edit the settings", style: textMedium.copyWith(fontSize: 16),),
                     
