@@ -69,8 +69,8 @@ class LobbyStatus {
     return LobbyStatus(
       map['roomId'] != null ? map['roomId'] as int : null,
       Set<Player>.from((map['currentPlayers'] as List<int>).map<Player>((x) => Player.fromMap(x as Map<String,dynamic>),),),
-      Map<String, bool>.from((map['readyPlayers'] as Map<String, bool>),
-    ));
+      Map<String, bool>.from((map['readyPlayers'] as Map<String, bool>)),
+    );
   }
 
   String toJson() => json.encode(toMap());

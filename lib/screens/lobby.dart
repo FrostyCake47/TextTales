@@ -229,10 +229,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     GestureDetector(
                       onTap: (){
                         setState(() {
-                          widget.broadcastFlag = 2;
+                          if(widget.mode == 'join') widget.broadcastFlag = 2;
                         });
                       },
-                      child: ReadyButton(),
+                      child: ReadyButton(isReady: lobbyStatus.readyPlayers[player.playerId] ?? false, mode: widget.mode ?? 'join', lobbyStatus: lobbyStatus,),
                     ),
 
                     Text(lobbyStatus.readyPlayers.toString()),

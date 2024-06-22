@@ -46,3 +46,19 @@ const Gradient playerCardReady = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient playerCardNotReady = LinearGradient(
+  colors: [Color.fromARGB(255, 202, 88, 99),Color.fromARGB(255, 223, 140, 80)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
+
+const Gradient playerCardNotStart = LinearGradient(
+  colors: [Color.fromARGB(255, 57, 57, 57),Color.fromARGB(255, 151, 151, 151)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
