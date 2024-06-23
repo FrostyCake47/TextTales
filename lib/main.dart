@@ -2,11 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/firebase_options.dart';
+import 'package:texttales/models/gamedata.dart';
 import 'package:texttales/models/gameserver.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/lobbystatus.dart';
 
 import 'package:texttales/models/player.dart';
+import 'package:texttales/models/story.dart';
 import 'package:texttales/screens/auth.dart';
 import 'package:texttales/screens/game.dart';
 import 'package:texttales/screens/home.dart';
@@ -18,6 +20,7 @@ final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => Pl
 final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(true)));
 final gameSettingProvider = StateNotifierProvider<GameSettingNotifier, GameSetting>((ref) => GameSettingNotifier(GameSetting('Classic', 5, 200, 60)));
 final lobbyStatusProvider = StateNotifierProvider<LobbyStatusNotifier, LobbyStatus>((ref) => LobbyStatusNotifier(LobbyStatus(0, <Player>{}, {}))); 
+final gameDataProvider = StateNotifierProvider<GameDataNotifier, GameData>((ref) => GameDataNotifier(GameData(gameId: '', gameSetting: GameSetting('Classic', 5, 200, 60), stories: <Story>[], currentPlayers: <Player>{})));
 //final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>((ref) => GameServerNotifier(GameServer(name: 'Jio localhost', ip: 'http://192.168.29.226')));
 final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>((ref) => GameServerNotifier(GameServer(name: 'KV localhost', ip: 'http://192.168.18.105')));
 

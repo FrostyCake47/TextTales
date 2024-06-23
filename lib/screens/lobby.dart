@@ -11,6 +11,8 @@ import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
+import 'package:texttales/services/wsdecoder.dart';
+import 'package:texttales/services/wsencoder.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 
@@ -66,15 +68,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       print(_package);
       _channel.sink.add(json.encode(_package));
     }
-
-    void gameSettingUpdateBroadcast(){
-      _channel.sink.add(json.encode({'type':'gameSetting', 'gameSetting':gameSetting.toMap(), 'playerId':player.playerId, 'roomId':lobbyStatus.roomId},));
-    }
-
-    void readyPlayerBroadcast(){
-      _channel.sink.add(jsonEncode({'type':'readyPlayers', 'playerId':player.playerId, 'roomId':lobbyStatus.roomId}));
-    }
-
+    
     void updateName(String name){
       ref.read(playerProvider.notifier).updateName(name);
     }
@@ -107,15 +101,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
     print(widget.broadcastFlag);
     if(widget.broadcastFlag != 0){
-      //broadcastflag
-      // 0 - off
-      // 1 - gameSetting broadcast
-      // 2 - update readyPlayer
-
-      print("broadcasting now");
-      if(widget.broadcastFlag == 1) gameSettingUpdateBroadcast();
-      else if(widget.broadcastFlag == 2) readyPlayerBroadcast();
-      
+      WebSocketLobbyMessageEncoder(channel: _channel, gameSetting: gameSetting, player: player, lobbyStatus: lobbyStatus, broadcastFlag: widget.broadcastFlag);
       setState(() {
         widget.broadcastFlag = 0;
       });
@@ -138,48 +124,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 print(message);
                 widget.oldsnapshot = snapshot.data;
 
-                //when you join
-                if(message['type'] == 'youjoin'){
-                  final Map _gameSetting = message['gameSetting'];
-
-                  //update gamesetting
-                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting['gamemode'], _gameSetting['rounds'], _gameSetting['maxchar'], _gameSetting['time']);
-                  final List<Map<String, dynamic>> _players = (message['players'] as List).cast<Map<String, dynamic>>();
-
-                  //update currentPlayers
-                  _players.forEach((_player){
-                    ref.read(lobbyStatusProvider.notifier).addPlayer(Player.fromMap(_player));
-                  });
-                }
-
-                //when otherjoins
-                else if(message['type'] == 'otherjoin'){
-                  //update the new player
-                  Player _player = Player.fromMap(message['player']);
-                  ref.read(lobbyStatusProvider.notifier).addPlayer(_player);
-                }
-                
-                //when other disconnects
-                else if(message['type'] == 'disconnect'){
-                  //update the disconnected
-                  final String _playerId = message['playerId'];
-                  ref.read(lobbyStatusProvider.notifier).removePlayer(_playerId);
-                }
-
-                else if(message['type'] == 'gameSetting'){
-                  final GameSetting _gameSetting = GameSetting.fromMap(message['gameSetting']);
-                  ref.read(gameSettingProvider.notifier).updateAll(_gameSetting.gamemode, _gameSetting.rounds, _gameSetting.maxchar, _gameSetting.time);
-                }
-
-                else if(message['type'] == 'readyPlayers'){
-                  final List<dynamic> readyPlayerList = jsonDecode(message['readyPlayers']);
-                  Map<String, bool> readyPlayers = Map();
-                  readyPlayerList.forEach((item) { 
-                    readyPlayers[item[0]] = item[1];
-                  });
-                  //final Map<String, bool> readyPlayers = (message['readyPlayers'] as Map<String, dynamic>).map((key, value) => MapEntry(key, value as bool));
-                  ref.read(lobbyStatusProvider.notifier).updateReadyPlayer(readyPlayers);
-                }
+                WebSocketDecoder.lobbyDecoder(ref, message);
               });
             }
 

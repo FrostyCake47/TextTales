@@ -40,7 +40,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _joinGameController = TextEditingController();
   final ToggleJoinGame toggleJoinGame = ref.watch(toggleJoinGameProvider);
   final Player player = ref.watch(playerProvider);
-  final LobbyStatus lobbyStatus = ref.watch(lobbyStatusProvider);
 
 
   @override 
@@ -59,6 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       widget.isPlayerInitiallyUpdated = true;
       ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);
       ref.read(lobbyStatusProvider.notifier).clearAll();
+      ref.read(gameDataProvider.notifier).clearAll();
     });
     
   }
