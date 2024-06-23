@@ -11,16 +11,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:texttales/components/homebtn.dart';
-import 'package:texttales/components/jointextarea.dart';
-import 'package:texttales/components/loginbtn.dart';
+import 'package:texttales/components/home/homebtn.dart';
+import 'package:texttales/components/home/jointextarea.dart';
+import 'package:texttales/components/home/loginbtn.dart';
 
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/lobbystatus.dart';
 import 'package:texttales/models/player.dart';
-import 'package:texttales/components/alert.dart';
+import 'package:texttales/components/common/alert.dart';
 import 'package:texttales/services/auth_service.dart';
 import 'package:texttales/services/gamerequest.dart';
 

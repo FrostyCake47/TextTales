@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:texttales/components/settingbutton.dart';
+import 'package:texttales/components/settings/settingbutton.dart';
 import 'package:texttales/constants/textstyles.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
