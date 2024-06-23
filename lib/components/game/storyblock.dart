@@ -12,7 +12,7 @@ class StoryBlock extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 15),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: Color(0xffD9D9D9),
+        color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(
