@@ -230,6 +230,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                       onTap: (){
                         setState(() {
                           if(widget.mode == 'join') widget.broadcastFlag = 2;
+                          else if(widget.mode == 'create'){
+                            if(lobbyStatus.currentPlayers.length - 1<= lobbyStatus.readyPlayers.values.where((ready) => ready).length){
+                              Navigator.popAndPushNamed(context, '/game');
+                            }
+                          }
                         });
                       },
                       child: ReadyButton(isReady: lobbyStatus.readyPlayers[player.playerId] ?? false, mode: widget.mode ?? 'join', lobbyStatus: lobbyStatus,),
