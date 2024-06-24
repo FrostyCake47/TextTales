@@ -11,6 +11,7 @@ import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
+import 'package:texttales/services/gamerequest.dart';
 import 'package:texttales/services/wsdecoder.dart';
 import 'package:texttales/services/wsencoder.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -173,14 +174,17 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
                     GestureDetector(
                       onTap: (){
-                        setState(() {
-                          if(widget.mode == 'join') widget.broadcastFlag = 2;
-                          else if(widget.mode == 'create'){
-                            if(lobbyStatus.currentPlayers.length - 1<= lobbyStatus.readyPlayers.values.where((ready) => ready).length){
-                              Navigator.popAndPushNamed(context, '/game');
-                            }
+                         if(widget.mode == 'join'){
+                          setState(() {
+                            widget.broadcastFlag = 2;
+                          });
+                         } 
+                        else if(widget.mode == 'create'){
+                          if(lobbyStatus.currentPlayers.length - 1<= lobbyStatus.readyPlayers.values.where((ready) => ready).length){
+                            GameRequest().createGame(ref, widget.roomId, lobbyStatus, gameSetting);
+                            //Navigator.popAndPushNamed(context, '/game');
                           }
-                        });
+                        }
                       },
                       child: ReadyButton(isReady: lobbyStatus.readyPlayers[player.playerId] ?? false, mode: widget.mode ?? 'join', lobbyStatus: lobbyStatus,),
                     ),

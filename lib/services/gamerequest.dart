@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:texttales/main.dart';
+import 'package:texttales/models/gamesetting.dart';
+import 'package:texttales/models/lobbystatus.dart';
 import 'dart:convert';
 
 import 'package:texttales/models/player.dart';
@@ -90,6 +92,46 @@ class GameRequest{
     catch(e){
       print("GameRequest: getGameId error: ${e}");
       return -1;
+    }
+  }
+
+  Future<String> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
+    try{
+      final gameServer = ref.watch(gameServerProvider);
+
+      /*var package = Map<String, dynamic>();
+      package['roomId'] = roomId ?? 0;
+      package['gameSetting'] = gameSetting.toMap();
+      package['lobbyStatus'] = lobbyStatus.toMap();
+      
+      print("package createGame: ${package}");*/
+
+      final response = await http.post(
+        Uri.parse('${gameServer.ip}:1234/game/create'),  // Replace with your IP address
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'roomId': roomId})
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == true) return '0';
+        else return '1';
+
+      } else {
+        // Handle the error
+        return '-1';
+      }
+
+    } catch(e){
+      print('Create game exception: $e');
+      return 'Error';
     }
   }
 }
