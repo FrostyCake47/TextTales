@@ -102,6 +102,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
     print(widget.broadcastFlag);
     if(widget.broadcastFlag != 0){
+      if(message['type'] == 'gamejoin'){
+        Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData']});
+      }
+
       WebSocketLobbyMessageEncoder(channel: _channel, gameSetting: gameSetting, player: player, lobbyStatus: lobbyStatus, broadcastFlag: widget.broadcastFlag);
       setState(() {
         widget.broadcastFlag = 0;
@@ -173,7 +177,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     lobbyStatus.currentPlayers.length != 0 ? PlayerIconBar(players: lobbyStatus.currentPlayers) : Text('no players'),
 
                     GestureDetector(
-                      onTap: (){
+                      onTap: () async {
                          if(widget.mode == 'join'){
                           setState(() {
                             widget.broadcastFlag = 2;
@@ -181,8 +185,14 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                          } 
                         else if(widget.mode == 'create'){
                           if(lobbyStatus.currentPlayers.length - 1<= lobbyStatus.readyPlayers.values.where((ready) => ready).length){
-                            GameRequest().createGame(ref, widget.roomId, lobbyStatus, gameSetting);
-                            //Navigator.popAndPushNamed(context, '/game');
+                            final data = await GameRequest().createGame(ref, widget.roomId, lobbyStatus, gameSetting);
+                            print(data);
+
+                            if(data['type'] == 'gameData'){
+                              _channel.sink.add(jsonEncode({'type':'gamejoin', 'gameData':data['gameData'], 'roomId':lobbyStatus.roomId}));
+                              Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':data['gameData']});
+                            }
+                            
                           }
                         }
                       },

@@ -95,7 +95,7 @@ class GameRequest{
     }
   }
 
-  Future<String> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
+  Future<dynamic> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
     try{
       final gameServer = ref.watch(gameServerProvider);
 
@@ -119,19 +119,20 @@ class GameRequest{
         }
       );
 
+      print(response.body);
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        if (data['status'] == true) return '0';
-        else return '1';
+        if (data['status'] == true) return data;
+        else return 'Room doesnt exist';
 
       } else {
-        // Handle the error
-        return '-1';
+        return 'Server Error: ${response.statusCode}';
       }
 
     } catch(e){
       print('Create game exception: $e');
-      return 'Error';
+      return 'Server Error: ${e}';
     }
   }
 }
