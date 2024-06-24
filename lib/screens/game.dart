@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/components/game/inputblock.dart';
 import 'package:texttales/components/game/storyblock.dart';
+import 'package:texttales/components/game/submitbutton.dart';
 import 'package:texttales/components/game/titleblock.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
@@ -16,6 +17,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class GameScreen extends ConsumerStatefulWidget {
   var broadcastFlag = 1;
   var oldsnapshot;
+  bool isSubmitted = false;
   GameScreen({super.key});
 
   @override
@@ -24,20 +26,23 @@ class GameScreen extends ConsumerStatefulWidget {
 
 class _GameScreenState extends ConsumerState<GameScreen> {
   late WebSocketChannel channel;
-  late TextEditingController controller;
+  late TextEditingController storyController;
+  late TextEditingController titleController;
   var message;
 
   @override
   void initState() {
     super.initState();
     channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
-    controller = TextEditingController();
+    storyController = TextEditingController();
+    titleController = TextEditingController();
   }
 
   @override
   void dispose() {
     channel.sink.close();
-    controller.dispose();
+    storyController.dispose();
+    titleController.dispose();
     super.dispose();
   }
 
@@ -132,7 +137,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       children: [
                         TitleBlock(),
                         SizedBox(height: 20,),
-                        InputBlock(gameData: gameData,)
+                        InputBlock(gameData: gameData,),
+                        SizedBox(height: 40,),
+
+                        GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              widget.isSubmitted = !widget.isSubmitted;
+                            });
+                          },
+                          child: SubmitButton(isSubmitted: widget.isSubmitted)
+                        ),
+                        Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
                       ],
                     ) :
 
@@ -153,8 +169,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     
 
                     SizedBox(height: 40,),
-                    Text(gameData.toString()), 
-                    Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
+                    //Text(gameData.toString()), 
+                    //Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                   ],
                 ),
               ),

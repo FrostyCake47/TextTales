@@ -62,3 +62,19 @@ const Gradient playerCardNotStart = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient submitButtonGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 211, 34, 81),Color.fromARGB(255, 255, 174, 53)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
+
+const Gradient submittedButtonGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 97, 73, 79),Color.fromARGB(255, 150, 132, 104)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
