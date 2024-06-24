@@ -135,9 +135,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     (gameData.currentRound == 1) ? 
                     Column(
                       children: [
-                        TitleBlock(),
+                        TitleBlock(controller: titleController,),
                         SizedBox(height: 20,),
-                        InputBlock(gameData: gameData,),
+                        InputBlock(gameData: gameData, controller: storyController,),
                         SizedBox(height: 40,),
 
                         GestureDetector(
@@ -161,7 +161,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
                         SizedBox(height: 40,),
                 
-                        InputBlock(gameData: gameData,),
+                        InputBlock(gameData: gameData, controller: storyController,),
                       ],
                     ),
 
@@ -169,8 +169,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     
 
                     SizedBox(height: 40,),
-                    //Text(gameData.toString()), 
-                    //Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
+                    Text(gameData.toString()), 
+                    Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                   ],
                 ),
               ),

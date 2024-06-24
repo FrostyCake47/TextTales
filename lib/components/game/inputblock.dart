@@ -3,7 +3,8 @@ import 'package:texttales/models/gamedata.dart';
 
 class InputBlock extends StatelessWidget {
   final GameData gameData;
-  const InputBlock({super.key, required this.gameData});
+  final TextEditingController controller;
+  const InputBlock({super.key, required this.gameData, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class InputBlock extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: controller,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         maxLength: gameData.gameSetting.maxchar,

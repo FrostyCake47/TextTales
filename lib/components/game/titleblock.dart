@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:texttales/models/gamedata.dart';
 
 class TitleBlock extends StatelessWidget {
-  const TitleBlock({super.key});
+  final TextEditingController controller;
+  const TitleBlock({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +22,14 @@ class TitleBlock extends StatelessWidget {
           ),
         ],
       ),
-      child: const TextField(
+      child: TextField(
+        controller: controller,
         keyboardType: TextInputType.multiline,
         textAlign: TextAlign.center,
         
         maxLines: null,
         //maxLength: 10,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
           hintText: 'Enter your title',
           hintTextDirection: TextDirection.rtl,
