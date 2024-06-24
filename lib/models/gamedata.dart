@@ -8,12 +8,11 @@ import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/models/story.dart';
 
-
 class GameDataNotifier extends StateNotifier<GameData>{
   GameDataNotifier(super.state);
 
-  void updateAll(String gameId, GameSetting gameSetting, List<Story> stories, Set<Player> currentPlayers){
-    state = state.copyWith(gameId: gameId, gameSetting: gameSetting, stories: stories, currentPlayers: currentPlayers);
+  void updateAll(String gameId, GameSetting gameSetting, List<Story> stories, Set<Player> currentPlayers, int currentRound){
+    state = state.copyWith(gameId: gameId, gameSetting: gameSetting, stories: stories, currentPlayers: currentPlayers, currentRound: currentRound);
   }
 
   void addStory(Story story){
@@ -31,6 +30,10 @@ class GameDataNotifier extends StateNotifier<GameData>{
     state = state.copyWith(gameId: '', gameSetting: GameSetting('classic', 5, 200, 60), stories: <Story>[], currentPlayers: <Player>{});
   }
 
+  void updatePlayers(Set<Player> players){
+    state = state.copyWith(currentPlayers: players);
+  }
+
   
 }
 
@@ -41,11 +44,14 @@ class GameData {
   final GameSetting gameSetting;
   final List<Story> stories;
   final Set<Player> currentPlayers;
+  final int currentRound;
+  
   GameData({
     required this.gameId,
     required this.gameSetting,
     required this.stories,
     required this.currentPlayers,
+    required this.currentRound,
   });
 
   GameData copyWith({
@@ -53,12 +59,14 @@ class GameData {
     GameSetting? gameSetting,
     List<Story>? stories,
     Set<Player>? currentPlayers,
+    int? currentRound,
   }) {
     return GameData(
       gameId: gameId ?? this.gameId,
       gameSetting: gameSetting ?? this.gameSetting,
       stories: stories ?? this.stories,
       currentPlayers: currentPlayers ?? this.currentPlayers,
+      currentRound: currentRound ?? this.currentRound,
     );
   }
 
@@ -68,6 +76,7 @@ class GameData {
       'gameSetting': gameSetting.toMap(),
       'stories': stories.map((x) => x.toMap()).toList(),
       'currentPlayers': currentPlayers.map((x) => x.toMap()).toList(),
+      'currentRound': currentRound,
     };
   }
 
@@ -77,6 +86,7 @@ class GameData {
       gameSetting: GameSetting.fromMap(map['gameSetting'] as Map<String,dynamic>),
       stories: List<Story>.from((map['stories'] as List<int>).map<Story>((x) => Story.fromMap(x as Map<String,dynamic>),),),
       currentPlayers: Set<Player>.from((map['currentPlayers'] as List<int>).map<Player>((x) => Player.fromMap(x as Map<String,dynamic>),),),
+      currentRound: map['currentRound'] as int,
     );
   }
 
@@ -86,7 +96,7 @@ class GameData {
 
   @override
   String toString() {
-    return 'GameData(gameId: $gameId, gameSetting: $gameSetting, stories: $stories, currentPlayers: $currentPlayers)';
+    return 'GameData(gameId: $gameId, gameSetting: $gameSetting, stories: $stories, currentPlayers: $currentPlayers, currentRound: $currentRound)';
   }
 
   @override
@@ -97,7 +107,8 @@ class GameData {
       other.gameId == gameId &&
       other.gameSetting == gameSetting &&
       listEquals(other.stories, stories) &&
-      setEquals(other.currentPlayers, currentPlayers);
+      setEquals(other.currentPlayers, currentPlayers) &&
+      other.currentRound == currentRound;
   }
 
   @override
@@ -105,6 +116,7 @@ class GameData {
     return gameId.hashCode ^
       gameSetting.hashCode ^
       stories.hashCode ^
-      currentPlayers.hashCode;
+      currentPlayers.hashCode ^
+      currentRound.hashCode;
   }
 }

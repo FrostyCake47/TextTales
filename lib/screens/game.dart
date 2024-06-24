@@ -7,6 +7,9 @@ import 'package:texttales/components/game/storyblock.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
+import 'package:texttales/models/gamesetting.dart';
+import 'package:texttales/models/player.dart';
+import 'package:texttales/models/story.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -41,11 +44,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final gameData = (ModalRoute.of(context)!.settings.arguments as Map)['gameData'];
+    final _gameData = (ModalRoute.of(context)!.settings.arguments as Map)['gameData'];
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
     final lobbyStatus = ref.watch(lobbyStatusProvider);
     final gameServer = ref.watch(gameServerProvider);
+    final gameData = ref.watch(gameDataProvider);
+    
 
 
     void onJoinBroadcast(String gameId){
@@ -56,7 +61,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
 
     if(widget.broadcastFlag != 0){
-      if(widget.broadcastFlag == 1) onJoinBroadcast(gameData['gameId']);
+      if(widget.broadcastFlag == 1) onJoinBroadcast(_gameData['gameId']);
 
       setState(() {
         widget.broadcastFlag = 0;
@@ -78,6 +83,32 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 message = jsonDecode(snapshot.data as String);
                 print(message);
                 widget.oldsnapshot = snapshot.data;
+
+                if(message['type'] == 'otherjoingame'){
+                  final List<dynamic> playerList = message['players'];
+                  var currentPlayers = Set<Player>();
+                  playerList.forEach((element) {
+                    final player = Player.fromMap(element);
+                    currentPlayers.add(player);
+                  });
+                  ref.read(gameDataProvider.notifier).updatePlayers(currentPlayers);
+                }
+
+                else if(message['type'] == 'youjoingame'){
+                  final gameData = message['gameData'];
+                  final gameId = gameData['gameId'];
+                  final GameSetting gameSetting = GameSetting.fromMap(gameData['gameSetting']);
+                  final int currentRound = gameData['currentRound'];
+
+                  final List<dynamic> playerList = message['players'];
+                  var currentPlayers = Set<Player>();
+                  playerList.forEach((element) {
+                    final player = Player.fromMap(element);
+                    currentPlayers.add(player);
+                  });
+                  ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound);
+
+                }
 
               });
             }
@@ -102,6 +133,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     InputBlock(),
 
                     SizedBox(height: 40,),
+                    Text(gameData.toString()), 
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                   ],
                 ),
