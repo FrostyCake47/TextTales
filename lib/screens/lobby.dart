@@ -35,6 +35,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   late WebSocketChannel _channel;
   late TextEditingController _controller;
   var message;
+  
 
   @override
   void initState(){
@@ -58,6 +59,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
     final lobbyStatus = ref.watch(lobbyStatusProvider);
