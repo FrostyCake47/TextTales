@@ -102,10 +102,6 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
     print(widget.broadcastFlag);
     if(widget.broadcastFlag != 0){
-      if(message['type'] == 'gamejoin'){
-        Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData']});
-      }
-
       WebSocketLobbyMessageEncoder(channel: _channel, gameSetting: gameSetting, player: player, lobbyStatus: lobbyStatus, broadcastFlag: widget.broadcastFlag);
       setState(() {
         widget.broadcastFlag = 0;
@@ -129,6 +125,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 print(message);
                 widget.oldsnapshot = snapshot.data;
 
+                if(message['type'] == 'gamejoin'){
+                  print(message);
+                  Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData']});
+                }
                 WebSocketDecoder.lobbyDecoder(ref, message);
               });
             }
