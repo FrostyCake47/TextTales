@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/components/game/inputblock.dart';
 import 'package:texttales/components/game/storyblock.dart';
+import 'package:texttales/components/game/titleblock.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
@@ -119,18 +120,37 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(height: 40,),
-                    Text("Continue the story!", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("Rounds: 1/4", style: textMedium.copyWith(fontSize: 22),),
+                    Text(gameData.currentRound == 1 ? "Lets start with your story" : "Continue the story!", style: textTalesStyle.copyWith(fontSize: 30),),
+                    Text("Rounds: ${gameData.currentRound}/4", style: textMedium.copyWith(fontSize: 22),),
                     SizedBox(height: 40,),
             
-                    StoryBlock(),
-            
-                    SizedBox(height: 40,),
-                    Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),
-                    Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
-                    SizedBox(height: 40,),
-            
-                    InputBlock(),
+                    
+                    
+                    
+                    (gameData.currentRound == 1) ? 
+                    Column(
+                      children: [
+                        TitleBlock(),
+                        SizedBox(height: 20,),
+                        InputBlock(gameData: gameData,)
+                      ],
+                    ) :
+
+                    Column(
+                      children: [
+                        StoryBlock(),
+
+                        SizedBox(height: 40,),
+                        Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),
+                        Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
+                        SizedBox(height: 40,),
+                
+                        InputBlock(gameData: gameData,),
+                      ],
+                    ),
+
+
+                    
 
                     SizedBox(height: 40,),
                     Text(gameData.toString()), 

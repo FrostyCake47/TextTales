@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:texttales/models/gamedata.dart';
 
-class InputBlock extends StatelessWidget {
-  final GameData gameData;
-  const InputBlock({super.key, required this.gameData});
+class TitleBlock extends StatelessWidget {
+  const TitleBlock({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15),
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(16),
@@ -22,17 +21,24 @@ class InputBlock extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: const TextField(
         keyboardType: TextInputType.multiline,
+        textAlign: TextAlign.center,
+        
         maxLines: null,
-        maxLength: gameData.gameSetting.maxchar,
-        decoration: const InputDecoration(
+        //maxLength: 10,
+        decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: 'Enter your story here...',
-          hintStyle: TextStyle()
+          hintText: 'Enter your title',
+          hintTextDirection: TextDirection.rtl,
+          hintStyle: TextStyle(
+            
+          )
+
         ),
-        style: const TextStyle(
-          // You can add styling here if needed
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 18
         ),
       )
     );
