@@ -74,10 +74,20 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       channel.sink.add(json.encode(_package));
     }
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(gameData.currentRound > gameData.gameSetting.rounds){
+      Navigator.pushNamed(context, '/story');
+    }
+    });
+
+    
 
     if(widget.broadcastFlag != 0){
       if(widget.broadcastFlag == 1) onJoinBroadcast(_gameData['gameId']);
-      else if(widget.broadcastFlag == 2) titlePageBroadcast();
+      else if(widget.broadcastFlag == 2) {
+        widget.isSubmitted = !widget.isSubmitted;
+        titlePageBroadcast();
+      }
 
       setState(() {
         widget.broadcastFlag = 0;
@@ -111,7 +121,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   children: [
                     SizedBox(height: 40,),
                     Text(gameData.currentRound == 1 ? "Lets start with your story" : "Continue the story!", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("Rounds: ${gameData.currentRound}/4", style: textMedium.copyWith(fontSize: 22),),
+                    Text("Rounds: ${gameData.currentRound}/${gameData.gameSetting.rounds}", style: textMedium.copyWith(fontSize: 22),),
                     SizedBox(height: 40,),
             
                     
@@ -144,10 +154,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
                         SizedBox(height: 40,),
                         Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),
-                        Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
+                        Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
                         SizedBox(height: 40,),
                 
                         InputBlock(gameData: gameData, controller: storyController,),
+
+                        SizedBox(height: 40,),
+
+                        GestureDetector(
+                          onTap: (){
+                            if(!widget.isSubmitted){setState(() {
+                              widget.broadcastFlag = 2;
+                              widget.isSubmitted = !widget.isSubmitted;
+                            });
+                          }},
+                          child: SubmitButton(isSubmitted: widget.isSubmitted)
+                        ),
                       ],
                     ),
 
