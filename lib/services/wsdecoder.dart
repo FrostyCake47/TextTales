@@ -83,5 +83,13 @@ class WebSocketMessageDecoder{
       ref.read(gameDataProvider.notifier).updateSubmitCount(message['submitCount']);
     }
 
+    else if(message['type'] == 'newround'){
+      List<Story> stories = (message['stories'] as List)
+      .map((storyMap) => Story.fromMap(storyMap))
+      .toList();
+
+      ref.read(gameDataProvider.notifier).updateStories(stories);
+    }
+
   }
 }

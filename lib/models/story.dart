@@ -9,7 +9,7 @@ class Page {
   final int storyId;
   final int pageId;
   final String content;
-  final Player playerId;
+  final String playerId;
 
   Page(
     this.storyId,
@@ -22,7 +22,7 @@ class Page {
     int? storyId,
     int? pageId,
     String? content,
-    Player? playerId,
+    String? playerId,
   }) {
     return Page(
       storyId ?? this.storyId,
@@ -37,7 +37,7 @@ class Page {
       'storyId': storyId,
       'pageId': pageId,
       'content': content,
-      'playerId': playerId.toMap(),
+      'playerId': playerId,
     };
   }
 
@@ -46,7 +46,7 @@ class Page {
       map['storyId'] as int,
       map['pageId'] as int,
       map['content'] as String,
-      Player.fromMap(map['playerId'] as Map<String,dynamic>),
+      map['playerId'] as String,
     );
   }
 
@@ -121,9 +121,11 @@ class Story {
       map['gameId'] as String,
       map['storyId'] as int,
       map['title'] as String,
-      List<Page>.from((map['pages'] as List<int>).map<Page>((x) => Page.fromMap(x as Map<String,dynamic>),),),
+      List<Page>.from((map['pages'] as List<dynamic>).map<Page>((x) => Page.fromMap(x as Map<String,dynamic>),),),
+
     );
   }
+  
 
   String toJson() => json.encode(toMap());
 
