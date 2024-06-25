@@ -140,7 +140,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
                     Column(
                       children: [
-                        StoryBlock(),
+                        StoryBlock(gameData: gameData, player: player,),
 
                         SizedBox(height: 40,),
                         Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),

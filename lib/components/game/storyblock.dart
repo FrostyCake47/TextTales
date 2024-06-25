@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:texttales/constants/textstyles.dart';
+import 'package:texttales/models/gamedata.dart';
+import 'package:texttales/models/player.dart';
 
 class StoryBlock extends StatelessWidget {
+  final GameData gameData;
+  final Player player;
   final String title = 'Redshire';
   final String content = 'In the heart of the tranquil countryside, where rolling hills met the horizon and the whispers of ancient forests echoed through the valleys, lay a hidden gem known as Redshire. This picturesque village, shrouded in a timeless charm, was a place where every cobblestone street and ivy-clad cottage told a story of its own.';
-  const StoryBlock({super.key});
+  const StoryBlock({super.key, required this.gameData, required this.player});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +30,9 @@ class StoryBlock extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.w600),),
+          gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length].title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.w600),) : Container(),
           SizedBox(height: 10,),
-          Text(content, style: textMedium.copyWith(color: Colors.black, fontSize: 16),)
+          gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound - 1)%gameData.currentPlayers.length].pages.last.content, style: textMedium.copyWith(color: Colors.black, fontSize: 16),) : Container(),
         ],
       )
     );
