@@ -20,7 +20,7 @@ final playerProvider = StateNotifierProvider<PlayerNotifier, Player>((ref) => Pl
 final toggleJoinGameProvider = StateNotifierProvider<ToggleJoinGameNotifier, ToggleJoinGame>((ref) => ToggleJoinGameNotifier(ToggleJoinGame(true)));
 final gameSettingProvider = StateNotifierProvider<GameSettingNotifier, GameSetting>((ref) => GameSettingNotifier(GameSetting('Classic', 5, 200, 60)));
 final lobbyStatusProvider = StateNotifierProvider<LobbyStatusNotifier, LobbyStatus>((ref) => LobbyStatusNotifier(LobbyStatus(0, <Player>{}, {}))); 
-final gameDataProvider = StateNotifierProvider<GameDataNotifier, GameData>((ref) => GameDataNotifier(GameData(gameId: '', gameSetting: GameSetting('Classic', 5, 200, 60), stories: <Story>[], currentPlayers: <Player>{}, currentRound: 1)));
+final gameDataProvider = StateNotifierProvider<GameDataNotifier, GameData>((ref) => GameDataNotifier(GameData(gameId: '', gameSetting: GameSetting('Classic', 5, 200, 60), stories: <Story>[], currentPlayers: <Player>{}, currentRound: 1, newRoundFlag: false)));
 //final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>((ref) => GameServerNotifier(GameServer(name: 'Jio localhost', ip: 'http://192.168.29.226')));
 final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>((ref) => GameServerNotifier(GameServer(name: 'KV localhost', ip: 'http://192.168.18.105')));
 

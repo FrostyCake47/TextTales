@@ -51,10 +51,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   Widget build(BuildContext context) {
     final _gameData = (ModalRoute.of(context)!.settings.arguments as Map)['gameData'];
-    final gameSetting = ref.watch(gameSettingProvider);
     final player = ref.watch(playerProvider);
-    final lobbyStatus = ref.watch(lobbyStatusProvider);
-    final gameServer = ref.watch(gameServerProvider);
     final gameData = ref.watch(gameDataProvider);
     
 
@@ -65,9 +62,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       channel.sink.add(json.encode(_package));
     }
 
+    void titlePageBroadcast(){
+      Map _page = {'storyId': gameData.indexOfPlayer(player), 'pageId':gameData.currentRound, 'content':storyController.text, 'playerId':player.playerId};
+      Map _story = {'gameId':gameData.gameId, 'storyId': gameData.indexOfPlayer(player), 'title':titleController.text, 'pages': [_page]};
+      Map _package = {'type':'titlepage', 'story': _story};
+
+      channel.sink.add(json.encode(_package));
+    }
+
 
     if(widget.broadcastFlag != 0){
       if(widget.broadcastFlag == 1) onJoinBroadcast(_gameData['gameId']);
+      else if(widget.broadcastFlag == 2) titlePageBroadcast();
 
       setState(() {
         widget.broadcastFlag = 0;
@@ -105,6 +111,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   final gameId = gameData['gameId'];
                   final GameSetting gameSetting = GameSetting.fromMap(gameData['gameSetting']);
                   final int currentRound = gameData['currentRound'];
+                  final bool newRoundFlag = gameData['newRoundFlag'];
 
                   final List<dynamic> playerList = message['players'];
                   var currentPlayers = Set<Player>();
@@ -112,8 +119,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     final player = Player.fromMap(element);
                     currentPlayers.add(player);
                   });
-                  ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound);
-
+                  ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound, newRoundFlag);
                 }
 
               });
@@ -143,6 +149,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         GestureDetector(
                           onTap: (){
                             setState(() {
+                              widget.broadcastFlag = 2;
                               widget.isSubmitted = !widget.isSubmitted;
                             });
                           },
