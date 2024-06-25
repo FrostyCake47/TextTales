@@ -37,6 +37,10 @@ class GameDataNotifier extends StateNotifier<GameData>{
   void updateSubmitCount(int submitcount){
     state = state.copyWith(submitCount: submitcount);
   }
+
+  void incrementRound(){
+    state = state.copyWith(currentRound: state.currentRound+1);
+  }
 }
 
 

@@ -68,6 +68,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       Map _story = {'gameId':gameData.gameId, 'storyId': gameData.indexOfPlayer(player), 'title':titleController.text, 'pages': [_page]};
       Map _package = {'type':'titlepage', 'story': _story};
 
+      storyController.text = '';
+      titleController.text = '';
+
       channel.sink.add(json.encode(_package));
     }
 
@@ -124,11 +127,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
                         GestureDetector(
                           onTap: (){
-                            if(!widget.isSubmitted) setState(() {
+                            if(!widget.isSubmitted){setState(() {
                               widget.broadcastFlag = 2;
                               widget.isSubmitted = !widget.isSubmitted;
                             });
-                          },
+                          }},
                           child: SubmitButton(isSubmitted: widget.isSubmitted)
                         ),
                         Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
