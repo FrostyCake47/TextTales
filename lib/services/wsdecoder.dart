@@ -90,6 +90,7 @@ class WebSocketMessageDecoder{
 
       ref.read(gameDataProvider.notifier).updateStories(stories);
       ref.read(gameDataProvider.notifier).incrementRound();
+      ref.read(gameDataProvider.notifier).updateSubmitCount(message['submitCount']);
     }
 
   }

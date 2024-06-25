@@ -64,12 +64,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     }
 
     void titlePageBroadcast(){
-      Map _page = {'storyId': gameData.indexOfPlayer(player), 'pageId':gameData.currentRound, 'content':storyController.text, 'playerId':player.playerId};
-      Map _story = {'gameId':gameData.gameId, 'storyId': gameData.indexOfPlayer(player), 'title':titleController.text, 'pages': [_page]};
+      Map _page = {'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'pageId': gameData.currentRound  , 'content':storyController.text, 'playerId':player.playerId};
+      Map _story = {'gameId':gameData.gameId, 'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'title':titleController.text, 'pages': [_page]};
       Map _package = {'type':'titlepage', 'story': _story};
 
-      storyController.text = '';
-      titleController.text = '';
+      channel.sink.add(json.encode(_package));
+    }
+
+    void onlyPageBroadcast(){
+      Map _page = {'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length, 'pageId':gameData.currentRound, 'content':storyController.text, 'playerId':player.playerId};
+      Map _package = {'type':'onlypage', 'page':_page};
 
       channel.sink.add(json.encode(_package));
     }
@@ -85,8 +89,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     if(widget.broadcastFlag != 0){
       if(widget.broadcastFlag == 1) onJoinBroadcast(_gameData['gameId']);
       else if(widget.broadcastFlag == 2) {
-        widget.isSubmitted = !widget.isSubmitted;
         titlePageBroadcast();
+      }
+      else if(widget.broadcastFlag == 3){
+        onlyPageBroadcast();
       }
 
       setState(() {
@@ -109,6 +115,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 message = jsonDecode(snapshot.data as String);
                 print(message);
                 widget.oldsnapshot = snapshot.data;
+
+                if(message['type'] == 'newround'){
+                  storyController.text = '';
+                  titleController.text = '';
+                  widget.isSubmitted = false;
+                }
 
                 WebSocketMessageDecoder.gameDecoder(ref, message);
               });
@@ -139,7 +151,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           onTap: (){
                             if(!widget.isSubmitted){setState(() {
                               widget.broadcastFlag = 2;
-                              widget.isSubmitted = !widget.isSubmitted;
+                              widget.isSubmitted = true;
                             });
                           }},
                           child: SubmitButton(isSubmitted: widget.isSubmitted)
@@ -165,7 +177,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                           onTap: (){
                             if(!widget.isSubmitted){setState(() {
                               widget.broadcastFlag = 2;
-                              widget.isSubmitted = !widget.isSubmitted;
+                              widget.isSubmitted = true;
                             });
                           }},
                           child: SubmitButton(isSubmitted: widget.isSubmitted)
