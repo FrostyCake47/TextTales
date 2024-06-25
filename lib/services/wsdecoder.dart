@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
+import 'package:texttales/models/story.dart';
 
-class WebSocketDecoder{
+class WebSocketMessageDecoder{
   static void lobbyDecoder(WidgetRef ref, dynamic message){
     if(message['type'] == 'youjoin'){
       final Map _gameSetting = message['gameSetting'];
@@ -48,5 +49,39 @@ class WebSocketDecoder{
       //final Map<String, bool> readyPlayers = (message['readyPlayers'] as Map<String, dynamic>).map((key, value) => MapEntry(key, value as bool));
       ref.read(lobbyStatusProvider.notifier).updateReadyPlayer(readyPlayers);
     }
+  }
+
+  static void gameDecoder(WidgetRef ref, dynamic message){
+    if(message['type'] == 'otherjoingame'){
+      final List<dynamic> playerList = message['players'];
+      var currentPlayers = Set<Player>();
+      playerList.forEach((element) {
+        final player = Player.fromMap(element);
+        currentPlayers.add(player);
+      });
+      ref.read(gameDataProvider.notifier).updatePlayers(currentPlayers);
+    }
+
+    else if(message['type'] == 'youjoingame'){
+      final gameData = message['gameData'];
+      final gameId = gameData['gameId'];
+      final GameSetting gameSetting = GameSetting.fromMap(gameData['gameSetting']);
+      final int currentRound = gameData['currentRound'];
+      final bool newRoundFlag = gameData['newRoundFlag'];
+      final int submitCount = gameData['submitCount'];
+
+      final List<dynamic> playerList = message['players'];
+      var currentPlayers = Set<Player>();
+      playerList.forEach((element) {
+        final player = Player.fromMap(element);
+        currentPlayers.add(player);
+      });
+      ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound, newRoundFlag, submitCount);
+    }
+
+    else if(message['type'] == 'submitCount'){
+      ref.read(gameDataProvider.notifier).updateSubmitCount(message['submitCount']);
+    }
+
   }
 }

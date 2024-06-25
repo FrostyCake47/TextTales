@@ -131,7 +131,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                   print(message);
                   Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData']});
                 }
-                WebSocketDecoder.lobbyDecoder(ref, message);
+                WebSocketMessageDecoder.lobbyDecoder(ref, message);
               });
             }
 

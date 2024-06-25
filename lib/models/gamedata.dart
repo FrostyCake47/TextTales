@@ -11,8 +11,8 @@ import 'package:texttales/models/story.dart';
 class GameDataNotifier extends StateNotifier<GameData>{
   GameDataNotifier(super.state);
 
-  void updateAll(String gameId, GameSetting gameSetting, List<Story> stories, Set<Player> currentPlayers, int currentRound, bool newRoundFlag){
-    state = state.copyWith(gameId: gameId, gameSetting: gameSetting, stories: stories, currentPlayers: currentPlayers, currentRound: currentRound, newRoundFlag: newRoundFlag);
+  void updateAll(String gameId, GameSetting gameSetting, List<Story> stories, Set<Player> currentPlayers, int currentRound, bool newRoundFlag, int submitCount){
+    state = state.copyWith(gameId: gameId, gameSetting: gameSetting, stories: stories, currentPlayers: currentPlayers, currentRound: currentRound, newRoundFlag: newRoundFlag, submitCount: submitCount);
   }
 
   void addStory(Story story){
@@ -32,7 +32,11 @@ class GameDataNotifier extends StateNotifier<GameData>{
 
   void updatePlayers(Set<Player> players){
     state = state.copyWith(currentPlayers: players);
-  } 
+  }
+
+  void updateSubmitCount(int submitcount){
+    state = state.copyWith(submitCount: submitcount);
+  }
 }
 
 
@@ -44,6 +48,7 @@ class GameData {
   final Set<Player> currentPlayers;
   final int currentRound;
   final bool newRoundFlag;
+  final int submitCount;
   
   GameData({
     required this.gameId,
@@ -52,6 +57,7 @@ class GameData {
     required this.currentPlayers,
     required this.currentRound,
     required this.newRoundFlag,
+    required this.submitCount,
   });
 
 
@@ -67,6 +73,7 @@ class GameData {
     Set<Player>? currentPlayers,
     int? currentRound,
     bool? newRoundFlag,
+    int? submitCount,
   }) {
     return GameData(
       gameId: gameId ?? this.gameId,
@@ -75,6 +82,7 @@ class GameData {
       currentPlayers: currentPlayers ?? this.currentPlayers,
       currentRound: currentRound ?? this.currentRound,
       newRoundFlag: newRoundFlag ?? this.newRoundFlag,
+      submitCount: submitCount ?? this.submitCount,
     );
   }
 
@@ -86,6 +94,7 @@ class GameData {
       'currentPlayers': currentPlayers.map((x) => x.toMap()).toList(),
       'currentRound': currentRound,
       'newRoundFlag': newRoundFlag,
+      'submitCount': submitCount,
     };
   }
 
@@ -97,6 +106,7 @@ class GameData {
       currentPlayers: Set<Player>.from((map['currentPlayers'] as List<int>).map<Player>((x) => Player.fromMap(x as Map<String,dynamic>),),),
       currentRound: map['currentRound'] as int,
       newRoundFlag: map['newRoundFlag'] as bool,
+      submitCount: map['submitCount'] as int,
     );
   }
 
@@ -106,7 +116,7 @@ class GameData {
 
   @override
   String toString() {
-    return 'GameData(gameId: $gameId, gameSetting: $gameSetting, stories: $stories, currentPlayers: $currentPlayers, currentRound: $currentRound, newRoundFlag: $newRoundFlag)';
+    return 'GameData(gameId: $gameId, gameSetting: $gameSetting, stories: $stories, currentPlayers: $currentPlayers, currentRound: $currentRound, newRoundFlag: $newRoundFlag, submitCount: $submitCount)';
   }
 
   @override
@@ -119,7 +129,8 @@ class GameData {
       listEquals(other.stories, stories) &&
       setEquals(other.currentPlayers, currentPlayers) &&
       other.currentRound == currentRound &&
-      other.newRoundFlag == newRoundFlag;
+      other.newRoundFlag == newRoundFlag &&
+      other.submitCount == submitCount;
   }
 
   @override
@@ -129,6 +140,7 @@ class GameData {
       stories.hashCode ^
       currentPlayers.hashCode ^
       currentRound.hashCode ^
-      newRoundFlag.hashCode;
+      newRoundFlag.hashCode ^
+      submitCount.hashCode;
   }
 }

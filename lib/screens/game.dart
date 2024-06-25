@@ -12,6 +12,7 @@ import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/models/story.dart';
+import 'package:texttales/services/wsdecoder.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -96,32 +97,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 print(message);
                 widget.oldsnapshot = snapshot.data;
 
-                if(message['type'] == 'otherjoingame'){
-                  final List<dynamic> playerList = message['players'];
-                  var currentPlayers = Set<Player>();
-                  playerList.forEach((element) {
-                    final player = Player.fromMap(element);
-                    currentPlayers.add(player);
-                  });
-                  ref.read(gameDataProvider.notifier).updatePlayers(currentPlayers);
-                }
-
-                else if(message['type'] == 'youjoingame'){
-                  final gameData = message['gameData'];
-                  final gameId = gameData['gameId'];
-                  final GameSetting gameSetting = GameSetting.fromMap(gameData['gameSetting']);
-                  final int currentRound = gameData['currentRound'];
-                  final bool newRoundFlag = gameData['newRoundFlag'];
-
-                  final List<dynamic> playerList = message['players'];
-                  var currentPlayers = Set<Player>();
-                  playerList.forEach((element) {
-                    final player = Player.fromMap(element);
-                    currentPlayers.add(player);
-                  });
-                  ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound, newRoundFlag);
-                }
-
+                WebSocketMessageDecoder.gameDecoder(ref, message);
               });
             }
             
@@ -148,14 +124,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
                         GestureDetector(
                           onTap: (){
-                            setState(() {
+                            if(!widget.isSubmitted) setState(() {
                               widget.broadcastFlag = 2;
                               widget.isSubmitted = !widget.isSubmitted;
                             });
                           },
                           child: SubmitButton(isSubmitted: widget.isSubmitted)
                         ),
-                        Text("Players Submitted: 2/4", style: textMedium.copyWith(fontSize: 20),),
+                        Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
                       ],
                     ) :
 
