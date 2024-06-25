@@ -64,11 +64,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     }
 
     void titlePageBroadcast(){
-      Map _page = {'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'pageId': gameData.currentRound  , 'content':storyController.text, 'playerId':player.playerId};
-      Map _story = {'gameId':gameData.gameId, 'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'title':titleController.text, 'pages': [_page]};
-      Map _package = {'type':'titlepage', 'story': _story};
+      Map page = {'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'pageId': gameData.currentRound  , 'content':storyController.text, 'playerId':player.playerId};
+      Map story = {'gameId':gameData.gameId, 'storyId': (gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length/*gameData.indexOfPlayer(player)*/, 'title':titleController.text, 'pages': [page]};
+      Map package = {'type':'titlepage', 'story': story};
 
-      channel.sink.add(json.encode(_package));
+      channel.sink.add(json.encode(package));
     }
 
     void onlyPageBroadcast(){
