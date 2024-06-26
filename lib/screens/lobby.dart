@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/components/lobby/configtab.dart';
 import 'package:texttales/components/lobby/playericonbar.dart';
 import 'package:texttales/components/lobby/readybutton.dart';
@@ -34,17 +35,24 @@ class LobbyScreen extends ConsumerStatefulWidget {
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   late WebSocketChannel _channel;
   late TextEditingController _controller;
+  late String ip;
   var message;
   
 
   @override
   void initState(){
     super.initState();
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
     print("initstate of lobby");
-    _channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
+    _channel = WebSocketChannel.connect(Uri.parse('ws://$ip:6969'));
+    //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
     //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.29.226:6969'));
     //_channel = WebSocketChannel.connect(Uri.parse('ws://192.168.89.31:6969'));
     _controller = TextEditingController();
+
+    
   }
 
   @override

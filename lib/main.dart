@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/firebase_options.dart';
 import 'package:texttales/models/gamedata.dart';
 import 'package:texttales/models/gameserver.dart';
@@ -27,6 +28,10 @@ final gameServerProvider = StateNotifierProvider<GameServerNotifier, GameServer>
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+  await Hive.initFlutter();
+
+  var serveripbox = await Hive.openBox('serverip');
+
   runApp(ProviderScope(
     child: MaterialApp(
       initialRoute: '/',

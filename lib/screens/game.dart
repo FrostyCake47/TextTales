@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/components/game/inputblock.dart';
 import 'package:texttales/components/game/storyblock.dart';
 import 'package:texttales/components/game/submitbutton.dart';
@@ -34,7 +35,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   @override
   void initState() {
     super.initState();
-    channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
+    channel = WebSocketChannel.connect(Uri.parse('ws://$ip:6969'));
+    //channel = WebSocketChannel.connect(Uri.parse('ws://192.168.18.105:6969'));
     storyController = TextEditingController();
     titleController = TextEditingController();
   }

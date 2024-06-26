@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
@@ -10,6 +11,9 @@ import 'package:texttales/models/player.dart';
 
 class GameRequest{
   Future<int> getRoomId(Player player, WidgetRef ref) async {
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
     int roomId;
     final gameServer = ref.watch(gameServerProvider);
     Map playerData = {
@@ -21,7 +25,7 @@ class GameRequest{
     try{
       print('getRoomID');
       final response = await http.post(
-        Uri.parse('${gameServer.ip}:1234/rooms/create'),
+        Uri.parse('http://${ip}:1234/rooms/create'),
         //Uri.parse('http://192.168.89.31:1234/rooms/create'),  // Replace with your IP address
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -58,11 +62,14 @@ class GameRequest{
   }
 
   Future<int> getRoomStatus(int roomID, WidgetRef ref) async {
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
     try{
       final gameServer = ref.watch(gameServerProvider);
       print('getRoomStatus');
       final response = await http.post(
-        Uri.parse('${gameServer.ip}:1234/rooms/join'),  // Replace with your IP address
+        Uri.parse('http://${ip}:1234/rooms/join'),  // Replace with your IP address
         //Uri.parse('http://192.168.89.31:1234/rooms/join'), 
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -96,18 +103,13 @@ class GameRequest{
   }
 
   Future<dynamic> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
     try{
       final gameServer = ref.watch(gameServerProvider);
-
-      /*var package = Map<String, dynamic>();
-      package['roomId'] = roomId ?? 0;
-      package['gameSetting'] = gameSetting.toMap();
-      package['lobbyStatus'] = lobbyStatus.toMap();
-      
-      print("package createGame: ${package}");*/
-
       final response = await http.post(
-        Uri.parse('${gameServer.ip}:1234/game/create'),  // Replace with your IP address
+        Uri.parse('http://${ip}:1234/game/create'),  // Replace with your IP address
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
