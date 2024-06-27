@@ -97,6 +97,30 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
       });
     }
 
+    void onSelectStory(int index){
+      if(mode == 'create'){
+        updateSelectedStory(index);
+        startTimer();
+      }
+    }
+
+    void onGoBack(){
+      setState(() {
+        selectedStory = null;
+        timer?.cancel();
+        displayedStoriesCount = 0;
+      });
+    }
+
+    void onNextButton(){
+      setState(() {
+        selectedStory = gameData.stories[(gameData.stories.indexOf(selectedStory ?? Story('', 0, '', [])) + 1) % gameData.stories.length];
+        timer?.cancel();
+        displayedStoriesCount = 0;
+        startTimer();
+      });
+    }
+
     return Scaffold(
       backgroundColor: dark,
       body: SingleChildScrollView(
@@ -141,12 +165,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           itemBuilder: (context, index){
                             
                             return GestureDetector(
-                              onTap: (){
-                                if(mode == 'create'){
-                                  updateSelectedStory(index);
-                                  startTimer();
-                                }
-                              },
+                              onTap: (){onSelectStory(index);},
                               child: StoryButton(story: gameData.stories[index]),
                             );
                         }),
@@ -164,11 +183,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: (){
-                                  setState(() {
-                                    selectedStory = null;
-                                    timer?.cancel();
-                                    displayedStoriesCount = 0;
-                                  });
+                                  onGoBack();
                                 },
                                 child: GoBackButton(),
                               ),
@@ -176,12 +191,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: (){
-                                  setState(() {
-                                    selectedStory = gameData.stories[(gameData.stories.indexOf(selectedStory ?? Story('', 0, '', [])) + 1) % gameData.stories.length];
-                                    timer?.cancel();
-                                    displayedStoriesCount = 0;
-                                    startTimer();
-                                  });
+                                  onNextButton();
                                 },
                                 child: NextButton(),
                               ),
