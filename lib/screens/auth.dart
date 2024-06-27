@@ -18,9 +18,7 @@ class AuthScreen extends StatelessWidget {
     final String? mode = args['mode'];
     final int? roomId = args['roomId'];
     final WidgetRef? ref = args['ref'];
-
-    if(ref != null) ref.read(gameDataProvider.notifier).clearAll();
-    
+ 
     return Scaffold(
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

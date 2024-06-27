@@ -72,7 +72,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     final player = ref.watch(playerProvider);
     final lobbyStatus = ref.watch(lobbyStatusProvider);
     final gameServer = ref.watch(gameServerProvider);
-
+    
 
     void onJoinBroadcast(int roomId){
       Map _package = {'type':'join', 'player':{'playerId':player.playerId, 'photoURL': player.photoURL, 'name':player.name}, 'roomId':roomId};
@@ -98,7 +98,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     if(!widget.isPlayerIdupdated){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.isRoomIdInitiallyUpdated = true;
-
+        ref.read(gameDataProvider.notifier).clearAll();
         ref.read(lobbyStatusProvider.notifier).changeRoomId(widget.roomId);
 
       });

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:texttales/constants/colors.dart';
 
-class NextButton extends StatelessWidget {
-  const NextButton({super.key});
+class GoBackButton extends StatelessWidget {
+  const GoBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class NextButton extends StatelessWidget {
             ),
           ],
         ),
-      child: Center(child: Text('Next Story')),
+      child: Center(child: Text('Go back')),
     );
   }
 }

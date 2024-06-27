@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:texttales/components/story/goback.dart';
 import 'package:texttales/components/story/nextstory.dart';
 import 'package:texttales/components/story/selectedstory.dart';
 import 'package:texttales/components/story/storybutton.dart';
@@ -104,17 +105,30 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                   
                   Column(
                     children: [
+                      Text(selectedStory!.title, style: textMedium.copyWith(color: Colors.black),),
                       SelectedStory(story: selectedStory, players: gameData.currentPlayers.toList(),),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            onTap: (){},
-                            child: NextButton(),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  selectedStory = null;
+                                });
+                              },
+                              child: GoBackButton(),
+                            ),
                           ),
-                          GestureDetector(
-                            onTap: (){},
-                            child: NextButton(),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  selectedStory = gameData.stories[(gameData.stories.indexOf(selectedStory ?? Story('', 0, '', [])) + 1) % gameData.stories.length];
+                                });
+                              },
+                              child: NextButton(),
+                            ),
                           )
                         ],
                       )
