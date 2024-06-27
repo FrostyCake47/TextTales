@@ -86,7 +86,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
     void _sendMessage() {
       if (_controller.text.isNotEmpty) {
-        _channel.sink.add(_controller.text);
+        _channel.sink.add(json.encode({'type':'message', 'message':_controller.text, 'roomId':lobbyStatus.roomId}));
       }
     }
 
