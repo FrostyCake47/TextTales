@@ -32,6 +32,10 @@ Future<void> main() async {
 
   var serveripbox = await Hive.openBox('serverip');
 
+  var box = Hive.box('serverip');
+  var ip = box.get('ip');
+  if(ip == null) box.put('ip', '13.233.167.195');
+
   runApp(ProviderScope(
     child: MaterialApp(
       initialRoute: '/',
