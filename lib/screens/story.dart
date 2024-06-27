@@ -20,6 +20,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class StoryScreen extends ConsumerStatefulWidget {
   var broadcastFlag = 1;
   var oldsnapshot;
+  int selectedIndex = 0;
 
   StoryScreen({super.key});
 
@@ -76,8 +77,15 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
   @override
   Widget build(BuildContext context) {
     final data = (ModalRoute.of(context)!.settings.arguments as Map);
-    final String? mode =  /*'create';*/ 'join'; /*data['mode'];*/
+    final String? mode =  /*'create';*/ /*'join';*/ data['mode'];
     final gameData = ref.watch(gameDataProvider);
+
+
+    void onJoinBroadcast(String gameId){
+      Map _package = {'type':'joinstory', 'gameId':gameId};
+      print(_package);
+      channel.sink.add(json.encode(_package));
+    }
 
     void updateSelectedStory(int index){
     setState(() {
@@ -98,10 +106,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
     }
 
     void onSelectStory(int index){
-      if(mode == 'create'){
-        updateSelectedStory(index);
-        startTimer();
-      }
+      updateSelectedStory(index);
+      startTimer();
     }
 
     void onGoBack(){
@@ -118,6 +124,29 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
         timer?.cancel();
         displayedStoriesCount = 0;
         startTimer();
+      });
+    }
+    
+    void onSelectStoryBroadcast(int index){
+      if(mode == 'create') channel.sink.add(json.encode({'type':'selectstory', 'index':index, 'gameId':gameData.gameId}));
+    }
+
+    void onGoBackBroadcast(){
+      if(mode == 'create') channel.sink.add(json.encode({'type':'goback', 'gameId':gameData.gameId}));
+    }
+
+    void onNextButtonBroadcast(){
+      if(mode == 'create') channel.sink.add(json.encode({'type':'nextbutton', 'gameId':gameData.gameId}));
+    }
+
+    if(widget.broadcastFlag != 0){
+      if(widget.broadcastFlag == 1) onJoinBroadcast(gameData.gameId);
+      if(widget.broadcastFlag == 2) onSelectStoryBroadcast(widget.selectedIndex);
+      if(widget.broadcastFlag == 3) onGoBackBroadcast();
+      if(widget.broadcastFlag == 4) onNextButtonBroadcast();
+
+      setState(() {
+        widget.broadcastFlag = 0;
       });
     }
 
@@ -139,6 +168,9 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                   widget.oldsnapshot = snapshot.data;
         
                   //WebSocketMessageDecoder.gameDecoder(ref, message);
+                  if(message['type'] == 'nextbutton') onNextButton();
+                  else if(message['type'] == 'goback') onGoBack();
+                  else if(message['type'] == 'selectstory') onSelectStory(message['index']);
                 });
               }
 
@@ -165,7 +197,13 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           itemBuilder: (context, index){
                             
                             return GestureDetector(
-                              onTap: (){onSelectStory(index);},
+                              onTap: (){
+                                setState(() {
+                                  widget.selectedIndex = index;
+                                  widget.broadcastFlag = 2;
+                                  if(mode == 'create') onSelectStory(index);
+                                });
+                              },
                               child: StoryButton(story: gameData.stories[index]),
                             );
                         }),
@@ -183,7 +221,10 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: (){
-                                  onGoBack();
+                                  setState(() {
+                                    widget.broadcastFlag = 3;
+                                    if(mode == 'create') onGoBack();
+                                  });
                                 },
                                 child: GoBackButton(),
                               ),
@@ -191,7 +232,10 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: (){
-                                  onNextButton();
+                                  setState(() {
+                                    widget.broadcastFlag = 4;
+                                    if(mode == 'create') onNextButton();
+                                  });
                                 },
                                 child: NextButton(),
                               ),
