@@ -61,7 +61,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final gameData = ref.watch(gameDataProvider);
     
 
-
     void onJoinBroadcast(String gameId){
       Map _package = {'type':'joingame', 'player':{'playerId':player.playerId, 'photoURL': player.photoURL, 'name':player.name}, 'gameId':gameId};
       print(_package);
@@ -85,7 +84,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if(gameData.currentRound > gameData.gameSetting.rounds){
-      Navigator.pushNamed(context, '/story');
+      Navigator.popAndPushNamed(context, '/story');
     }
     });
 
@@ -177,6 +176,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         InputBlock(gameData: gameData, controller: storyController,),
 
                         SizedBox(height: 40,),
+                        
 
                         GestureDetector(
                           onTap: (){

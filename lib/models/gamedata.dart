@@ -12,8 +12,15 @@ class GameDataNotifier extends StateNotifier<GameData>{
   GameDataNotifier(super.state);
 
   void updateAll(String gameId, GameSetting gameSetting, List<Story> stories, Set<Player> currentPlayers, int currentRound, bool newRoundFlag, int submitCount){
+    print('shhhhhhhhhhhhhit update aaaaaaaaaaaaaaaal');
     state = state.copyWith(gameId: gameId, gameSetting: gameSetting, stories: stories, currentPlayers: currentPlayers, currentRound: currentRound, newRoundFlag: newRoundFlag, submitCount: submitCount);
   }
+
+  void updateWhenYouJoin(String gameId, GameSetting gameSetting, Set<Player> currentPlayers){
+    print('shhhhhhhhhhhhhit update specific aaaaaaaaaaaaaaaal');
+    state = state.copyWith(gameId: gameId, gameSetting: gameSetting, currentPlayers: currentPlayers);
+  }
+
 
   void addStory(Story story){
     var newStories = state.stories;
@@ -27,6 +34,7 @@ class GameDataNotifier extends StateNotifier<GameData>{
   }
 
   void clearAll(){
+    print('shhhhhhhhhhhhhit clear aaaaaaaaaaaaaaaal');
     state = state.copyWith(gameId: '', gameSetting: GameSetting('classic', 5, 200, 60), stories: <Story>[], currentPlayers: <Player>{});
   }
 

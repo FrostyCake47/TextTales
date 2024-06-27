@@ -44,7 +44,7 @@ Future<void> main() async {
         '/auth' : (context) => const AuthScreen(),
         '/lobby' : (context) => LobbyScreen(),
         '/game' : (context) => GameScreen(),
-        '/story' : (context) => const StoryScreen(),
+        '/story' : (context) => StoryScreen(),
         '/setting' : (context) => const SettingScreen(),
       },
     

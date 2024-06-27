@@ -69,16 +69,22 @@ class WebSocketMessageDecoder{
       final int currentRound = gameData['currentRound'];
       final bool newRoundFlag = gameData['newRoundFlag'];
       final int submitCount = gameData['submitCount'];
-
+      //
+      final List<Story> stories = ((gameData['stories'] ?? <Story>[]) as List)
+      .map((storyMap) => Story.fromMap(storyMap))
+      .toList();
+      //lets see
       final List<dynamic> playerList = message['players'];
       var currentPlayers = Set<Player>();
       playerList.forEach((element) {
         final player = Player.fromMap(element);
         currentPlayers.add(player);
       });
-      ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, <Story>[], currentPlayers, currentRound, newRoundFlag, submitCount);
-    }
 
+      ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, stories, currentPlayers, currentRound, newRoundFlag, submitCount);
+      
+    }
+    //
     else if(message['type'] == 'submitCount'){
       ref.read(gameDataProvider.notifier).updateSubmitCount(message['submitCount']);
     }
@@ -92,6 +98,10 @@ class WebSocketMessageDecoder{
       ref.read(gameDataProvider.notifier).incrementRound();
       ref.read(gameDataProvider.notifier).updateSubmitCount(message['submitCount']);
     }
+
+  }
+
+  static void storyDecoder(){
 
   }
 }

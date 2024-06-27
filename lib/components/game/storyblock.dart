@@ -30,10 +30,11 @@ class StoryBlock extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length].title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.w600),) : Container(),
+          gameData.stories.length != 0 && gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound -1 )%gameData.currentPlayers.length].title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.w600),) : Container(),
           SizedBox(height: 10,),
-          gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound - 1)%gameData.currentPlayers.length].pages.last.content, style: textMedium.copyWith(color: Colors.black, fontSize: 16),) : Container(),
+          gameData.stories.length != 0 && gameData.currentPlayers.length != 0 ? Text(gameData.stories[(gameData.indexOfPlayer(player) + gameData.currentRound - 1)%gameData.currentPlayers.length].pages.last.content, style: textMedium.copyWith(color: Colors.black, fontSize: 16),) : Container(),
         ],
+        //bruh
       )
     );
   }
