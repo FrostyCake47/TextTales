@@ -9,8 +9,8 @@ class StoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      margin: EdgeInsets.symmetric(vertical: 10,  horizontal: 30),
+      padding: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 0,  horizontal: 30),
       decoration: BoxDecoration(
         gradient: homebtnGradient,
         borderRadius: BorderRadius.circular(15),

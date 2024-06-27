@@ -58,8 +58,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       widget.isPlayerInitiallyUpdated = true;
       ref.read(playerProvider.notifier).updateAll(playerId, photoURL, name);
       ref.read(lobbyStatusProvider.notifier).clearAll();
-      ref.read(gameDataProvider.notifier).clearAll();
+      //ref.read(gameDataProvider.notifier).clearAll();
     });
+    //huh
     
   }
 
@@ -99,7 +100,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if(isPlayerAuth()){
       int status =  await GameRequest().getRoomStatus(roomId, ref);
       print("status at home $status");
-      if(status == 0) Navigator.pushNamed(context, '/auth', arguments: {'mode':'join', 'roomId':roomId});
+      if(status == 0) Navigator.pushNamed(context, '/auth', arguments: {'mode':'join', 'roomId':roomId, 'ref':ref});
       else if(status == 1) createAlert(context, "Invalid RoomId", homebtnGradient);
       else createAlert(context, "Server Error: Try again later", homebtnGradient);
     }
