@@ -9,7 +9,8 @@ import 'package:texttales/models/story.dart';
 class SelectedStory extends StatelessWidget {
   final Story? story;
   final List<Player> players;
-  const SelectedStory({super.key, required this.story, required this.players});
+  final int displayedStoriesCount;
+  const SelectedStory({super.key, required this.story, required this.players, required this.displayedStoriesCount});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SelectedStory extends StatelessWidget {
         physics: ScrollPhysics(),
         shrinkWrap: true,
         
-        itemCount: story?.pages.length,
+        itemCount: displayedStoriesCount,
         itemBuilder: (context, index){
           Player player = Player('', '', '');
           String _playerId = story!.pages[index].playerId;
