@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/components/story/goback.dart';
 import 'package:texttales/components/story/nextstory.dart';
@@ -27,12 +28,18 @@ class StoryScreen extends ConsumerStatefulWidget {
 }
 
 class _StoryScreenState extends ConsumerState<StoryScreen> {
+  final FlutterTts flutterTts = FlutterTts();
   late WebSocketChannel channel;
   var message;
   late Story? selectedStory = null;
   int displayedStoriesCount = 0;
   Timer? timer;
 
+  void speak(String text) async {
+    await flutterTts.setLanguage('en-US');
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(text);
+  }
   
   @override
   void initState() {
@@ -130,7 +137,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                     Column(
                       children: [
                         TitleBlock(selectedStory: selectedStory),
-                        SelectedStory(story: selectedStory, players: gameData.currentPlayers.toList(), displayedStoriesCount: displayedStoriesCount,),
+                        SelectedStory(story: selectedStory, players: gameData.currentPlayers.toList(), displayedStoriesCount: displayedStoriesCount, speak: speak,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

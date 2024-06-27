@@ -10,7 +10,8 @@ class SelectedStory extends StatelessWidget {
   final Story? story;
   final List<Player> players;
   final int displayedStoriesCount;
-  const SelectedStory({super.key, required this.story, required this.players, required this.displayedStoriesCount});
+  final Function(String text) speak;
+  const SelectedStory({super.key, required this.story, required this.players, required this.displayedStoriesCount, required this.speak});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,8 @@ class SelectedStory extends StatelessWidget {
           players.forEach((_player) => {
             if(_player.playerId == _playerId) player = _player
           });
+
+          speak(story!.pages[index].content);
 
           return Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
