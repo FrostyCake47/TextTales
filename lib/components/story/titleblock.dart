@@ -5,15 +5,17 @@ import 'package:texttales/models/story.dart';
 
 class TitleBlock extends StatelessWidget {
   final Story? selectedStory;
-  const TitleBlock({super.key, required this.selectedStory});
+  final Function(String text) speak;
+  const TitleBlock({super.key, required this.selectedStory, required this.speak});
 
   @override
   Widget build(BuildContext context) {
+    speak(selectedStory!.title);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        gradient: homebtnGradient,
+        gradient: gamebtnGradient,
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
@@ -25,7 +27,7 @@ class TitleBlock extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(selectedStory!.title, style: textMedium.copyWith(color: Colors.black),),
+      child: Text(selectedStory!.title, style: textMedium.copyWith(color: Colors.black, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
 
     );
   }

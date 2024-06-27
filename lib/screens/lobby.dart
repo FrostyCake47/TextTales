@@ -137,7 +137,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
                 if(message['type'] == 'gamejoin'){
                   print(message);
-                  Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData']});
+                  Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':message['gameData'], 'mode':widget.mode});
                 }
                 WebSocketMessageDecoder.lobbyDecoder(ref, message);
               });
@@ -200,7 +200,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
 
                             if(data['type'] == 'gameData'){
                               _channel.sink.add(jsonEncode({'type':'gamejoin', 'gameData':data['gameData'], 'roomId':lobbyStatus.roomId}));
-                              Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':data['gameData']});
+                              Navigator.popAndPushNamed(context, '/game', arguments: {'gameData':data['gameData'], 'mode':widget.mode});
                             }
                             
                           }

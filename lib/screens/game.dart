@@ -56,7 +56,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _gameData = (ModalRoute.of(context)!.settings.arguments as Map)['gameData'];
+    final data = (ModalRoute.of(context)!.settings.arguments as Map);
+    final _gameData = data['gameData'];
+    final mode = data['mode'];
     final player = ref.watch(playerProvider);
     final gameData = ref.watch(gameDataProvider);
     
@@ -84,7 +86,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if(gameData.currentRound > gameData.gameSetting.rounds){
-      Navigator.popAndPushNamed(context, '/story');
+      Navigator.popAndPushNamed(context, '/story', arguments: {'mode':mode});
     }
     });
 

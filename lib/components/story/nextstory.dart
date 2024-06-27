@@ -10,7 +10,7 @@ class NextButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         margin: EdgeInsets.symmetric(vertical: 10,  horizontal: 10),
         decoration: BoxDecoration(
-          gradient: homebtnGradient,
+          gradient: nextstorygamebtnGradient,
           borderRadius: BorderRadius.circular(15),
           boxShadow: const [
             BoxShadow(
@@ -21,7 +21,7 @@ class NextButton extends StatelessWidget {
             ),
           ],
         ),
-      child: Center(child: Text('Next Story')),
+      child: Center(child: Text('Next Story', style: TextStyle(color: Colors.black))),
     );
   }
 }

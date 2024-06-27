@@ -42,7 +42,7 @@ class SelectedStory extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             margin: EdgeInsets.symmetric(vertical: 10,  horizontal: 10),
             decoration: BoxDecoration(
-              gradient: homebtnGradient,
+              gradient: gamebtnGradient,
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -54,17 +54,20 @@ class SelectedStory extends StatelessWidget {
               ],
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10, top: 5),
                   child: ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(player.photoURL, scale: 3,)),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(player.name, style: textMedium.copyWith(fontSize: 14, color: Colors.grey.shade700, fontWeight: FontWeight.w600),),
-                    Text(story!.pages[index].content, style: textMedium.copyWith(fontSize: 14, color: Colors.black),)
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(player.name, style: textMedium.copyWith(fontSize: 14, color: Colors.grey.shade700, fontWeight: FontWeight.w600),),
+                      Text(story!.pages[index].content, style: textMedium.copyWith(fontSize: 14, color: Colors.black),)
+                    ],
+                  ),
                 )
               ],
             ),

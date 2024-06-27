@@ -10,7 +10,7 @@ class GoBackButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         margin: EdgeInsets.symmetric(vertical: 10,  horizontal: 10),
         decoration: BoxDecoration(
-          gradient: homebtnGradient,
+          gradient: gobackgamebtnGradient,
           borderRadius: BorderRadius.circular(15),
           boxShadow: const [
             BoxShadow(
@@ -21,7 +21,7 @@ class GoBackButton extends StatelessWidget {
             ),
           ],
         ),
-      child: Center(child: Text('Go back')),
+      child: Center(child: Text('Go back', style: TextStyle(color: Colors.black),)),
     );
   }
 }

@@ -78,3 +78,27 @@ const Gradient submittedButtonGradient = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient gamebtnGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 194, 242, 252), Color.fromARGB(255, 171, 255, 237)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
+
+const Gradient gobackgamebtnGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 74, 186, 250), Color.fromARGB(255, 54, 233, 249)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);
+
+const Gradient nextstorygamebtnGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 52, 255, 184), Color.fromARGB(255, 45, 203, 169)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);

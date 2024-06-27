@@ -28,22 +28,33 @@ class StoryScreen extends ConsumerStatefulWidget {
 }
 
 class _StoryScreenState extends ConsumerState<StoryScreen> {
-  final FlutterTts flutterTts = FlutterTts();
+  late FlutterTts flutterTts;
   late WebSocketChannel channel;
   var message;
   late Story? selectedStory = null;
   int displayedStoriesCount = 0;
   Timer? timer;
 
-  void speak(String text) async {
+  void initSpeak() async {
+    flutterTts = FlutterTts();
     await flutterTts.setLanguage('en-US');
-    await flutterTts.setPitch(1);
+    await flutterTts.setPitch(1.0);
+
+    flutterTts.setVoice({'name': 'en-us-x-sfg#male_2-local', 'locale': 'en-US'});
+    /*var voices = await flutterTts.getVoices;
+    for (var voice in voices) {
+      print(voice);
+    }*/
+  }
+
+  void speak(String text) async {
     await flutterTts.speak(text);
   }
   
   @override
   void initState() {
     super.initState();
+    initSpeak();
     var box = Hive.box('serverip');
     String ip = box.get('ip') ?? '';
 
@@ -54,6 +65,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
   void dispose() {
     channel.sink.close();
     timer?.cancel();
+    flutterTts.stop();
     // TODO: implement dispo
     super.dispose();
   }
@@ -63,6 +75,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = (ModalRoute.of(context)!.settings.arguments as Map);
+    final String? mode =  /*'create';*/ 'join'; /*data['mode'];*/
     final gameData = ref.watch(gameDataProvider);
 
     void updateSelectedStory(int index){
@@ -103,6 +117,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                   //WebSocketMessageDecoder.gameDecoder(ref, message);
                 });
               }
+
+              
         
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -115,6 +131,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                     selectedStory == null ? Column(
                       children: [
                         Text("Select a story to view it", style: textMedium.copyWith(fontSize: 24, fontWeight: FontWeight.w600), textAlign: TextAlign.center,),
+                        (mode == null || mode == 'join') ? Text('Only leader can select the story') : Container(),
                         ListView.builder(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           itemCount: gameData.stories.length,
@@ -122,13 +139,15 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           physics: ScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index){
+                            
                             return GestureDetector(
-                          
                               onTap: (){
-                                updateSelectedStory(index);
-                                startTimer();
+                                if(mode == 'create'){
+                                  updateSelectedStory(index);
+                                  startTimer();
+                                }
                               },
-                              child: StoryButton(),
+                              child: StoryButton(story: gameData.stories[index]),
                             );
                         }),
                       ],
@@ -136,9 +155,10 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                     
                     Column(
                       children: [
-                        TitleBlock(selectedStory: selectedStory),
+                        TitleBlock(selectedStory: selectedStory, speak: speak,),
                         SelectedStory(story: selectedStory, players: gameData.currentPlayers.toList(), displayedStoriesCount: displayedStoriesCount, speak: speak,),
-                        Row(
+                        
+                        (mode == 'create' && displayedStoriesCount == selectedStory!.pages.length) ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
@@ -167,11 +187,11 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                               ),
                             )
                           ],
-                        )
+                        ) : ((displayedStoriesCount == selectedStory!.pages.length) ? Text('Waiting for leader to select...') : Container()),
                       ],
                     ),
         
-        
+                    Text(mode ?? ''),
                     Text(gameData.toString())
                 ],
               );
