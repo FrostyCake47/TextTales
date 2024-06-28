@@ -209,7 +209,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                       child: ReadyButton(isReady: lobbyStatus.readyPlayers[player.playerId] ?? false, mode: widget.mode ?? 'join', lobbyStatus: lobbyStatus,),
                     ),
 
-                    Text(lobbyStatus.readyPlayers.toString()),
+                    /*Text(lobbyStatus.readyPlayers.toString()),
                     Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
                 
                     Form(
@@ -222,7 +222,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                     GestureDetector(
                       onTap: _sendMessage,
                       child:const Icon(Icons.send),
-                    )
+                    )*/
                   ],
                 ),
               ),
