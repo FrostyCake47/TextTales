@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:texttales/components/common/exitwarning.dart';
 import 'package:texttales/components/game/inputblock.dart';
 import 'package:texttales/components/game/storyblock.dart';
 import 'package:texttales/components/game/submitbutton.dart';
@@ -107,102 +108,112 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     }
     
 
-    return Scaffold(
-      backgroundColor: dark,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/gamebg.png'), fit: BoxFit.fill)
-        ),
-        child: StreamBuilder(
-          stream: channel.stream,
-          builder: (context, snapshot) {
-            if(snapshot.hasData && (snapshot.data != widget.oldsnapshot)){
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                message = jsonDecode(snapshot.data as String);
-                print(message);
-                widget.oldsnapshot = snapshot.data;
-
-                if(message['type'] == 'newround'){
-                  storyController.text = '';
-                  titleController.text = '';
-                  widget.isSubmitted = false;
-                }
-
-                WebSocketMessageDecoder.gameDecoder(ref, message);
-              });
-            }
-            
-            return Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 40,),
-                    Text(gameData.currentRound == 1 ? "Lets start with your story" : "Continue the story!", style: textTalesStyle.copyWith(fontSize: 30),),
-                    Text("Rounds: ${gameData.currentRound}/${gameData.gameSetting.rounds}", style: textMedium.copyWith(fontSize: 22),),
-                    SizedBox(height: 40,),
-            
-                    
-                    
-                    
-                    (gameData.currentRound == 1) ? 
-                    Column(
-                      children: [
-                        TitleBlock(controller: titleController,),
-                        SizedBox(height: 20,),
-                        InputBlock(gameData: gameData, controller: storyController,),
-                        SizedBox(height: 40,),
-
-                        GestureDetector(
-                          onTap: (){
-                            if(!widget.isSubmitted){setState(() {
-                              widget.broadcastFlag = 2;
-                              widget.isSubmitted = true;
-                            });
-                          }},
-                          child: SubmitButton(isSubmitted: widget.isSubmitted)
-                        ),
-                        Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
-                      ],
-                    ) :
-
-                    Column(
-                      children: [
-                        StoryBlock(gameData: gameData, player: player,),
-
-                        SizedBox(height: 40,),
-                        Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),
-                        Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
-                        SizedBox(height: 40,),
-                
-                        InputBlock(gameData: gameData, controller: storyController,),
-
-                        SizedBox(height: 40,),
-                        
-
-                        GestureDetector(
-                          onTap: (){
-                            if(!widget.isSubmitted){setState(() {
-                              widget.broadcastFlag = 2;
-                              widget.isSubmitted = true;
-                            });
-                          }},
-                          child: SubmitButton(isSubmitted: widget.isSubmitted)
-                        ),
-                      ],
-                    ),
-
-
-                    
-
-                    SizedBox(height: 40,),
-                    Text(gameData.toString()), 
-                    Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
-                  ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didpop) async {
+        if(didpop) return;
+        final bool shouldPop = await exitWarningDialogue(context);
+        if (context.mounted && shouldPop) {
+          Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: dark,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/gamebg.png'), fit: BoxFit.fill)
+          ),
+          child: StreamBuilder(
+            stream: channel.stream,
+            builder: (context, snapshot) {
+              if(snapshot.hasData && (snapshot.data != widget.oldsnapshot)){
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  message = jsonDecode(snapshot.data as String);
+                  print(message);
+                  widget.oldsnapshot = snapshot.data;
+      
+                  if(message['type'] == 'newround'){
+                    storyController.text = '';
+                    titleController.text = '';
+                    widget.isSubmitted = false;
+                  }
+      
+                  WebSocketMessageDecoder.gameDecoder(ref, message);
+                });
+              }
+              
+              return Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 40,),
+                      Text(gameData.currentRound == 1 ? "Lets start with your story" : "Continue the story!", style: textTalesStyle.copyWith(fontSize: 30),),
+                      Text("Rounds: ${gameData.currentRound}/${gameData.gameSetting.rounds}", style: textMedium.copyWith(fontSize: 22),),
+                      SizedBox(height: 40,),
+              
+                      
+                      
+                      
+                      (gameData.currentRound == 1) ? 
+                      Column(
+                        children: [
+                          TitleBlock(controller: titleController,),
+                          SizedBox(height: 20,),
+                          InputBlock(gameData: gameData, controller: storyController,),
+                          SizedBox(height: 40,),
+      
+                          GestureDetector(
+                            onTap: (){
+                              if(!widget.isSubmitted){setState(() {
+                                widget.broadcastFlag = 2;
+                                widget.isSubmitted = true;
+                              });
+                            }},
+                            child: SubmitButton(isSubmitted: widget.isSubmitted)
+                          ),
+                          Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
+                        ],
+                      ) :
+      
+                      Column(
+                        children: [
+                          StoryBlock(gameData: gameData, player: player,),
+      
+                          SizedBox(height: 40,),
+                          Text("Write your part", style: textTalesStyle.copyWith(fontSize: 26),),
+                          Text("Players Submitted: ${gameData.submitCount}/${gameData.currentPlayers.length}", style: textMedium.copyWith(fontSize: 20),),
+                          SizedBox(height: 40,),
+                  
+                          InputBlock(gameData: gameData, controller: storyController,),
+      
+                          SizedBox(height: 40,),
+                          
+      
+                          GestureDetector(
+                            onTap: (){
+                              if(!widget.isSubmitted){setState(() {
+                                widget.broadcastFlag = 2;
+                                widget.isSubmitted = true;
+                              });
+                            }},
+                            child: SubmitButton(isSubmitted: widget.isSubmitted)
+                          ),
+                        ],
+                      ),
+      
+      
+                      
+      
+                      SizedBox(height: 40,),
+                      Text(gameData.toString()), 
+                      Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
+              );
+            }
+          ),
         ),
       ),
     );
