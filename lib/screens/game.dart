@@ -165,7 +165,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       
                           GestureDetector(
                             onTap: (){
-                              if(!widget.isSubmitted){setState(() {
+                              if(!widget.isSubmitted && storyController.text.isNotEmpty && titleController.text.isNotEmpty){setState(() {
                                 widget.broadcastFlag = 2;
                                 widget.isSubmitted = true;
                               });
@@ -192,7 +192,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       
                           GestureDetector(
                             onTap: (){
-                              if(!widget.isSubmitted){setState(() {
+                              if(!widget.isSubmitted && storyController.text.isNotEmpty){setState(() {
                                 widget.broadcastFlag = 2;
                                 widget.isSubmitted = true;
                               });
