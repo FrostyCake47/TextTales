@@ -95,7 +95,12 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
     }
 
     void startTimer() {
-      timer = Timer.periodic(Duration(seconds: 3), (Timer t) {
+      int wordCount = 3;
+      //if(displayedStoriesCount != 0) wordCount = (selectedStory!.pages[displayedStoriesCount].content.length).toInt();
+      //else wordCount = (selectedStory!.title.length).toInt();
+      int time = 10; //(wordCount/10).toInt();
+
+      timer = Timer.periodic(Duration(seconds: time), (Timer t) {
         setState(() {
           if (displayedStoriesCount < selectedStory!.pages.length) {
             displayedStoriesCount++;
@@ -105,6 +110,38 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
         });
       });
     }
+
+    /*void startTimer() {
+      int wordCount = 50;
+      if (displayedStoriesCount != 0) {
+        wordCount = selectedStory!.pages[displayedStoriesCount].content.length;
+      } else {
+        wordCount = selectedStory!.title.length;
+      }
+      int time = (wordCount / 10).toInt();
+
+      void scheduleNextTimer(int time) {
+        timer = Timer(Duration(seconds: time), () {
+          setState(() {
+            if (displayedStoriesCount < selectedStory!.pages.length) {
+              displayedStoriesCount++;
+              // Recalculate wordCount and time for the next iteration
+              if (displayedStoriesCount != 0) {
+                wordCount = selectedStory!.pages[displayedStoriesCount].content.length;
+              } else {
+                wordCount = selectedStory!.title.length;
+              }
+              time = (wordCount / 10).toInt();
+              scheduleNextTimer(time); // Schedule the next timer
+            } else {
+              timer?.cancel();
+            }
+          });
+        });
+      }
+
+      scheduleNextTimer(time); // Start the first timer
+    }*/
 
     void onSelectStory(int index){
       updateSelectedStory(index);

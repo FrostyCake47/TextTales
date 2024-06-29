@@ -34,8 +34,10 @@ class InputBlock extends StatelessWidget {
           hintStyle: TextStyle()
         ),
         style: const TextStyle(
+
           // You can add styling here if needed
         ),
+        textAlign: TextAlign.center,
       )
     );
   }
