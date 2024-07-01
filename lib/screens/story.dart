@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/components/common/exitwarning.dart';
 import 'package:texttales/components/story/goback.dart';
 import 'package:texttales/components/story/nextstory.dart';
+import 'package:texttales/components/story/savestory.dart';
 import 'package:texttales/components/story/selectedstory.dart';
 import 'package:texttales/components/story/storybutton.dart';
 import 'package:texttales/components/story/titleblock.dart';
@@ -15,6 +16,7 @@ import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/story.dart';
+import 'package:texttales/services/gamerequest.dart';
 import 'package:texttales/services/wsdecoder.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -98,7 +100,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
       int wordCount = 3;
       //if(displayedStoriesCount != 0) wordCount = (selectedStory!.pages[displayedStoriesCount].content.length).toInt();
       //else wordCount = (selectedStory!.title.length).toInt();
-      int time = 10; //(wordCount/10).toInt();
+      int time = 5; //(wordCount/10).toInt();
 
       timer = Timer.periodic(Duration(seconds: time), (Timer t) {
         setState(() {
@@ -177,11 +179,16 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
       if(mode == 'create') channel.sink.add(json.encode({'type':'nextbutton', 'gameId':gameData.gameId}));
     }
 
+    
+
     if(widget.broadcastFlag != 0){
-      if(widget.broadcastFlag == 1) onJoinBroadcast(gameData.gameId);
-      if(widget.broadcastFlag == 2) onSelectStoryBroadcast(widget.selectedIndex);
-      if(widget.broadcastFlag == 3) onGoBackBroadcast();
-      if(widget.broadcastFlag == 4) onNextButtonBroadcast();
+      if(widget.broadcastFlag == 1) {
+        onJoinBroadcast(gameData.gameId);
+        GameRequest().uploadStory(gameData);
+      }
+      else if(widget.broadcastFlag == 2) onSelectStoryBroadcast(widget.selectedIndex);
+      else if(widget.broadcastFlag == 3) onGoBackBroadcast();
+      else if(widget.broadcastFlag == 4) onNextButtonBroadcast();
 
       setState(() {
         widget.broadcastFlag = 0;
@@ -255,6 +262,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                                   child: StoryButton(story: gameData.stories[index]),
                                 );
                             }),
+
+                            
                           ],
                         ) :
                         
@@ -262,6 +271,11 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           children: [
                             TitleBlock(selectedStory: selectedStory, speak: speak,),
                             SelectedStory(story: selectedStory, players: gameData.currentPlayers.toList(), displayedStoriesCount: displayedStoriesCount, speak: speak,),
+
+                            /*(displayedStoriesCount == selectedStory!.pages.length) ? GestureDetector(
+                              onTap: (){},
+                              child: SaveStory(),
+                            ) : Container(), */
                             
                             (mode == 'create' && displayedStoriesCount == selectedStory!.pages.length) ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -277,6 +291,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                                     child: GoBackButton(),
                                   ),
                                 ),
+                                
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: (){
@@ -293,8 +308,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           ],
                         ),
                           
-                        /*Text(mode ?? ''),
-                        Text(gameData.toString())*/
+                        Text(mode ?? ''),
+                        Text(gameData.toString())
                     ],
                   ),
                 ),

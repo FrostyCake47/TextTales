@@ -102,3 +102,11 @@ const Gradient nextstorygamebtnGradient = LinearGradient(
   end: FractionalOffset.bottomRight,
   tileMode: TileMode.repeated
 );
+
+const Gradient savestorygamebtnGradient = LinearGradient(
+  colors: [Color.fromARGB(255, 49, 245, 255), Color.fromARGB(255, 41, 214, 185)],
+  stops: [0.0, 1.0],
+  begin: FractionalOffset.topLeft,
+  end: FractionalOffset.bottomRight,
+  tileMode: TileMode.repeated
+);

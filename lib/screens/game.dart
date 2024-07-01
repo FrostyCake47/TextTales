@@ -206,9 +206,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       
       
                       SizedBox(height: 40,),
-                      /*Text(gameData.toString()), 
+                      Text(gameData.toString()), 
                       Text(snapshot.hasData ? '${snapshot.data}' : '', style: TextStyle(color: Color.fromARGB(255, 68, 39, 0)),),
-                      */
+                      
                     ],
                   ),
                 ),

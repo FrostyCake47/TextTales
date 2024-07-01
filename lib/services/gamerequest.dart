@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:texttales/main.dart';
+import 'package:texttales/models/gamedata.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/lobbystatus.dart';
 import 'dart:convert';
@@ -135,6 +136,31 @@ class GameRequest{
     } catch(e){
       print('Create game exception: $e');
       return 'Server Error: ${e}';
+    }
+  }
+
+  Future<void> uploadStory(GameData gameData) async {
+    var box = Hive.box('serverip');
+    String ip = box.get('ip') ?? '';
+
+    try{
+      final response = await http.post(
+        Uri.parse('http://${ip}:1234/game/upload'),  // Replace with your IP address
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'gameData': gameData})
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
+      );
+
+      print(response.body);
+
+    } catch(e){
+      print('Upload game exception: $e');
     }
   }
 }

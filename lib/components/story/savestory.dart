@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:texttales/constants/colors.dart';
 
-class NextButton extends StatelessWidget {
-  const NextButton({super.key});
+class SaveStory extends StatelessWidget {
+  const SaveStory({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         margin: EdgeInsets.symmetric(vertical: 10,  horizontal: 10),
         decoration: BoxDecoration(
-          gradient: nextstorygamebtnGradient,
+          gradient: savestorygamebtnGradient,
           borderRadius: BorderRadius.circular(15),
           boxShadow: const [
             BoxShadow(
@@ -21,7 +21,16 @@ class NextButton extends StatelessWidget {
             ),
           ],
         ),
-      child: Center(child: Text('Next Story', style: TextStyle(color: Colors.black))),
+      child: Center(child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(Icons.cloud_upload),
+          ),
+          Text('Save Story', style: TextStyle(color: Colors.black),),
+        ],
+      )),
     );
   }
 }
