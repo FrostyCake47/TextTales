@@ -12,6 +12,7 @@ import 'package:texttales/models/player.dart';
 import 'package:texttales/models/story.dart';
 import 'package:texttales/screens/auth.dart';
 import 'package:texttales/screens/game.dart';
+import 'package:texttales/screens/history.dart';
 import 'package:texttales/screens/home.dart';
 import 'package:texttales/screens/lobby.dart';
 import 'package:texttales/screens/setting.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
         '/game' : (context) => GameScreen(),
         '/story' : (context) => StoryScreen(),
         '/setting' : (context) => const SettingScreen(),
+        '/history' : (context) => const HistoryScreen(),
       },
     
       debugShowCheckedModeBanner: false,

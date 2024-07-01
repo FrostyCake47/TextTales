@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:texttales/components/common/exitwarning.dart';
 import 'package:texttales/components/game/inputblock.dart';
@@ -14,6 +15,7 @@ import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
 import 'package:texttales/models/story.dart';
+import 'package:texttales/services/gamerequest.dart';
 import 'package:texttales/services/wsdecoder.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -85,9 +87,19 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       channel.sink.add(json.encode(_package));
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if(gameData.currentRound > gameData.gameSetting.rounds){
-      Navigator.popAndPushNamed(context, '/story', arguments: {'mode':mode});
+        showDialog(context: context, builder: (context){
+          return const Center(
+              child: SpinKitCircle(
+                color: Colors.white,
+                size: 50.0,
+              ),
+            );
+        });
+        await GameRequest().updateGameHistory(gameData.gameId, player.playerId);
+        Navigator.pop(context);
+        Navigator.popAndPushNamed(context, '/story', arguments: {'mode':mode});
     }
     });
 

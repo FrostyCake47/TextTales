@@ -11,9 +11,14 @@ import 'dart:convert';
 import 'package:texttales/models/player.dart';
 
 class GameRequest{
-  Future<int> getRoomId(Player player, WidgetRef ref) async {
+  late String ip;
+
+  GameRequest(){
     var box = Hive.box('serverip');
-    String ip = box.get('ip') ?? '';
+    ip = box.get('ip') ?? '';
+  }
+
+  Future<int> getRoomId(Player player, WidgetRef ref) async {
 
     int roomId;
     final gameServer = ref.watch(gameServerProvider);
@@ -63,8 +68,6 @@ class GameRequest{
   }
 
   Future<int> getRoomStatus(int roomID, WidgetRef ref) async {
-    var box = Hive.box('serverip');
-    String ip = box.get('ip') ?? '';
 
     try{
       final gameServer = ref.watch(gameServerProvider);
@@ -104,8 +107,6 @@ class GameRequest{
   }
 
   Future<dynamic> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
-    var box = Hive.box('serverip');
-    String ip = box.get('ip') ?? '';
 
     try{
       final gameServer = ref.watch(gameServerProvider);
@@ -140,8 +141,7 @@ class GameRequest{
   }
 
   Future<void> uploadStory(GameData gameData) async {
-    var box = Hive.box('serverip');
-    String ip = box.get('ip') ?? '';
+
 
     try{
       final response = await http.post(
@@ -162,5 +162,25 @@ class GameRequest{
     } catch(e){
       print('Upload game exception: $e');
     }
+  }
+
+  Future<void> updateGameHistory(String gameId, String playerId) async {
+    final response = await http.post(
+        Uri.parse('http://${ip}:1234/user/history/add'),  // Replace with your IP address
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'gameId': gameId, 'playerId':playerId})
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
+      ).then((value) => print(value.body))
+      .catchError((err){
+        print('error in updategameHistory: $err');
+      });
+
+
   }
 }

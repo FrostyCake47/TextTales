@@ -229,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: (){
-                          Navigator.pushNamed(context, '/setting',);
+                          Navigator.pushNamed(context, '/history',);
                         },
                         child: HomeBtn(text: 'History',imgSrc: 'history', px: 8, ml:10,)
                       ),
