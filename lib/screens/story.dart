@@ -182,10 +182,7 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
     
 
     if(widget.broadcastFlag != 0){
-      if(widget.broadcastFlag == 1) {
-        onJoinBroadcast(gameData.gameId);
-        GameRequest().uploadStory(gameData);
-      }
+      if(widget.broadcastFlag == 1) onJoinBroadcast(gameData.gameId);
       else if(widget.broadcastFlag == 2) onSelectStoryBroadcast(widget.selectedIndex);
       else if(widget.broadcastFlag == 3) onGoBackBroadcast();
       else if(widget.broadcastFlag == 4) onNextButtonBroadcast();

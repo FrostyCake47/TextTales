@@ -107,7 +107,6 @@ class GameRequest{
   }
 
   Future<dynamic> createGame(WidgetRef ref, int? roomId, LobbyStatus lobbyStatus, GameSetting gameSetting) async {
-
     try{
       final gameServer = ref.watch(gameServerProvider);
       final response = await http.post(
@@ -140,16 +139,14 @@ class GameRequest{
     }
   }
 
-  Future<void> uploadStory(GameData gameData) async {
-
-
+  Future<void> uploadStory(String gameId) async {
     try{
       final response = await http.post(
         Uri.parse('http://${ip}:1234/game/upload'),  // Replace with your IP address
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode({'gameData': gameData})
+        body: jsonEncode({'gameId': gameId})
       ).timeout(
         const Duration(seconds: 10),
         onTimeout: (){
@@ -165,6 +162,7 @@ class GameRequest{
   }
 
   Future<void> updateGameHistory(String gameId, String playerId) async {
+    print('updatingGameHistory');
     final response = await http.post(
         Uri.parse('http://${ip}:1234/user/history/add'),  // Replace with your IP address
         headers: <String, String>{

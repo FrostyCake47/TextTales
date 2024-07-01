@@ -98,6 +98,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             );
         });
         await GameRequest().updateGameHistory(gameData.gameId, player.playerId);
+        if(mode == 'create') GameRequest().uploadStory(gameData.gameId);
         Navigator.pop(context);
         Navigator.popAndPushNamed(context, '/story', arguments: {'mode':mode});
     }
