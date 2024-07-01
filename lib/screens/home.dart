@@ -214,12 +214,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: HomeBtn(text: "Join Game", imgSrc: 'join',),
                 ) : JoinTextArea(joinGameController: _joinGameController, joinGame: joinGame, text: "Enter room ID"),
 
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, '/setting',);
-                  },
-                  child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mx: 80,)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/setting',);
+                        },
+                        child: HomeBtn(text: 'Setting',imgSrc: 'setting', px: 8, mr:10)
+                      ),
+                    ),
+
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/setting',);
+                        },
+                        child: HomeBtn(text: 'History',imgSrc: 'history', px: 8, ml:10,)
+                      ),
+                    ),
+                  ],
                 ),
+                
+                
                 const SizedBox(
                   height: 20,
                 ),

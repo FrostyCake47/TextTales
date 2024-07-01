@@ -7,15 +7,16 @@ class HomeBtn extends StatelessWidget {
   final String text;
   final String imgSrc;
   double? px;
-  double? mx;
-  HomeBtn({super.key, required this.text, this.px, this.mx, required this.imgSrc});
+  double? ml;
+  double? mr;
+  HomeBtn({super.key, required this.text, this.px, this.ml, this.mr, required this.imgSrc});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: px ?? 15),
-      margin: EdgeInsets.symmetric(vertical: 10,  horizontal: mx ?? 30),
+      //margin: EdgeInsets.symmetric(vertical: 10,  horizontal: mx ?? 30),
+      margin: EdgeInsets.only(top: 10, bottom: 10, left: ml ?? 20, right: mr ?? 20),
       decoration: BoxDecoration(
         gradient: homebtnGradient,
         borderRadius: BorderRadius.circular(15),
