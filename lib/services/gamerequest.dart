@@ -178,7 +178,26 @@ class GameRequest{
       .catchError((err){
         print('error in updategameHistory: $err');
       });
+  }
 
+  Future<void> getGameHistory(String playerId) async {
+    print('getGameHistory');
+    final response = await http.post(
+        Uri.parse('http://${ip}:1234/user/history/get'),  // Replace with your IP address
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'playerId':playerId})
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
+      ).then((value) => print(value.body))
+      .catchError((err){
+        print('error in updategameHistory: $err');
+      });
 
+      return response;
   }
 }
