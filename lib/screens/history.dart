@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:texttales/components/history/historyblock.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
@@ -47,7 +48,22 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Text('No data found'); // Show message if no data is found
                   } else {
-                   return Text(snapshot.data.toString());
+                    
+                    List<Map<String, dynamic>> history = [];
+                    final titleMapObject = (snapshot.data as Map)['titleMapObject'];
+                    titleMapObject.forEach((key, value) {
+                      history.add({'gameId':key, 'titles':value});
+                    });
+                    print(history);
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: ScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: history.length,
+                      itemBuilder: (context, index){
+    
+                        return HistoryBlock(game: history[index],);
+                      });
                 }})
               ],
             ),
