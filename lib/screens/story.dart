@@ -273,8 +273,8 @@ class _StoryScreenState extends ConsumerState<StoryScreen> {
                           ],
                         ),
                           
-                        Text(mode ?? ''),
-                        Text(gameData.toString())
+                        /*Text(mode ?? ''),
+                        Text(gameData.toString())*/
                     ],
                   ),
                 ),
