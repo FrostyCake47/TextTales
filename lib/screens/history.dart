@@ -15,10 +15,11 @@ class HistoryScreen extends ConsumerStatefulWidget {
 }
 
 class _HistoryScreenState extends ConsumerState<HistoryScreen> {
+  late dynamic history;
 
   Future<dynamic> handleFutureBuilder(String playerId) async {
-    final response = await GameRequest().getGameHistory(playerId);
-    return;
+    final _history = await GameRequest().getGameHistory(playerId);
+    return _history;
   }
 
   @override
@@ -39,11 +40,15 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
                 FutureBuilder(future: handleFutureBuilder(player.playerId), 
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    return Container();
-                  }
-                  else return SpinKitCircle(color: Colors.white, size: 50.0,);
-                })
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return SpinKitCircle(color: Colors.white, size: 50.0,);
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}'); // Show error message
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Text('No data found'); // Show message if no data is found
+                  } else {
+                   return Text(snapshot.data.toString());
+                }})
               ],
             ),
           ),
