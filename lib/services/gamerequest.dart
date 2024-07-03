@@ -203,4 +203,27 @@ class GameRequest{
     }
     
   }
+
+  Future<dynamic> getGameData(String gameId) async {
+    print('getGameData');
+    try{
+      final response = await http.post(
+        Uri.parse('http://${ip}:1234/game/gamedata'),  // Replace with your IP address
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'gameId':gameId})
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: (){
+          return http.Response('Error', 408);
+        }
+      );
+      return json.decode(response.body)['gameData'];
+    }
+    
+    catch(e){
+      print(e);
+    }
+  }
 }

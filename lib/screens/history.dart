@@ -5,8 +5,11 @@ import 'package:texttales/components/history/historyblock.dart';
 import 'package:texttales/constants/colors.dart';
 import 'package:texttales/constants/textstyles.dart';
 import 'package:texttales/main.dart';
+import 'package:texttales/models/gamesetting.dart';
 import 'package:texttales/models/player.dart';
+import 'package:texttales/models/story.dart';
 import 'package:texttales/services/gamerequest.dart';
+import 'package:texttales/services/wsdecoder.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
@@ -23,9 +26,19 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     return _history;
   }
 
+
   @override
   Widget build(BuildContext context) {
     Player player = ref.watch(playerProvider);
+
+    void pushToStory(String gameId) async {
+    final dynamic _gameData = await GameRequest().getGameData(gameId);
+    if(_gameData != null){
+        print(_gameData);
+        final result = WebSocketMessageDecoder.historyDecoder(_gameData, ref);
+        if (result) Navigator.popAndPushNamed(context, '/story', arguments: {'mode':'create'});
+      }
+    }
     return Scaffold(
       backgroundColor: dark,
       body: Container(
@@ -62,7 +75,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                       itemCount: history.length,
                       itemBuilder: (context, index){
     
-                        return HistoryBlock(game: history[index],);
+                        return HistoryBlock(game: history[index], ref: ref, pushToStory: pushToStory,);
                       });
                 }})
               ],

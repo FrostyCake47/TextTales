@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:texttales/main.dart';
 import 'package:texttales/models/gamesetting.dart';
@@ -101,7 +102,26 @@ class WebSocketMessageDecoder{
 
   }
 
-  static void storyDecoder(){
+  static bool historyDecoder(dynamic _gameData, WidgetRef ref){
+      final gameData = _gameData;
+      final gameId = gameData['gameId'];
+      final GameSetting gameSetting = GameSetting.fromMap(gameData['gameSetting']);
+      final int currentRound = gameData['currentRound'] ?? 0;
+      final bool newRoundFlag = gameData['newRoundFlag'] ?? false;
+      final int submitCount = gameData['submitCount'] ?? 0;
+      //
+      final List<Story> stories = ((gameData['stories'] ?? <Story>[]) as List)
+      .map((storyMap) => Story.fromMap(storyMap))
+      .toList();
+      //lets see
+      final List<dynamic> playerList = gameData['players'];
+      var currentPlayers = Set<Player>();
+      playerList.forEach((element) {
+        final player = Player.fromMap(element);
+        currentPlayers.add(player);
+      });
 
+      ref.read(gameDataProvider.notifier).updateAll(gameId, gameSetting, stories, currentPlayers, currentRound, newRoundFlag, submitCount);
+      return true;
   }
 }
