@@ -3,6 +3,8 @@
 
 TextTales is an interactive storytelling app where users can create, share, and experience dynamic stories together. Each player can contribute to the story, creating a unique and collaborative narrative experience.
 
+[ **Pixie - Backend** ](https://github.com/FrostyCake47/texttales-backend)
+
 ## Features
 
 - **Real-time Story Creation**: Multiple users can join a game and contribute to a shared story.
@@ -19,3 +21,5 @@ TextTales is an interactive storytelling app where users can create, share, and 
   - **Google OAuth**: For authentication.
   - **WebSockets**: For real-time communication.
   - **Hive**: For local database storage.
+ 
+  
